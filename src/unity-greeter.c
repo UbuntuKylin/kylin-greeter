@@ -135,27 +135,6 @@ typedef struct _BackgroundClass BackgroundClass;
 
 #define BACKGROUND_TYPE_DRAW_FLAGS (background_draw_flags_get_type ())
 #define _cairo_destroy0(var) ((var == NULL) ? NULL : (var = (cairo_destroy (var), NULL)))
-typedef struct _MainWindowPrivate MainWindowPrivate;
-
-#define TYPE_MENU_BAR (menu_bar_get_type ())
-#define MENU_BAR(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_MENU_BAR, MenuBar))
-#define MENU_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_MENU_BAR, MenuBarClass))
-#define IS_MENU_BAR(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_MENU_BAR))
-#define IS_MENU_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_MENU_BAR))
-#define MENU_BAR_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_MENU_BAR, MenuBarClass))
-
-typedef struct _MenuBar MenuBar;
-typedef struct _MenuBarClass MenuBarClass;
-
-#define TYPE_LIST_STACK (list_stack_get_type ())
-#define LIST_STACK(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_LIST_STACK, ListStack))
-#define LIST_STACK_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_LIST_STACK, ListStackClass))
-#define IS_LIST_STACK(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_LIST_STACK))
-#define IS_LIST_STACK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_LIST_STACK))
-#define LIST_STACK_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_LIST_STACK, ListStackClass))
-
-typedef struct _ListStack ListStack;
-typedef struct _ListStackClass ListStackClass;
 #define _g_timer_destroy0(var) ((var == NULL) ? NULL : (var = (g_timer_destroy (var), NULL)))
 #define _g_option_context_free0(var) ((var == NULL) ? NULL : (var = (g_option_context_free (var), NULL)))
 typedef struct _ParamSpecUnityGreeter ParamSpecUnityGreeter;
@@ -195,17 +174,6 @@ typedef enum  {
 	BACKGROUND_DRAW_FLAGS_NONE,
 	BACKGROUND_DRAW_FLAGS_GRID
 } BackgroundDrawFlags;
-
-struct _MainWindow {
-	GtkWindow parent_instance;
-	MainWindowPrivate * priv;
-	MenuBar* menubar;
-	ListStack* stack;
-};
-
-struct _MainWindowClass {
-	GtkWindowClass parent_class;
-};
 
 struct _ParamSpecUnityGreeter {
 	GParamSpec parent_instance;
@@ -247,14 +215,14 @@ enum  {
 static UnityGreeter* unity_greeter_new (gboolean test_mode_);
 static UnityGreeter* unity_greeter_construct (GType object_type, gboolean test_mode_);
 static cairo_surface_t* unity_greeter_create_root_surface (GdkScreen* screen);
-static void __lambda50_ (UnityGreeter* self, const gchar* text, LightDMMessageType type);
-static void ___lambda50__lightdm_greeter_show_message (LightDMGreeter* _sender, const gchar* text, LightDMMessageType type, gpointer self);
-static void __lambda51_ (UnityGreeter* self, const gchar* text, LightDMPromptType type);
-static void ___lambda51__lightdm_greeter_show_prompt (LightDMGreeter* _sender, const gchar* text, LightDMPromptType type, gpointer self);
-static void __lambda52_ (UnityGreeter* self);
-static void ___lambda52__lightdm_greeter_autologin_timer_expired (LightDMGreeter* _sender, gpointer self);
-static void __lambda53_ (UnityGreeter* self);
-static void ___lambda53__lightdm_greeter_authentication_complete (LightDMGreeter* _sender, gpointer self);
+static void __lambda48_ (UnityGreeter* self, const gchar* text, LightDMMessageType type);
+static void ___lambda48__lightdm_greeter_show_message (LightDMGreeter* _sender, const gchar* text, LightDMMessageType type, gpointer self);
+static void __lambda49_ (UnityGreeter* self, const gchar* text, LightDMPromptType type);
+static void ___lambda49__lightdm_greeter_show_prompt (LightDMGreeter* _sender, const gchar* text, LightDMPromptType type, gpointer self);
+static void __lambda50_ (UnityGreeter* self);
+static void ___lambda50__lightdm_greeter_autologin_timer_expired (LightDMGreeter* _sender, gpointer self);
+static void __lambda51_ (UnityGreeter* self);
+static void ___lambda51__lightdm_greeter_authentication_complete (LightDMGreeter* _sender, gpointer self);
 SettingsDaemon* settings_daemon_new (void);
 SettingsDaemon* settings_daemon_construct (GType object_type);
 void settings_daemon_start (SettingsDaemon* self);
@@ -262,17 +230,17 @@ MainWindow* main_window_new (void);
 MainWindow* main_window_construct (GType object_type);
 DialogDBusInterface* dialog_dbus_interface_new (void);
 DialogDBusInterface* dialog_dbus_interface_construct (GType object_type);
-static void __lambda54_ (UnityGreeter* self, guint32 type);
+static void __lambda52_ (UnityGreeter* self, guint32 type);
 GType shutdown_dialog_type_get_type (void) G_GNUC_CONST;
 void main_window_show_shutdown_dialog (MainWindow* self, ShutdownDialogType type);
-static void ___lambda54__dialog_dbus_interface_open_dialog (DialogDBusInterface* _sender, guint32 type, gpointer self);
-static void __lambda55_ (UnityGreeter* self, DialogDBusInterface* type);
+static void ___lambda52__dialog_dbus_interface_open_dialog (DialogDBusInterface* _sender, guint32 type, gpointer self);
+static void __lambda53_ (UnityGreeter* self, DialogDBusInterface* type);
 void main_window_close_shutdown_dialog (MainWindow* self);
-static void ___lambda55__dialog_dbus_interface_close_dialog (DialogDBusInterface* _sender, gpointer self);
-static void __lambda56_ (UnityGreeter* self, GDBusConnection* c);
-static void ___lambda56__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
-static void __lambda57_ (UnityGreeter* self);
-static void ___lambda57__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self);
+static void ___lambda53__dialog_dbus_interface_close_dialog (DialogDBusInterface* _sender, gpointer self);
+static void __lambda54_ (UnityGreeter* self, GDBusConnection* c);
+static void ___lambda54__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
+static void __lambda55_ (UnityGreeter* self);
+static void ___lambda55__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self);
 static void unity_greeter_start_fake_wm (UnityGreeter* self);
 static gboolean unity_greeter_ready_cb (UnityGreeter* self);
 static gboolean _unity_greeter_ready_cb_gsource_func (gpointer self);
@@ -309,9 +277,7 @@ gboolean unity_greeter_show_remote_login_hint (UnityGreeter* self);
 gboolean unity_greeter_hide_users_hint (UnityGreeter* self);
 gboolean unity_greeter_has_guest_account_hint (UnityGreeter* self);
 static GdkFilterReturn unity_greeter_focus_upon_map (UnityGreeter* self, GdkXEvent* gxevent, GdkEvent* event);
-GType menu_bar_get_type (void) G_GNUC_CONST;
-GType list_stack_get_type (void) G_GNUC_CONST;
-GtkWindow* menu_bar_get_keyboard_window (MenuBar* self);
+GtkWindow* main_window_get_keyboard_window (MainWindow* self);
 static GdkFilterReturn _unity_greeter_focus_upon_map_gdk_filter_func (GdkXEvent* xevent, GdkEvent* event, gpointer self);
 static void unity_greeter_log_cb (const gchar* log_domain, GLogLevelFlags log_level, const gchar* message);
 gint unity_greeter_main (gchar** args, int args_length1);
@@ -325,8 +291,8 @@ gdouble ug_settings_get_double (const gchar* key);
 #define UG_SETTINGS_KEY_XFT_ANTIALIAS "xft-antialias"
 #define UG_SETTINGS_KEY_XFT_HINTSTYLE "xft-hintstyle"
 #define UG_SETTINGS_KEY_XFT_RGBA "xft-rgba"
-static gboolean __lambda58_ (void);
-static gboolean ___lambda58__gsource_func (gpointer self);
+static gboolean __lambda56_ (void);
+static gboolean ___lambda56__gsource_func (gpointer self);
 static void g_cclosure_user_marshal_VOID__STRING_INT (GClosure * closure, GValue * return_value, guint n_param_values, const GValue * param_values, gpointer invocation_hint, gpointer marshal_data);
 static void unity_greeter_finalize (UnityGreeter* obj);
 enum  {
@@ -371,7 +337,7 @@ static gpointer _unity_greeter_ref0 (gpointer self) {
 }
 
 
-static void __lambda50_ (UnityGreeter* self, const gchar* text, LightDMMessageType type) {
+static void __lambda48_ (UnityGreeter* self, const gchar* text, LightDMMessageType type) {
 	const gchar* _tmp0_ = NULL;
 	LightDMMessageType _tmp1_ = 0;
 	g_return_if_fail (text != NULL);
@@ -381,12 +347,12 @@ static void __lambda50_ (UnityGreeter* self, const gchar* text, LightDMMessageTy
 }
 
 
-static void ___lambda50__lightdm_greeter_show_message (LightDMGreeter* _sender, const gchar* text, LightDMMessageType type, gpointer self) {
-	__lambda50_ (self, text, type);
+static void ___lambda48__lightdm_greeter_show_message (LightDMGreeter* _sender, const gchar* text, LightDMMessageType type, gpointer self) {
+	__lambda48_ (self, text, type);
 }
 
 
-static void __lambda51_ (UnityGreeter* self, const gchar* text, LightDMPromptType type) {
+static void __lambda49_ (UnityGreeter* self, const gchar* text, LightDMPromptType type) {
 	const gchar* _tmp0_ = NULL;
 	LightDMPromptType _tmp1_ = 0;
 	g_return_if_fail (text != NULL);
@@ -396,34 +362,34 @@ static void __lambda51_ (UnityGreeter* self, const gchar* text, LightDMPromptTyp
 }
 
 
-static void ___lambda51__lightdm_greeter_show_prompt (LightDMGreeter* _sender, const gchar* text, LightDMPromptType type, gpointer self) {
-	__lambda51_ (self, text, type);
+static void ___lambda49__lightdm_greeter_show_prompt (LightDMGreeter* _sender, const gchar* text, LightDMPromptType type, gpointer self) {
+	__lambda49_ (self, text, type);
 }
 
 
-static void __lambda52_ (UnityGreeter* self) {
+static void __lambda50_ (UnityGreeter* self) {
 	LightDMGreeter* _tmp0_ = NULL;
 	_tmp0_ = self->priv->greeter;
 	lightdm_greeter_authenticate_autologin (_tmp0_);
 }
 
 
-static void ___lambda52__lightdm_greeter_autologin_timer_expired (LightDMGreeter* _sender, gpointer self) {
-	__lambda52_ (self);
+static void ___lambda50__lightdm_greeter_autologin_timer_expired (LightDMGreeter* _sender, gpointer self) {
+	__lambda50_ (self);
 }
 
 
-static void __lambda53_ (UnityGreeter* self) {
+static void __lambda51_ (UnityGreeter* self) {
 	g_signal_emit_by_name (self, "authentication-complete");
 }
 
 
-static void ___lambda53__lightdm_greeter_authentication_complete (LightDMGreeter* _sender, gpointer self) {
-	__lambda53_ (self);
+static void ___lambda51__lightdm_greeter_authentication_complete (LightDMGreeter* _sender, gpointer self) {
+	__lambda51_ (self);
 }
 
 
-static void __lambda54_ (UnityGreeter* self, guint32 type) {
+static void __lambda52_ (UnityGreeter* self, guint32 type) {
 	ShutdownDialogType dialog_type = 0;
 	guint32 _tmp0_ = 0U;
 	MainWindow* _tmp1_ = NULL;
@@ -448,12 +414,12 @@ static void __lambda54_ (UnityGreeter* self, guint32 type) {
 }
 
 
-static void ___lambda54__dialog_dbus_interface_open_dialog (DialogDBusInterface* _sender, guint32 type, gpointer self) {
-	__lambda54_ (self, type);
+static void ___lambda52__dialog_dbus_interface_open_dialog (DialogDBusInterface* _sender, guint32 type, gpointer self) {
+	__lambda52_ (self, type);
 }
 
 
-static void __lambda55_ (UnityGreeter* self, DialogDBusInterface* type) {
+static void __lambda53_ (UnityGreeter* self, DialogDBusInterface* type) {
 	MainWindow* _tmp0_ = NULL;
 	g_return_if_fail (type != NULL);
 	_tmp0_ = self->priv->main_window;
@@ -461,12 +427,12 @@ static void __lambda55_ (UnityGreeter* self, DialogDBusInterface* type) {
 }
 
 
-static void ___lambda55__dialog_dbus_interface_close_dialog (DialogDBusInterface* _sender, gpointer self) {
-	__lambda55_ (self, _sender);
+static void ___lambda53__dialog_dbus_interface_close_dialog (DialogDBusInterface* _sender, gpointer self) {
+	__lambda53_ (self, _sender);
 }
 
 
-static void __lambda56_ (UnityGreeter* self, GDBusConnection* c) {
+static void __lambda54_ (UnityGreeter* self, GDBusConnection* c) {
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (c != NULL);
 	{
@@ -476,11 +442,11 @@ static void __lambda56_ (UnityGreeter* self, GDBusConnection* c) {
 		_tmp1_ = self->priv->dbus_object;
 		dialog_dbus_interface_register_object (_tmp1_, _tmp0_, "/org/gnome/SessionManager/EndSessionDialog", &_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch35_g_error;
+			goto __catch30_g_error;
 		}
 	}
-	goto __finally35;
-	__catch35_g_error:
+	goto __finally30;
+	__catch30_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp2_ = NULL;
@@ -493,7 +459,7 @@ static void __lambda56_ (UnityGreeter* self, GDBusConnection* c) {
 "ndSessionDialog: %s", _tmp3_);
 		_g_error_free0 (e);
 	}
-	__finally35:
+	__finally30:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -502,18 +468,18 @@ static void __lambda56_ (UnityGreeter* self, GDBusConnection* c) {
 }
 
 
-static void ___lambda56__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
-	__lambda56_ (self, connection);
+static void ___lambda54__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
+	__lambda54_ (self, connection);
 }
 
 
-static void __lambda57_ (UnityGreeter* self) {
+static void __lambda55_ (UnityGreeter* self) {
 	g_debug ("unity-greeter.vala:135: Failed to acquire name com.canonical.Unity");
 }
 
 
-static void ___lambda57__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
-	__lambda57_ (self);
+static void ___lambda55__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
+	__lambda55_ (self);
 }
 
 
@@ -577,13 +543,13 @@ static UnityGreeter* unity_greeter_construct (GType object_type, gboolean test_m
 	_g_object_unref0 (self->priv->greeter);
 	self->priv->greeter = _tmp4_;
 	_tmp5_ = self->priv->greeter;
-	g_signal_connect (_tmp5_, "show-message", (GCallback) ___lambda50__lightdm_greeter_show_message, self);
+	g_signal_connect (_tmp5_, "show-message", (GCallback) ___lambda48__lightdm_greeter_show_message, self);
 	_tmp6_ = self->priv->greeter;
-	g_signal_connect (_tmp6_, "show-prompt", (GCallback) ___lambda51__lightdm_greeter_show_prompt, self);
+	g_signal_connect (_tmp6_, "show-prompt", (GCallback) ___lambda49__lightdm_greeter_show_prompt, self);
 	_tmp7_ = self->priv->greeter;
-	g_signal_connect (_tmp7_, "autologin-timer-expired", (GCallback) ___lambda52__lightdm_greeter_autologin_timer_expired, self);
+	g_signal_connect (_tmp7_, "autologin-timer-expired", (GCallback) ___lambda50__lightdm_greeter_autologin_timer_expired, self);
 	_tmp8_ = self->priv->greeter;
-	g_signal_connect (_tmp8_, "authentication-complete", (GCallback) ___lambda53__lightdm_greeter_authentication_complete, self);
+	g_signal_connect (_tmp8_, "authentication-complete", (GCallback) ___lambda51__lightdm_greeter_authentication_complete, self);
 	connected = FALSE;
 	{
 		gboolean _tmp9_ = FALSE;
@@ -593,12 +559,12 @@ static UnityGreeter* unity_greeter_construct (GType object_type, gboolean test_m
 		_tmp11_ = lightdm_greeter_connect_sync (_tmp10_, &_inner_error_);
 		_tmp9_ = _tmp11_;
 		if (_inner_error_ != NULL) {
-			goto __catch33_g_error;
+			goto __catch28_g_error;
 		}
 		connected = _tmp9_;
 	}
-	goto __finally33;
-	__catch33_g_error:
+	goto __finally28;
+	__catch28_g_error:
 	{
 		GError* e = NULL;
 		e = _inner_error_;
@@ -606,7 +572,7 @@ static UnityGreeter* unity_greeter_construct (GType object_type, gboolean test_m
 		g_warning ("unity-greeter.vala:72: Failed to connect to LightDM daemon");
 		_g_error_free0 (e);
 	}
-	__finally33:
+	__finally28:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -681,11 +647,11 @@ static UnityGreeter* unity_greeter_construct (GType object_type, gboolean test_m
 		_tmp38_ = self->priv->state_file;
 		g_key_file_load_from_file (_tmp37_, _tmp38_, G_KEY_FILE_NONE, &_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch34_g_error;
+			goto __catch29_g_error;
 		}
 	}
-	goto __finally34;
-	__catch34_g_error:
+	goto __finally29;
+	__catch29_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp39_ = NULL;
@@ -703,7 +669,7 @@ static UnityGreeter* unity_greeter_construct (GType object_type, gboolean test_m
 		}
 		_g_error_free0 (e);
 	}
-	__finally34:
+	__finally29:
 	if (_inner_error_ != NULL) {
 		_g_free0 (state_file_name);
 		_g_free0 (_tmp24_);
@@ -722,10 +688,10 @@ static UnityGreeter* unity_greeter_construct (GType object_type, gboolean test_m
 	_g_object_unref0 (self->priv->dbus_object);
 	self->priv->dbus_object = _tmp44_;
 	_tmp45_ = self->priv->dbus_object;
-	g_signal_connect (_tmp45_, "open-dialog", (GCallback) ___lambda54__dialog_dbus_interface_open_dialog, self);
+	g_signal_connect (_tmp45_, "open-dialog", (GCallback) ___lambda52__dialog_dbus_interface_open_dialog, self);
 	_tmp46_ = self->priv->dbus_object;
-	g_signal_connect (_tmp46_, "close-dialog", (GCallback) ___lambda55__dialog_dbus_interface_close_dialog, self);
-	g_bus_own_name_with_closures (G_BUS_TYPE_SESSION, "com.canonical.Unity", G_BUS_NAME_OWNER_FLAGS_NONE, (GClosure*) ((___lambda56__gbus_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda56__gbus_acquired_callback, unity_greeter_ref (self), unity_greeter_unref)), (GClosure*) ((NULL == NULL) ? NULL : g_cclosure_new ((GCallback) NULL, NULL, NULL)), (GClosure*) ((___lambda57__gbus_name_lost_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda57__gbus_name_lost_callback, unity_greeter_ref (self), unity_greeter_unref)));
+	g_signal_connect (_tmp46_, "close-dialog", (GCallback) ___lambda53__dialog_dbus_interface_close_dialog, self);
+	g_bus_own_name_with_closures (G_BUS_TYPE_SESSION, "com.canonical.Unity", G_BUS_NAME_OWNER_FLAGS_NONE, (GClosure*) ((___lambda54__gbus_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda54__gbus_acquired_callback, unity_greeter_ref (self), unity_greeter_unref)), (GClosure*) ((NULL == NULL) ? NULL : g_cclosure_new ((GCallback) NULL, NULL, NULL)), (GClosure*) ((___lambda55__gbus_name_lost_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda55__gbus_name_lost_callback, unity_greeter_ref (self), unity_greeter_unref)));
 	unity_greeter_start_fake_wm (self);
 	gdk_threads_add_idle (_unity_greeter_ready_cb_gsource_func, self);
 	_g_free0 (state_file_name);
@@ -756,13 +722,13 @@ gchar* unity_greeter_get_state (UnityGreeter* self, const gchar* key) {
 		_tmp3_ = g_key_file_get_value (_tmp1_, "greeter", _tmp2_, &_inner_error_);
 		_tmp0_ = _tmp3_;
 		if (_inner_error_ != NULL) {
-			goto __catch36_g_error;
+			goto __catch31_g_error;
 		}
 		result = _tmp0_;
 		return result;
 	}
-	goto __finally36;
-	__catch36_g_error:
+	goto __finally31;
+	__catch31_g_error:
 	{
 		GError* e = NULL;
 		e = _inner_error_;
@@ -771,7 +737,7 @@ gchar* unity_greeter_get_state (UnityGreeter* self, const gchar* key) {
 		_g_error_free0 (e);
 		return result;
 	}
-	__finally36:
+	__finally31:
 	g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 	g_clear_error (&_inner_error_);
 	return NULL;
@@ -801,11 +767,11 @@ void unity_greeter_set_state (UnityGreeter* self, const gchar* key, const gchar*
 		_tmp5_ = self->priv->state_file;
 		g_file_set_contents (_tmp5_, data, (gssize) (-1), &_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch37_g_error;
+			goto __catch32_g_error;
 		}
 	}
-	goto __finally37;
-	__catch37_g_error:
+	goto __finally32;
+	__catch32_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp6_ = NULL;
@@ -817,7 +783,7 @@ void unity_greeter_set_state (UnityGreeter* self, const gchar* key, const gchar*
 		g_debug ("unity-greeter.vala:163: Failed to write state: %s", _tmp7_);
 		_g_error_free0 (e);
 	}
-	__finally37:
+	__finally32:
 	if (_inner_error_ != NULL) {
 		_g_free0 (data);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -897,7 +863,7 @@ gboolean unity_greeter_start_session (UnityGreeter* self, const gchar* session, 
 	unity_greeter_refresh_background (_tmp4_, _tmp5_);
 	_tmp6_ = self->test_mode;
 	if (_tmp6_) {
-		g_debug ("unity-greeter.vala:194: Successfully logged in! Quitting...");
+		g_debug ("unity-greeter.vala:198: Successfully logged in! Quitting...");
 		gtk_main_quit ();
 		result = TRUE;
 		_cairo_destroy0 (c);
@@ -917,7 +883,7 @@ gboolean unity_greeter_start_session (UnityGreeter* self, const gchar* session, 
 		_tmp10_ = self->priv->greeter;
 		_tmp11_ = lightdm_greeter_get_default_session_hint (_tmp10_);
 		_tmp12_ = _tmp11_;
-		g_debug ("unity-greeter.vala:201: Session %s is not available, using system defa" \
+		g_debug ("unity-greeter.vala:205: Session %s is not available, using system defa" \
 "ult %s instead", _tmp9_, _tmp12_);
 		_tmp13_ = self->priv->greeter;
 		_tmp14_ = lightdm_greeter_get_default_session_hint (_tmp13_);
@@ -935,12 +901,12 @@ gboolean unity_greeter_start_session (UnityGreeter* self, const gchar* session, 
 		_tmp19_ = lightdm_greeter_start_session_sync (_tmp17_, _tmp18_, &_inner_error_);
 		_tmp16_ = _tmp19_;
 		if (_inner_error_ != NULL) {
-			goto __catch38_g_error;
+			goto __catch33_g_error;
 		}
 		_result_ = _tmp16_;
 	}
-	goto __finally38;
-	__catch38_g_error:
+	goto __finally33;
+	__catch33_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp20_ = NULL;
@@ -949,10 +915,10 @@ gboolean unity_greeter_start_session (UnityGreeter* self, const gchar* session, 
 		_inner_error_ = NULL;
 		_tmp20_ = e;
 		_tmp21_ = _tmp20_->message;
-		g_warning ("unity-greeter.vala:212: Failed to start session: %s", _tmp21_);
+		g_warning ("unity-greeter.vala:216: Failed to start session: %s", _tmp21_);
 		_g_error_free0 (e);
 	}
-	__finally38:
+	__finally33:
 	if (_inner_error_ != NULL) {
 		_cairo_destroy0 (c);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -1013,7 +979,7 @@ static gboolean unity_greeter_ready_cb (UnityGreeter* self) {
 	ca_context* _tmp0_ = NULL;
 	gboolean _tmp1_ = FALSE;
 	g_return_val_if_fail (self != NULL, FALSE);
-	g_debug ("unity-greeter.vala:235: starting system-ready sound");
+	g_debug ("unity-greeter.vala:239: starting system-ready sound");
 	ca_context_create (&_tmp0_);
 	_ca_context_destroy0 (self->priv->canberra_context);
 	self->priv->canberra_context = _tmp0_;
@@ -1034,7 +1000,7 @@ void unity_greeter_show (UnityGreeter* self) {
 	GdkWindow* _tmp2_ = NULL;
 	MainWindow* _tmp3_ = NULL;
 	g_return_if_fail (self != NULL);
-	g_debug ("unity-greeter.vala:252: Showing main window");
+	g_debug ("unity-greeter.vala:256: Showing main window");
 	_tmp0_ = self->priv->main_window;
 	gtk_widget_show ((GtkWidget*) _tmp0_);
 	_tmp1_ = self->priv->main_window;
@@ -1277,121 +1243,109 @@ static GdkFilterReturn unity_greeter_focus_upon_map (UnityGreeter* self, GdkXEve
 		if (_tmp20_) {
 			Window keyboard_xid = 0;
 			MainWindow* _tmp21_ = NULL;
-			MenuBar* _tmp22_ = NULL;
+			GtkWindow* _tmp22_ = NULL;
 			GtkWindow* _tmp23_ = NULL;
-			GtkWindow* _tmp24_ = NULL;
-			gboolean _tmp31_ = FALSE;
-			Window _tmp32_ = 0;
-			Window _tmp33_ = 0;
-			gboolean _tmp36_ = FALSE;
+			gboolean _tmp29_ = FALSE;
+			Window _tmp30_ = 0;
+			Window _tmp31_ = 0;
+			gboolean _tmp34_ = FALSE;
 			keyboard_xid = (Window) 0;
 			_tmp21_ = self->priv->main_window;
-			_tmp22_ = _tmp21_->menubar;
-			_tmp23_ = menu_bar_get_keyboard_window (_tmp22_);
-			_tmp24_ = _tmp23_;
-			if (_tmp24_ != NULL) {
-				MainWindow* _tmp25_ = NULL;
-				MenuBar* _tmp26_ = NULL;
-				GtkWindow* _tmp27_ = NULL;
-				GtkWindow* _tmp28_ = NULL;
-				GdkWindow* _tmp29_ = NULL;
-				Window _tmp30_ = 0;
-				_tmp25_ = self->priv->main_window;
-				_tmp26_ = _tmp25_->menubar;
-				_tmp27_ = menu_bar_get_keyboard_window (_tmp26_);
-				_tmp28_ = _tmp27_;
-				_tmp29_ = gtk_widget_get_window ((GtkWidget*) _tmp28_);
-				_tmp30_ = gdk_x11_window_get_xid (_tmp29_);
-				keyboard_xid = _tmp30_;
+			_tmp22_ = main_window_get_keyboard_window (_tmp21_);
+			_tmp23_ = _tmp22_;
+			if (_tmp23_ != NULL) {
+				MainWindow* _tmp24_ = NULL;
+				GtkWindow* _tmp25_ = NULL;
+				GtkWindow* _tmp26_ = NULL;
+				GdkWindow* _tmp27_ = NULL;
+				Window _tmp28_ = 0;
+				_tmp24_ = self->priv->main_window;
+				_tmp25_ = main_window_get_keyboard_window (_tmp24_);
+				_tmp26_ = _tmp25_;
+				_tmp27_ = gtk_widget_get_window ((GtkWidget*) _tmp26_);
+				_tmp28_ = gdk_x11_window_get_xid (_tmp27_);
+				keyboard_xid = _tmp28_;
 			}
-			_tmp32_ = xwin;
-			_tmp33_ = keyboard_xid;
-			if (_tmp32_ != _tmp33_) {
-				GdkWindow* _tmp34_ = NULL;
-				GdkWindowTypeHint _tmp35_ = 0;
-				_tmp34_ = win;
-				_tmp35_ = gdk_window_get_type_hint (_tmp34_);
-				_tmp31_ = _tmp35_ != GDK_WINDOW_TYPE_HINT_NOTIFICATION;
+			_tmp30_ = xwin;
+			_tmp31_ = keyboard_xid;
+			if (_tmp30_ != _tmp31_) {
+				GdkWindow* _tmp32_ = NULL;
+				GdkWindowTypeHint _tmp33_ = 0;
+				_tmp32_ = win;
+				_tmp33_ = gdk_window_get_type_hint (_tmp32_);
+				_tmp29_ = _tmp33_ != GDK_WINDOW_TYPE_HINT_NOTIFICATION;
 			} else {
-				_tmp31_ = FALSE;
+				_tmp29_ = FALSE;
 			}
-			_tmp36_ = _tmp31_;
-			if (_tmp36_) {
-				GdkWindow* _tmp37_ = NULL;
-				MainWindow* _tmp38_ = NULL;
-				MenuBar* _tmp39_ = NULL;
-				GtkWindow* _tmp40_ = NULL;
-				GtkWindow* _tmp41_ = NULL;
-				_tmp37_ = win;
-				gdk_window_focus (_tmp37_, (guint32) GDK_CURRENT_TIME);
-				_tmp38_ = self->priv->main_window;
-				_tmp39_ = _tmp38_->menubar;
-				_tmp40_ = menu_bar_get_keyboard_window (_tmp39_);
-				_tmp41_ = _tmp40_;
-				if (_tmp41_ != NULL) {
-					MainWindow* _tmp42_ = NULL;
-					MenuBar* _tmp43_ = NULL;
-					GtkWindow* _tmp44_ = NULL;
-					GtkWindow* _tmp45_ = NULL;
-					GdkWindow* _tmp46_ = NULL;
-					_tmp42_ = self->priv->main_window;
-					_tmp43_ = _tmp42_->menubar;
-					_tmp44_ = menu_bar_get_keyboard_window (_tmp43_);
-					_tmp45_ = _tmp44_;
-					_tmp46_ = gtk_widget_get_window ((GtkWidget*) _tmp45_);
-					gdk_window_raise (_tmp46_);
+			_tmp34_ = _tmp29_;
+			if (_tmp34_) {
+				GdkWindow* _tmp35_ = NULL;
+				MainWindow* _tmp36_ = NULL;
+				GtkWindow* _tmp37_ = NULL;
+				GtkWindow* _tmp38_ = NULL;
+				_tmp35_ = win;
+				gdk_window_focus (_tmp35_, (guint32) GDK_CURRENT_TIME);
+				_tmp36_ = self->priv->main_window;
+				_tmp37_ = main_window_get_keyboard_window (_tmp36_);
+				_tmp38_ = _tmp37_;
+				if (_tmp38_ != NULL) {
+					MainWindow* _tmp39_ = NULL;
+					GtkWindow* _tmp40_ = NULL;
+					GtkWindow* _tmp41_ = NULL;
+					GdkWindow* _tmp42_ = NULL;
+					_tmp39_ = self->priv->main_window;
+					_tmp40_ = main_window_get_keyboard_window (_tmp39_);
+					_tmp41_ = _tmp40_;
+					_tmp42_ = gtk_widget_get_window ((GtkWidget*) _tmp41_);
+					gdk_window_raise (_tmp42_);
 				}
 			}
 		}
 		_g_object_unref0 (win);
 		_g_object_unref0 (display);
 	} else {
-		XEvent* _tmp47_ = NULL;
-		gint _tmp48_ = 0;
-		_tmp47_ = xevent;
-		_tmp48_ = (*_tmp47_).type;
-		if (_tmp48_ == ((gint) UnmapNotify)) {
+		XEvent* _tmp43_ = NULL;
+		gint _tmp44_ = 0;
+		_tmp43_ = xevent;
+		_tmp44_ = (*_tmp43_).type;
+		if (_tmp44_ == ((gint) UnmapNotify)) {
 			Window xwin = 0;
 			gint revert_to = 0;
-			XEvent* _tmp49_ = NULL;
-			XUnmapEvent _tmp50_ = {0};
-			Display* _tmp51_ = NULL;
-			Window _tmp52_ = 0;
-			gint _tmp53_ = 0;
-			gint _tmp54_ = 0;
-			_tmp49_ = xevent;
-			_tmp50_ = (*_tmp49_).xunmap;
-			_tmp51_ = _tmp50_.display;
-			XGetInputFocus (_tmp51_, &_tmp52_, &_tmp53_);
-			xwin = _tmp52_;
-			revert_to = _tmp53_;
-			_tmp54_ = revert_to;
-			if (_tmp54_ == ((gint) RevertToNone)) {
-				MainWindow* _tmp55_ = NULL;
-				GdkWindow* _tmp56_ = NULL;
-				MainWindow* _tmp57_ = NULL;
-				MenuBar* _tmp58_ = NULL;
-				GtkWindow* _tmp59_ = NULL;
-				GtkWindow* _tmp60_ = NULL;
-				_tmp55_ = self->priv->main_window;
-				_tmp56_ = gtk_widget_get_window ((GtkWidget*) _tmp55_);
-				gdk_window_focus (_tmp56_, (guint32) GDK_CURRENT_TIME);
-				_tmp57_ = self->priv->main_window;
-				_tmp58_ = _tmp57_->menubar;
-				_tmp59_ = menu_bar_get_keyboard_window (_tmp58_);
-				_tmp60_ = _tmp59_;
-				if (_tmp60_ != NULL) {
-					MainWindow* _tmp61_ = NULL;
-					MenuBar* _tmp62_ = NULL;
-					GtkWindow* _tmp63_ = NULL;
-					GtkWindow* _tmp64_ = NULL;
-					GdkWindow* _tmp65_ = NULL;
-					_tmp61_ = self->priv->main_window;
-					_tmp62_ = _tmp61_->menubar;
-					_tmp63_ = menu_bar_get_keyboard_window (_tmp62_);
-					_tmp64_ = _tmp63_;
-					_tmp65_ = gtk_widget_get_window ((GtkWidget*) _tmp64_);
-					gdk_window_raise (_tmp65_);
+			XEvent* _tmp45_ = NULL;
+			XUnmapEvent _tmp46_ = {0};
+			Display* _tmp47_ = NULL;
+			Window _tmp48_ = 0;
+			gint _tmp49_ = 0;
+			gint _tmp50_ = 0;
+			_tmp45_ = xevent;
+			_tmp46_ = (*_tmp45_).xunmap;
+			_tmp47_ = _tmp46_.display;
+			XGetInputFocus (_tmp47_, &_tmp48_, &_tmp49_);
+			xwin = _tmp48_;
+			revert_to = _tmp49_;
+			_tmp50_ = revert_to;
+			if (_tmp50_ == ((gint) RevertToNone)) {
+				MainWindow* _tmp51_ = NULL;
+				GdkWindow* _tmp52_ = NULL;
+				MainWindow* _tmp53_ = NULL;
+				GtkWindow* _tmp54_ = NULL;
+				GtkWindow* _tmp55_ = NULL;
+				_tmp51_ = self->priv->main_window;
+				_tmp52_ = gtk_widget_get_window ((GtkWidget*) _tmp51_);
+				gdk_window_focus (_tmp52_, (guint32) GDK_CURRENT_TIME);
+				_tmp53_ = self->priv->main_window;
+				_tmp54_ = main_window_get_keyboard_window (_tmp53_);
+				_tmp55_ = _tmp54_;
+				if (_tmp55_ != NULL) {
+					MainWindow* _tmp56_ = NULL;
+					GtkWindow* _tmp57_ = NULL;
+					GtkWindow* _tmp58_ = NULL;
+					GdkWindow* _tmp59_ = NULL;
+					_tmp56_ = self->priv->main_window;
+					_tmp57_ = main_window_get_keyboard_window (_tmp56_);
+					_tmp58_ = _tmp57_;
+					_tmp59_ = gtk_widget_get_window ((GtkWidget*) _tmp58_);
+					gdk_window_raise (_tmp59_);
 				}
 			}
 		}
@@ -1602,18 +1556,18 @@ static void _unity_greeter_log_cb_glog_func (const gchar* log_domain, GLogLevelF
 }
 
 
-static gboolean __lambda58_ (void) {
+static gboolean __lambda56_ (void) {
 	gboolean result = FALSE;
-	g_debug ("unity-greeter.vala:605: Got a SIGTERM");
+	g_debug ("unity-greeter.vala:609: Got a SIGTERM");
 	gtk_main_quit ();
 	result = TRUE;
 	return result;
 }
 
 
-static gboolean ___lambda58__gsource_func (gpointer self) {
+static gboolean ___lambda56__gsource_func (gpointer self) {
 	gboolean result;
-	result = __lambda58_ ();
+	result = __lambda56_ ();
 	return result;
 }
 
@@ -1707,7 +1661,7 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 		_argv_size_ = argv_length1;
 		if (_inner_error_ != NULL) {
 			argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
-			goto __catch39_g_error;
+			goto __catch34_g_error;
 		}
 		_tmp2_ = argv;
 		_tmp2__length1 = argv_length1;
@@ -1715,12 +1669,12 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 		atspi_pid = _tmp3_;
 		if (_inner_error_ != NULL) {
 			argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
-			goto __catch39_g_error;
+			goto __catch34_g_error;
 		}
 		argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
 	}
-	goto __finally39;
-	__catch39_g_error:
+	goto __finally34;
+	__catch34_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp4_ = NULL;
@@ -1729,10 +1683,10 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 		_inner_error_ = NULL;
 		_tmp4_ = e;
 		_tmp5_ = _tmp4_->message;
-		g_warning ("unity-greeter.vala:487: Error starting the at-spi registry: %s", _tmp5_);
+		g_warning ("unity-greeter.vala:491: Error starting the at-spi registry: %s", _tmp5_);
 		_g_error_free0 (e);
 	}
-	__finally39:
+	__finally34:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -1746,8 +1700,8 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 	g_log_set_default_handler (_unity_greeter_log_cb_glog_func, NULL);
 	_tmp7_ = getuid ();
 	_tmp8_ = g_getenv ("LANG");
-	g_debug ("unity-greeter.vala:496: Starting unity-greeter %s UID=%d LANG=%s", VERSION, (gint) _tmp7_, _tmp8_);
-	g_debug ("unity-greeter.vala:499: Setting cursor");
+	g_debug ("unity-greeter.vala:500: Starting unity-greeter %s UID=%d LANG=%s", VERSION, (gint) _tmp7_, _tmp8_);
+	g_debug ("unity-greeter.vala:503: Setting cursor");
 	_tmp9_ = gdk_get_default_root_window ();
 	_tmp10_ = gdk_cursor_new (GDK_LEFT_PTR);
 	_tmp11_ = _tmp10_;
@@ -1783,7 +1737,7 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 	options = _tmp18_;
 	options_length1 = 3;
 	_options_size_ = options_length1;
-	g_debug ("unity-greeter.vala:513: Loading command line options");
+	g_debug ("unity-greeter.vala:517: Loading command line options");
 	_tmp19_ = _ ("- Unity Greeter");
 	_tmp20_ = g_option_context_new (_tmp19_);
 	c = _tmp20_;
@@ -1799,11 +1753,11 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 		_tmp25_ = c;
 		g_option_context_parse (_tmp25_, &args_length1, &args, &_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch40_g_error;
+			goto __catch35_g_error;
 		}
 	}
-	goto __finally40;
-	__catch40_g_error:
+	goto __finally35;
+	__catch35_g_error:
 	{
 		GError* e = NULL;
 		FILE* _tmp26_ = NULL;
@@ -1835,7 +1789,7 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 		options = (g_free (options), NULL);
 		return result;
 	}
-	__finally40:
+	__finally35:
 	if (_inner_error_ != NULL) {
 		_g_option_context_free0 (c);
 		options = (g_free (options), NULL);
@@ -1855,9 +1809,9 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 	}
 	_tmp36_ = do_test_mode;
 	if (_tmp36_) {
-		g_debug ("unity-greeter.vala:538: Running in test mode");
+		g_debug ("unity-greeter.vala:542: Running in test mode");
 	}
-	g_debug ("unity-greeter.vala:541: Setting GTK+ settings");
+	g_debug ("unity-greeter.vala:545: Setting GTK+ settings");
 	_tmp37_ = gtk_settings_get_default ();
 	_tmp38_ = _g_object_ref0 (_tmp37_);
 	settings = _tmp38_;
@@ -1930,11 +1884,11 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 		_tmp65_ = value;
 		g_object_set ((GObject*) _tmp64_, "gtk-xft-rgba", _tmp65_, NULL, NULL);
 	}
-	g_debug ("unity-greeter.vala:564: Creating Unity Greeter");
+	g_debug ("unity-greeter.vala:568: Creating Unity Greeter");
 	_tmp66_ = do_test_mode;
 	_tmp67_ = unity_greeter_new (_tmp66_);
 	greeter = _tmp67_;
-	g_debug ("unity-greeter.vala:567: Showing greeter");
+	g_debug ("unity-greeter.vala:571: Showing greeter");
 	_tmp68_ = greeter;
 	unity_greeter_show (_tmp68_);
 	_tmp69_ = do_test_mode;
@@ -1955,7 +1909,7 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 			_argv_size_ = argv_length1;
 			if (_inner_error_ != NULL) {
 				argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
-				goto __catch41_g_error;
+				goto __catch36_g_error;
 			}
 			_tmp72_ = argv;
 			_tmp72__length1 = argv_length1;
@@ -1963,12 +1917,12 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 			upstart_pid = _tmp73_;
 			if (_inner_error_ != NULL) {
 				argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
-				goto __catch41_g_error;
+				goto __catch36_g_error;
 			}
 			argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
 		}
-		goto __finally41;
-		__catch41_g_error:
+		goto __finally36;
+		__catch36_g_error:
 		{
 			GError* e = NULL;
 			GError* _tmp74_ = NULL;
@@ -1977,10 +1931,10 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 			_inner_error_ = NULL;
 			_tmp74_ = e;
 			_tmp75_ = _tmp74_->message;
-			g_warning ("unity-greeter.vala:587: Error starting Upstart for indicators: %s", _tmp75_);
+			g_warning ("unity-greeter.vala:591: Error starting Upstart for indicators: %s", _tmp75_);
 			_g_error_free0 (e);
 		}
-		__finally41:
+		__finally36:
 		if (_inner_error_ != NULL) {
 			_unity_greeter_unref0 (greeter);
 			_g_free0 (value);
@@ -1995,11 +1949,11 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 		{
 			g_spawn_command_line_async ("nm-applet", &_inner_error_);
 			if (_inner_error_ != NULL) {
-				goto __catch42_g_error;
+				goto __catch37_g_error;
 			}
 		}
-		goto __finally42;
-		__catch42_g_error:
+		goto __finally37;
+		__catch37_g_error:
 		{
 			GError* e = NULL;
 			GError* _tmp76_ = NULL;
@@ -2008,10 +1962,10 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 			_inner_error_ = NULL;
 			_tmp76_ = e;
 			_tmp77_ = _tmp76_->message;
-			g_warning ("unity-greeter.vala:599: Error starting nm-applet: %s", _tmp77_);
+			g_warning ("unity-greeter.vala:603: Error starting nm-applet: %s", _tmp77_);
 			_g_error_free0 (e);
 		}
-		__finally42:
+		__finally37:
 		if (_inner_error_ != NULL) {
 			_unity_greeter_unref0 (greeter);
 			_g_free0 (value);
@@ -2023,10 +1977,10 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 			return 0;
 		}
 	}
-	g_unix_signal_add_full (G_PRIORITY_DEFAULT, (gint) SIGTERM, ___lambda58__gsource_func, NULL, NULL);
-	g_debug ("unity-greeter.vala:610: Starting main loop");
+	g_unix_signal_add_full (G_PRIORITY_DEFAULT, (gint) SIGTERM, ___lambda56__gsource_func, NULL, NULL);
+	g_debug ("unity-greeter.vala:614: Starting main loop");
 	gtk_main ();
-	g_debug ("unity-greeter.vala:613: Cleaning up");
+	g_debug ("unity-greeter.vala:617: Cleaning up");
 	_tmp78_ = upstart_pid;
 	if (_tmp78_ != ((GPid) 0)) {
 		GPid _tmp79_ = 0;
@@ -2047,13 +2001,13 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 			gint _tmp85_ = 0;
 			_tmp84_ = status;
 			_tmp85_ = WEXITSTATUS (_tmp84_);
-			g_debug ("unity-greeter.vala:621: Upstart exited with return value %d", _tmp85_);
+			g_debug ("unity-greeter.vala:625: Upstart exited with return value %d", _tmp85_);
 		} else {
 			gint _tmp86_ = 0;
 			int _tmp87_ = 0;
 			_tmp86_ = status;
 			_tmp87_ = WTERMSIG (_tmp86_);
-			g_debug ("unity-greeter.vala:623: Upstart terminated with signal %d", (gint) _tmp87_);
+			g_debug ("unity-greeter.vala:627: Upstart terminated with signal %d", (gint) _tmp87_);
 		}
 		upstart_pid = (GPid) 0;
 	}
@@ -2077,17 +2031,17 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 			gint _tmp95_ = 0;
 			_tmp94_ = status;
 			_tmp95_ = WEXITSTATUS (_tmp94_);
-			g_debug ("unity-greeter.vala:633: AT-SPI exited with return value %d", _tmp95_);
+			g_debug ("unity-greeter.vala:637: AT-SPI exited with return value %d", _tmp95_);
 		} else {
 			gint _tmp96_ = 0;
 			int _tmp97_ = 0;
 			_tmp96_ = status;
 			_tmp97_ = WTERMSIG (_tmp96_);
-			g_debug ("unity-greeter.vala:635: AT-SPI terminated with signal %d", (gint) _tmp97_);
+			g_debug ("unity-greeter.vala:639: AT-SPI terminated with signal %d", (gint) _tmp97_);
 		}
 		atspi_pid = (GPid) 0;
 	}
-	g_debug ("unity-greeter.vala:639: Exiting");
+	g_debug ("unity-greeter.vala:643: Exiting");
 	result = EXIT_SUCCESS;
 	_unity_greeter_unref0 (greeter);
 	_g_free0 (value);

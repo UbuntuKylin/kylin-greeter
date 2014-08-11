@@ -71,9 +71,9 @@ public class SessionList : GreeterList
 
     private SessionPrompt prompt;
 
-    public SessionList (Background bg, MenuBar mb, string? session, string? default_session)
+    public SessionList (Background bg,  string? session, string? default_session)
     {
-        Object (background: bg, menubar: mb, session: session, default_session: default_session);
+        Object (background: bg,  session: session, default_session: default_session);
     }
 
     construct

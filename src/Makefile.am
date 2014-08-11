@@ -23,7 +23,6 @@ unity_greeter_SOURCES = \
 	list-stack.vala \
 	main-window.vala \
 	menu.vala \
-	menubar.vala \
 	prompt-box.vala \
 	session-list.vala \
 	remote-login-service.vala \

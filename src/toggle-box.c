@@ -386,15 +386,15 @@ static GtkButton* toggle_box_make_button (ToggleBox* self, const gchar* key, con
 		gtk_css_provider_load_from_data (style, "* {padding: 8px;}", (gssize) (-1), &_inner_error_);
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (style);
-			goto __catch32_g_error;
+			goto __catch27_g_error;
 		}
 		_tmp26_ = item;
 		_tmp27_ = gtk_widget_get_style_context ((GtkWidget*) _tmp26_);
 		gtk_style_context_add_provider (_tmp27_, (GtkStyleProvider*) style, (guint) GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 		_g_object_unref0 (style);
 	}
-	goto __finally32;
-	__catch32_g_error:
+	goto __finally27;
+	__catch27_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp28_ = NULL;
@@ -406,7 +406,7 @@ static GtkButton* toggle_box_make_button (ToggleBox* self, const gchar* key, con
 		g_debug ("toggle-box.vala:114: Internal error loading session chooser style: %s", _tmp29_);
 		_g_error_free0 (e);
 	}
-	__finally32:
+	__finally27:
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (label);
 		_g_free0 (name);

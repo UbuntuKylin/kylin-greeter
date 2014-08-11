@@ -171,10 +171,10 @@ static void dash_box_base_size_allocate_cb (DashBox* self);
 static void _dash_box_base_size_allocate_cb_gtk_widget_size_allocate (GtkWidget* _sender, GtkAllocation* allocation, gpointer self);
 FadeTracker* fade_tracker_new (GtkWidget* widget);
 FadeTracker* fade_tracker_construct (GType object_type, GtkWidget* widget);
-static void ___lambda38_ (DashBox* self);
+static void ___lambda31_ (DashBox* self);
 gdouble fade_tracker_get_alpha (FadeTracker* self);
 static void dash_box_set_base_alpha (DashBox* self, gdouble value);
-static void ____lambda38__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
+static void ____lambda31__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
 static void dash_box_fade_done_cb (DashBox* self);
 static void _dash_box_fade_done_cb_fade_tracker_done (FadeTracker* _sender, gpointer self);
 static void dash_box_set_has_base (DashBox* self, gboolean value);
@@ -245,7 +245,7 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-static void ___lambda38_ (DashBox* self) {
+static void ___lambda31_ (DashBox* self) {
 	FadeTracker* _tmp0_ = NULL;
 	gdouble _tmp1_ = 0.0;
 	gdouble _tmp2_ = 0.0;
@@ -257,8 +257,8 @@ static void ___lambda38_ (DashBox* self) {
 }
 
 
-static void ____lambda38__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self) {
-	___lambda38_ (self);
+static void ____lambda31__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self) {
+	___lambda31_ (self);
 }
 
 
@@ -308,7 +308,7 @@ void dash_box_set_base (DashBox* self, GtkWidget* w) {
 		_g_object_unref0 (self->priv->orig_tracker);
 		self->priv->orig_tracker = _tmp10_;
 		_tmp11_ = self->priv->orig_tracker;
-		g_signal_connect_object ((GObject*) _tmp11_, "notify::alpha", (GCallback) ____lambda38__g_object_notify, self, 0);
+		g_signal_connect_object ((GObject*) _tmp11_, "notify::alpha", (GCallback) ____lambda31__g_object_notify, self, 0);
 		_tmp12_ = self->priv->orig_tracker;
 		g_signal_connect_object (_tmp12_, "done", (GCallback) _dash_box_fade_done_cb_fade_tracker_done, self, 0);
 		_tmp13_ = self->priv->orig_tracker;

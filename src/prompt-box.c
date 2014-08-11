@@ -305,35 +305,35 @@ void prompt_box_foreach_prompt_widget (PromptBox* self, GtkCallback cb, void* cb
 static void _g_object_unref0_ (gpointer var);
 static void _g_list_free__g_object_unref0_ (GList* self);
 void prompt_box_clear (PromptBox* self);
-static void __lambda28_ (PromptBox* self, GtkWidget* w);
-static void ___lambda28__gtk_callback (GtkWidget* widget, gpointer self);
+static void __lambda32_ (PromptBox* self, GtkWidget* w);
+static void ___lambda32__gtk_callback (GtkWidget* widget, gpointer self);
 void prompt_box_set_has_errors (PromptBox* self, gboolean value);
 void prompt_box_reset_messages (PromptBox* self);
-static void __lambda29_ (PromptBox* self, GtkWidget* w);
-static void ___lambda29__gtk_callback (GtkWidget* widget, gpointer self);
+static void __lambda28_ (PromptBox* self, GtkWidget* w);
+static void ___lambda28__gtk_callback (GtkWidget* widget, gpointer self);
 void prompt_box_reset_spinners (PromptBox* self);
-static void __lambda30_ (PromptBox* self, GtkWidget* w);
+static void __lambda29_ (PromptBox* self, GtkWidget* w);
 GType dash_entry_get_type (void) G_GNUC_CONST;
 void dash_entry_set_did_respond (DashEntry* self, gboolean value);
-static void ___lambda30__gtk_callback (GtkWidget* widget, gpointer self);
+static void ___lambda29__gtk_callback (GtkWidget* widget, gpointer self);
 void prompt_box_reset_state (PromptBox* self);
 void prompt_box_add_static_prompts (PromptBox* self);
 static void prompt_box_real_add_static_prompts (PromptBox* self);
 static void prompt_box_update_prompt_visibility (PromptBox* self, GtkWidget* w);
 void fadable_fade_in (Fadable* self);
 void prompt_box_fade_in_prompts (PromptBox* self);
-static void __lambda31_ (PromptBox* self, GtkWidget* w);
-static void ___lambda31__gtk_callback (GtkWidget* widget, gpointer self);
+static void __lambda33_ (PromptBox* self, GtkWidget* w);
+static void ___lambda33__gtk_callback (GtkWidget* widget, gpointer self);
 void prompt_box_show_prompts (PromptBox* self);
-static void __lambda32_ (PromptBox* self, GtkWidget* w);
-static void ___lambda32__gtk_callback (GtkWidget* widget, gpointer self);
+static void __lambda34_ (PromptBox* self, GtkWidget* w);
+static void ___lambda34__gtk_callback (GtkWidget* widget, gpointer self);
 void prompt_box_attach_item (PromptBox* self, GtkWidget* w, gboolean add_style_class);
 void unity_greeter_add_style_class (GtkWidget* widget);
 void prompt_box_add_message (PromptBox* self, const gchar* text, gboolean is_error);
 DashEntry* prompt_box_add_prompt (PromptBox* self, const gchar* text, const gchar* accessible_text, gboolean is_secret);
-static void __lambda33_ (PromptBox* self, GtkWidget* w);
+static void __lambda35_ (PromptBox* self, GtkWidget* w);
 void dash_entry_set_can_respond (DashEntry* self, gboolean value);
-static void ___lambda33__gtk_callback (GtkWidget* widget, gpointer self);
+static void ___lambda35__gtk_callback (GtkWidget* widget, gpointer self);
 DashEntry* dash_entry_new (void);
 DashEntry* dash_entry_construct (GType object_type);
 void dash_entry_set_constant_placeholder_text (DashEntry* self, const gchar* value);
@@ -342,13 +342,13 @@ static void _prompt_box_entry_activate_cb_dash_entry_respond (DashEntry* _sender
 GtkComboBox* prompt_box_add_combo (PromptBox* self, GPtrArray* texts, gboolean read_only);
 static Block2Data* block2_data_ref (Block2Data* _data2_);
 static void block2_data_unref (void * _userdata_);
-static void __lambda35_ (Block2Data* _data2_, const gchar* text);
-static void ___lambda35__gfunc (gconstpointer data, gpointer self);
+static void __lambda37_ (Block2Data* _data2_, const gchar* text);
+static void ___lambda37__gfunc (gconstpointer data, gpointer self);
 static Block3Data* block3_data_ref (Block3Data* _data3_);
 static void block3_data_unref (void * _userdata_);
-static void __lambda34_ (Block3Data* _data3_, GtkWidget* w);
+static void __lambda36_ (Block3Data* _data3_, GtkWidget* w);
 static void _vala_array_add1 (gchar*** array, int* length, int* size, gchar* value);
-static void ___lambda34__gtk_callback (GtkWidget* widget, gpointer self);
+static void ___lambda36__gtk_callback (GtkWidget* widget, gpointer self);
 void prompt_box_add_button (PromptBox* self, const gchar* text, const gchar* accessible_text);
 GType dash_button_get_type (void) G_GNUC_CONST;
 DashButton* dash_button_new (const gchar* text);
@@ -358,8 +358,8 @@ static void _prompt_box_button_clicked_cb_gtk_button_clicked (GtkButton* _sender
 static void prompt_box_real_grab_focus (GtkWidget* base);
 static Block4Data* block4_data_ref (Block4Data* _data4_);
 static void block4_data_unref (void * _userdata_);
-static void __lambda36_ (Block4Data* _data4_, GtkWidget* w);
-static void ___lambda36__gtk_callback (GtkWidget* widget, gpointer self);
+static void __lambda30_ (Block4Data* _data4_, GtkWidget* w);
+static void ___lambda30__gtk_callback (GtkWidget* widget, gpointer self);
 static void prompt_box_real_size_allocate (GtkWidget* base, GtkAllocation* allocation);
 static void prompt_box_real_draw_full_alpha (FadableBox* base, cairo_t* c);
 gboolean prompt_box_get_has_errors (PromptBox* self);
@@ -374,8 +374,8 @@ static GObject * prompt_box_constructor (GType type, guint n_construct_propertie
 ActiveIndicator* active_indicator_new (void);
 ActiveIndicator* active_indicator_construct (GType object_type);
 #define ACTIVE_INDICATOR_HEIGHT 7
-static gboolean _prompt_box___lambda37_ (PromptBox* self);
-static gboolean __prompt_box___lambda37__gtk_widget_button_release_event (GtkWidget* _sender, GdkEventButton* event, gpointer self);
+static gboolean _prompt_box___lambda57_ (PromptBox* self);
+static gboolean __prompt_box___lambda57__gtk_widget_button_release_event (GtkWidget* _sender, GdkEventButton* event, gpointer self);
 static void prompt_box_finalize (GObject* obj);
 static void _vala_prompt_box_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
 static void _vala_prompt_box_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
@@ -389,8 +389,8 @@ static void active_indicator_real_get_preferred_height (GtkWidget* base, gint* m
 static gboolean active_indicator_real_draw (GtkWidget* base, cairo_t* c);
 gboolean active_indicator_get_active (ActiveIndicator* self);
 static GObject * active_indicator_constructor (GType type, guint n_construct_properties, GObjectConstructParam * construct_properties);
-static void _active_indicator___lambda27_ (ActiveIndicator* self);
-static void __active_indicator___lambda27__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
+static void _active_indicator___lambda6_ (ActiveIndicator* self);
+static void __active_indicator___lambda6__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
 static void active_indicator_finalize (GObject* obj);
 static void _vala_active_indicator_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
 static void _vala_active_indicator_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
@@ -532,15 +532,15 @@ static GtkGrid* prompt_box_real_create_name_grid (PromptBox* self) {
 		_g_free0 (_tmp18_);
 		_tmp16_ = _tmp20_;
 		if (_inner_error_ != NULL) {
-			goto __catch18_g_error;
+			goto __catch13_g_error;
 		}
 		_tmp21_ = self->priv->message_image;
 		_tmp22_ = _tmp16_;
 		g_object_set ((GtkImage*) _tmp21_, "pixbuf", _tmp22_, NULL);
 		_g_object_unref0 (_tmp22_);
 	}
-	goto __finally18;
-	__catch18_g_error:
+	goto __finally13;
+	__catch13_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp23_ = NULL;
@@ -552,7 +552,7 @@ static GtkGrid* prompt_box_real_create_name_grid (PromptBox* self) {
 		g_debug ("prompt-box.vala:193: Error loading message image: %s", _tmp24_);
 		_g_error_free0 (e);
 	}
-	__finally18:
+	__finally13:
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (name_grid);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -609,15 +609,15 @@ static GtkGrid* prompt_box_real_create_name_grid (PromptBox* self) {
 		gtk_css_provider_load_from_data (style, "* {padding: 2px;}", (gssize) (-1), &_inner_error_);
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (style);
-			goto __catch19_g_error;
+			goto __catch14_g_error;
 		}
 		_tmp44_ = self->option_button;
 		_tmp45_ = gtk_widget_get_style_context ((GtkWidget*) _tmp44_);
 		gtk_style_context_add_provider (_tmp45_, (GtkStyleProvider*) style, (guint) GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 		_g_object_unref0 (style);
 	}
-	goto __finally19;
-	__catch19_g_error:
+	goto __finally14;
+	__catch14_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp46_ = NULL;
@@ -629,7 +629,7 @@ static GtkGrid* prompt_box_real_create_name_grid (PromptBox* self) {
 		g_debug ("prompt-box.vala:223: Internal error loading session chooser style: %s", _tmp47_);
 		_g_error_free0 (e);
 	}
-	__finally19:
+	__finally14:
 	if (_inner_error_ != NULL) {
 		_g_object_unref0 (align);
 		_g_object_unref0 (name_grid);
@@ -985,7 +985,7 @@ void prompt_box_foreach_prompt_widget (PromptBox* self, GtkCallback cb, void* cb
 }
 
 
-static void __lambda28_ (PromptBox* self, GtkWidget* w) {
+static void __lambda32_ (PromptBox* self, GtkWidget* w) {
 	GtkWidget* _tmp0_ = NULL;
 	g_return_if_fail (w != NULL);
 	_tmp0_ = w;
@@ -993,21 +993,21 @@ static void __lambda28_ (PromptBox* self, GtkWidget* w) {
 }
 
 
-static void ___lambda28__gtk_callback (GtkWidget* widget, gpointer self) {
-	__lambda28_ (self, widget);
+static void ___lambda32__gtk_callback (GtkWidget* widget, gpointer self) {
+	__lambda32_ (self, widget);
 }
 
 
 void prompt_box_clear (PromptBox* self) {
 	g_return_if_fail (self != NULL);
 	self->priv->prompt_visibility = PROMPT_BOX_PROMPT_VISIBILITY_HIDDEN;
-	prompt_box_foreach_prompt_widget (self, ___lambda28__gtk_callback, self);
+	prompt_box_foreach_prompt_widget (self, ___lambda32__gtk_callback, self);
 	prompt_box_reset_last_row (self);
 	prompt_box_set_has_errors (self, FALSE);
 }
 
 
-static void __lambda29_ (PromptBox* self, GtkWidget* w) {
+static void __lambda28_ (PromptBox* self, GtkWidget* w) {
 	gboolean is_error = FALSE;
 	GtkWidget* _tmp0_ = NULL;
 	gconstpointer _tmp1_ = NULL;
@@ -1025,19 +1025,19 @@ static void __lambda29_ (PromptBox* self, GtkWidget* w) {
 }
 
 
-static void ___lambda29__gtk_callback (GtkWidget* widget, gpointer self) {
-	__lambda29_ (self, widget);
+static void ___lambda28__gtk_callback (GtkWidget* widget, gpointer self) {
+	__lambda28_ (self, widget);
 }
 
 
 void prompt_box_reset_messages (PromptBox* self) {
 	g_return_if_fail (self != NULL);
 	prompt_box_set_has_errors (self, FALSE);
-	prompt_box_foreach_prompt_widget (self, ___lambda29__gtk_callback, self);
+	prompt_box_foreach_prompt_widget (self, ___lambda28__gtk_callback, self);
 }
 
 
-static void __lambda30_ (PromptBox* self, GtkWidget* w) {
+static void __lambda29_ (PromptBox* self, GtkWidget* w) {
 	GtkWidget* _tmp0_ = NULL;
 	g_return_if_fail (w != NULL);
 	_tmp0_ = w;
@@ -1056,14 +1056,14 @@ static void __lambda30_ (PromptBox* self, GtkWidget* w) {
 }
 
 
-static void ___lambda30__gtk_callback (GtkWidget* widget, gpointer self) {
-	__lambda30_ (self, widget);
+static void ___lambda29__gtk_callback (GtkWidget* widget, gpointer self) {
+	__lambda29_ (self, widget);
 }
 
 
 void prompt_box_reset_spinners (PromptBox* self) {
 	g_return_if_fail (self != NULL);
-	prompt_box_foreach_prompt_widget (self, ___lambda30__gtk_callback, self);
+	prompt_box_foreach_prompt_widget (self, ___lambda29__gtk_callback, self);
 }
 
 
@@ -1138,7 +1138,7 @@ static void prompt_box_update_prompt_visibility (PromptBox* self, GtkWidget* w) 
 }
 
 
-static void __lambda31_ (PromptBox* self, GtkWidget* w) {
+static void __lambda33_ (PromptBox* self, GtkWidget* w) {
 	GtkWidget* _tmp0_ = NULL;
 	g_return_if_fail (w != NULL);
 	_tmp0_ = w;
@@ -1146,8 +1146,8 @@ static void __lambda31_ (PromptBox* self, GtkWidget* w) {
 }
 
 
-static void ___lambda31__gtk_callback (GtkWidget* widget, gpointer self) {
-	__lambda31_ (self, widget);
+static void ___lambda33__gtk_callback (GtkWidget* widget, gpointer self) {
+	__lambda33_ (self, widget);
 }
 
 
@@ -1155,11 +1155,11 @@ void prompt_box_fade_in_prompts (PromptBox* self) {
 	g_return_if_fail (self != NULL);
 	self->priv->prompt_visibility = PROMPT_BOX_PROMPT_VISIBILITY_FADING;
 	gtk_widget_show ((GtkWidget*) self);
-	prompt_box_foreach_prompt_widget (self, ___lambda31__gtk_callback, self);
+	prompt_box_foreach_prompt_widget (self, ___lambda33__gtk_callback, self);
 }
 
 
-static void __lambda32_ (PromptBox* self, GtkWidget* w) {
+static void __lambda34_ (PromptBox* self, GtkWidget* w) {
 	GtkWidget* _tmp0_ = NULL;
 	g_return_if_fail (w != NULL);
 	_tmp0_ = w;
@@ -1167,8 +1167,8 @@ static void __lambda32_ (PromptBox* self, GtkWidget* w) {
 }
 
 
-static void ___lambda32__gtk_callback (GtkWidget* widget, gpointer self) {
-	__lambda32_ (self, widget);
+static void ___lambda34__gtk_callback (GtkWidget* widget, gpointer self) {
+	__lambda34_ (self, widget);
 }
 
 
@@ -1176,7 +1176,7 @@ void prompt_box_show_prompts (PromptBox* self) {
 	g_return_if_fail (self != NULL);
 	self->priv->prompt_visibility = PROMPT_BOX_PROMPT_VISIBILITY_SHOWN;
 	gtk_widget_show ((GtkWidget*) self);
-	prompt_box_foreach_prompt_widget (self, ___lambda32__gtk_callback, self);
+	prompt_box_foreach_prompt_widget (self, ___lambda34__gtk_callback, self);
 }
 
 
@@ -1267,7 +1267,7 @@ void prompt_box_add_message (PromptBox* self, const gchar* text, gboolean is_err
 }
 
 
-static void __lambda33_ (PromptBox* self, GtkWidget* w) {
+static void __lambda35_ (PromptBox* self, GtkWidget* w) {
 	GtkWidget* _tmp0_ = NULL;
 	g_return_if_fail (w != NULL);
 	_tmp0_ = w;
@@ -1290,8 +1290,8 @@ static void __lambda33_ (PromptBox* self, GtkWidget* w) {
 }
 
 
-static void ___lambda33__gtk_callback (GtkWidget* widget, gpointer self) {
-	__lambda33_ (self, widget);
+static void ___lambda35__gtk_callback (GtkWidget* widget, gpointer self) {
+	__lambda35_ (self, widget);
 }
 
 
@@ -1446,7 +1446,7 @@ DashEntry* prompt_box_add_prompt (PromptBox* self, const gchar* text, const gcha
 	DashEntry* _tmp35_ = NULL;
 	g_return_val_if_fail (self != NULL, NULL);
 	g_return_val_if_fail (text != NULL, NULL);
-	prompt_box_foreach_prompt_widget (self, ___lambda33__gtk_callback, self);
+	prompt_box_foreach_prompt_widget (self, ___lambda35__gtk_callback, self);
 	_tmp0_ = dash_entry_new ();
 	g_object_ref_sink (_tmp0_);
 	entry = _tmp0_;
@@ -1567,7 +1567,7 @@ static void block2_data_unref (void * _userdata_) {
 }
 
 
-static void __lambda35_ (Block2Data* _data2_, const gchar* text) {
+static void __lambda37_ (Block2Data* _data2_, const gchar* text) {
 	PromptBox * self;
 	GtkComboBoxText* _tmp0_ = NULL;
 	const gchar* _tmp1_ = NULL;
@@ -1579,8 +1579,8 @@ static void __lambda35_ (Block2Data* _data2_, const gchar* text) {
 }
 
 
-static void ___lambda35__gfunc (gconstpointer data, gpointer self) {
-	__lambda35_ (self, data);
+static void ___lambda37__gfunc (gconstpointer data, gpointer self) {
+	__lambda37_ (self, data);
 }
 
 
@@ -1659,7 +1659,7 @@ GtkComboBox* prompt_box_add_combo (PromptBox* self, GPtrArray* texts, gboolean r
 	_tmp13_ = _data2_->combo;
 	prompt_box_attach_item (self, (GtkWidget*) _tmp13_, FALSE);
 	_tmp14_ = texts;
-	g_ptr_array_foreach (_tmp14_, ___lambda35__gfunc, _data2_);
+	g_ptr_array_foreach (_tmp14_, ___lambda37__gfunc, _data2_);
 	_tmp15_ = texts;
 	_tmp16_ = g_ptr_array_get_length (_tmp15_);
 	_tmp17_ = _tmp16_;
@@ -1706,7 +1706,7 @@ static void _vala_array_add1 (gchar*** array, int* length, int* size, gchar* val
 }
 
 
-static void __lambda34_ (Block3Data* _data3_, GtkWidget* w) {
+static void __lambda36_ (Block3Data* _data3_, GtkWidget* w) {
 	PromptBox * self;
 	GtkWidget* _tmp0_ = NULL;
 	self = _data3_->self;
@@ -1737,8 +1737,8 @@ static void __lambda34_ (Block3Data* _data3_, GtkWidget* w) {
 }
 
 
-static void ___lambda34__gtk_callback (GtkWidget* widget, gpointer self) {
-	__lambda34_ (self, widget);
+static void ___lambda36__gtk_callback (GtkWidget* widget, gpointer self) {
+	__lambda36_ (self, widget);
 }
 
 
@@ -1753,7 +1753,7 @@ void prompt_box_entry_activate_cb (PromptBox* self) {
 	_data3_->response = _tmp0_;
 	_data3_->response_length1 = 0;
 	_data3_->_response_size_ = _data3_->response_length1;
-	prompt_box_foreach_prompt_widget (self, ___lambda34__gtk_callback, _data3_);
+	prompt_box_foreach_prompt_widget (self, ___lambda36__gtk_callback, _data3_);
 	g_signal_emit_by_name (self, "respond", _data3_->response, _data3_->response_length1);
 	block3_data_unref (_data3_);
 	_data3_ = NULL;
@@ -1817,7 +1817,7 @@ static void block4_data_unref (void * _userdata_) {
 }
 
 
-static void __lambda36_ (Block4Data* _data4_, GtkWidget* w) {
+static void __lambda30_ (Block4Data* _data4_, GtkWidget* w) {
 	PromptBox * self;
 	gboolean _tmp0_ = FALSE;
 	GtkWidget* _tmp1_ = NULL;
@@ -1895,8 +1895,8 @@ static void __lambda36_ (Block4Data* _data4_, GtkWidget* w) {
 }
 
 
-static void ___lambda36__gtk_callback (GtkWidget* widget, gpointer self) {
-	__lambda36_ (self, widget);
+static void ___lambda30__gtk_callback (GtkWidget* widget, gpointer self) {
+	__lambda30_ (self, widget);
 }
 
 
@@ -1910,7 +1910,7 @@ static void prompt_box_real_grab_focus (GtkWidget* base) {
 	_data4_->self = g_object_ref (self);
 	_data4_->done = FALSE;
 	_data4_->best = NULL;
-	prompt_box_foreach_prompt_widget (self, ___lambda36__gtk_callback, _data4_);
+	prompt_box_foreach_prompt_widget (self, ___lambda30__gtk_callback, _data4_);
 	_tmp0_ = _data4_->best;
 	if (_tmp0_ != NULL) {
 		GtkWidget* _tmp1_ = NULL;
@@ -2165,7 +2165,7 @@ static void g_cclosure_user_marshal_VOID__BOXED_INT (GClosure * closure, GValue 
 }
 
 
-static gboolean _prompt_box___lambda37_ (PromptBox* self) {
+static gboolean _prompt_box___lambda57_ (PromptBox* self) {
 	gboolean result = FALSE;
 	g_signal_emit_by_name (self, "name-clicked");
 	result = TRUE;
@@ -2173,9 +2173,9 @@ static gboolean _prompt_box___lambda37_ (PromptBox* self) {
 }
 
 
-static gboolean __prompt_box___lambda37__gtk_widget_button_release_event (GtkWidget* _sender, GdkEventButton* event, gpointer self) {
+static gboolean __prompt_box___lambda57__gtk_widget_button_release_event (GtkWidget* _sender, GdkEventButton* event, gpointer self) {
 	gboolean result;
-	result = _prompt_box___lambda37_ (self);
+	result = _prompt_box___lambda57_ (self);
 	return result;
 }
 
@@ -2348,7 +2348,7 @@ static GObject * prompt_box_constructor (GType type, guint n_construct_propertie
 	_tmp45_ = small_box_eventbox;
 	gtk_event_box_set_visible_window (_tmp45_, FALSE);
 	_tmp46_ = small_box_eventbox;
-	g_signal_connect_object ((GtkWidget*) _tmp46_, "button-release-event", (GCallback) __prompt_box___lambda37__gtk_widget_button_release_event, self, 0);
+	g_signal_connect_object ((GtkWidget*) _tmp46_, "button-release-event", (GCallback) __prompt_box___lambda57__gtk_widget_button_release_event, self, 0);
 	_tmp47_ = small_box_eventbox;
 	_tmp48_ = small_box_grid;
 	gtk_container_add ((GtkContainer*) _tmp47_, (GtkWidget*) _tmp48_);
@@ -2570,13 +2570,13 @@ void active_indicator_set_active (ActiveIndicator* self, gboolean value) {
 }
 
 
-static void _active_indicator___lambda27_ (ActiveIndicator* self) {
+static void _active_indicator___lambda6_ (ActiveIndicator* self) {
 	gtk_widget_queue_draw ((GtkWidget*) self);
 }
 
 
-static void __active_indicator___lambda27__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self) {
-	_active_indicator___lambda27_ (self);
+static void __active_indicator___lambda6__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self) {
+	_active_indicator___lambda6_ (self);
 }
 
 
@@ -2601,14 +2601,14 @@ static GObject * active_indicator_constructor (GType type, guint n_construct_pro
 		_tmp3_ = gdk_pixbuf_new_from_file (_tmp2_, &_inner_error_);
 		_tmp1_ = _tmp3_;
 		if (_inner_error_ != NULL) {
-			goto __catch20_g_error;
+			goto __catch15_g_error;
 		}
 		_tmp4_ = _tmp1_;
 		g_object_set ((GtkImage*) self, "pixbuf", _tmp4_, NULL);
 		_g_object_unref0 (_tmp4_);
 	}
-	goto __finally20;
-	__catch20_g_error:
+	goto __finally15;
+	__catch15_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp5_ = NULL;
@@ -2620,13 +2620,13 @@ static GObject * active_indicator_constructor (GType type, guint n_construct_pro
 		g_debug ("prompt-box.vala:639: Could not load active image: %s", _tmp6_);
 		_g_error_free0 (e);
 	}
-	__finally20:
+	__finally15:
 	if (_inner_error_ != NULL) {
 		_g_free0 (filename);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 	}
-	g_signal_connect_object ((GObject*) self, "notify::active", (GCallback) __active_indicator___lambda27__g_object_notify, self, 0);
+	g_signal_connect_object ((GObject*) self, "notify::active", (GCallback) __active_indicator___lambda6__g_object_notify, self, 0);
 	g_object_set ((GtkMisc*) self, "xalign", 0.0f, NULL);
 	_g_free0 (filename);
 	return obj;

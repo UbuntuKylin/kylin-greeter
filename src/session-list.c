@@ -172,16 +172,6 @@ typedef struct _SessionListPrivate SessionListPrivate;
 
 typedef struct _Background Background;
 typedef struct _BackgroundClass BackgroundClass;
-
-#define TYPE_MENU_BAR (menu_bar_get_type ())
-#define MENU_BAR(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_MENU_BAR, MenuBar))
-#define MENU_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_MENU_BAR, MenuBarClass))
-#define IS_MENU_BAR(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_MENU_BAR))
-#define IS_MENU_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_MENU_BAR))
-#define MENU_BAR_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_MENU_BAR, MenuBarClass))
-
-typedef struct _MenuBar MenuBar;
-typedef struct _MenuBarClass MenuBarClass;
 #define _g_hash_table_unref0(var) ((var == NULL) ? NULL : (var = (g_hash_table_unref (var), NULL)))
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 
@@ -360,14 +350,13 @@ enum  {
 	SESSION_LIST_DEFAULT_SESSION
 };
 GType background_get_type (void) G_GNUC_CONST;
-GType menu_bar_get_type (void) G_GNUC_CONST;
-SessionList* session_list_new (Background* bg, MenuBar* mb, const gchar* session, const gchar* default_session);
-SessionList* session_list_construct (GType object_type, Background* bg, MenuBar* mb, const gchar* session, const gchar* default_session);
+SessionList* session_list_new (Background* bg, const gchar* session, const gchar* default_session);
+SessionList* session_list_construct (GType object_type, Background* bg, const gchar* session, const gchar* default_session);
 static SessionPrompt* session_list_add_session_prompt (SessionList* self, const gchar* id);
 const gchar* session_list_get_session (SessionList* self);
 const gchar* session_list_get_default_session (SessionList* self);
-static void __lambda39_ (SessionList* self, gchar** responses, int responses_length1);
-static void ___lambda39__prompt_box_respond (PromptBox* _sender, gchar** response, int response_length1, gpointer self);
+static void __lambda38_ (SessionList* self, gchar** responses, int responses_length1);
+static void ___lambda38__prompt_box_respond (PromptBox* _sender, gchar** response, int response_length1, gpointer self);
 void greeter_list_add_entry (GreeterList* self, PromptBox* entry);
 static void session_list_real_add_manual_entry (GreeterList* base);
 static void session_list_real_show_authenticated (GreeterList* base, gboolean successful);
@@ -665,29 +654,26 @@ static void _vala_session_prompt_set_property (GObject * object, guint property_
 }
 
 
-SessionList* session_list_construct (GType object_type, Background* bg, MenuBar* mb, const gchar* session, const gchar* default_session) {
+SessionList* session_list_construct (GType object_type, Background* bg, const gchar* session, const gchar* default_session) {
 	SessionList * self = NULL;
 	Background* _tmp0_ = NULL;
-	MenuBar* _tmp1_ = NULL;
+	const gchar* _tmp1_ = NULL;
 	const gchar* _tmp2_ = NULL;
-	const gchar* _tmp3_ = NULL;
 	g_return_val_if_fail (bg != NULL, NULL);
-	g_return_val_if_fail (mb != NULL, NULL);
 	_tmp0_ = bg;
-	_tmp1_ = mb;
-	_tmp2_ = session;
-	_tmp3_ = default_session;
-	self = (SessionList*) g_object_new (object_type, "background", _tmp0_, "menubar", _tmp1_, "session", _tmp2_, "default-session", _tmp3_, NULL);
+	_tmp1_ = session;
+	_tmp2_ = default_session;
+	self = (SessionList*) g_object_new (object_type, "background", _tmp0_, "session", _tmp1_, "default-session", _tmp2_, NULL);
 	return self;
 }
 
 
-SessionList* session_list_new (Background* bg, MenuBar* mb, const gchar* session, const gchar* default_session) {
-	return session_list_construct (TYPE_SESSION_LIST, bg, mb, session, default_session);
+SessionList* session_list_new (Background* bg, const gchar* session, const gchar* default_session) {
+	return session_list_construct (TYPE_SESSION_LIST, bg, session, default_session);
 }
 
 
-static void __lambda39_ (SessionList* self, gchar** responses, int responses_length1) {
+static void __lambda38_ (SessionList* self, gchar** responses, int responses_length1) {
 	gchar** _tmp0_ = NULL;
 	gint _tmp0__length1 = 0;
 	const gchar* _tmp1_ = NULL;
@@ -698,8 +684,8 @@ static void __lambda39_ (SessionList* self, gchar** responses, int responses_len
 }
 
 
-static void ___lambda39__prompt_box_respond (PromptBox* _sender, gchar** response, int response_length1, gpointer self) {
-	__lambda39_ (self, response, response_length1);
+static void ___lambda38__prompt_box_respond (PromptBox* _sender, gchar** response, int response_length1, gpointer self) {
+	__lambda38_ (self, response, response_length1);
 }
 
 
@@ -718,7 +704,7 @@ static SessionPrompt* session_list_add_session_prompt (SessionList* self, const 
 	_tmp3_ = session_prompt_new (_tmp0_, _tmp1_, _tmp2_);
 	g_object_ref_sink (_tmp3_);
 	e = _tmp3_;
-	g_signal_connect_object ((PromptBox*) e, "respond", (GCallback) ___lambda39__prompt_box_respond, self, 0);
+	g_signal_connect_object ((PromptBox*) e, "respond", (GCallback) ___lambda38__prompt_box_respond, self, 0);
 	greeter_list_add_entry ((GreeterList*) self, (PromptBox*) e);
 	result = e;
 	return result;
@@ -926,7 +912,7 @@ GdkPixbuf* session_list_get_badge (const gchar* session) {
 			_g_free0 (_tmp24_);
 			_tmp21_ = _tmp26_;
 			if (_inner_error_ != NULL) {
-				goto __catch21_g_error;
+				goto __catch16_g_error;
 			}
 			_g_object_unref0 (pixbuf);
 			pixbuf = _tmp21_;
@@ -937,8 +923,8 @@ GdkPixbuf* session_list_get_badge (const gchar* session) {
 			_tmp31_ = _g_object_ref0 (_tmp30_);
 			g_hash_table_insert (_tmp27_, _tmp29_, _tmp31_);
 		}
-		goto __finally21;
-		__catch21_g_error:
+		goto __finally16;
+		__catch16_g_error:
 		{
 			GError* e = NULL;
 			const gchar* _tmp32_ = NULL;
@@ -952,7 +938,7 @@ GdkPixbuf* session_list_get_badge (const gchar* session) {
 			g_debug ("session-list.vala:152: Error loading badge %s: %s", _tmp32_, _tmp34_);
 			_g_error_free0 (e);
 		}
-		__finally21:
+		__finally16:
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (pixbuf);
 			_g_free0 (name);

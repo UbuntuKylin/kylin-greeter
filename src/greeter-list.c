@@ -121,16 +121,6 @@ typedef struct _DashBoxClass DashBoxClass;
 typedef struct _Background Background;
 typedef struct _BackgroundClass BackgroundClass;
 
-#define TYPE_MENU_BAR (menu_bar_get_type ())
-#define MENU_BAR(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_MENU_BAR, MenuBar))
-#define MENU_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_MENU_BAR, MenuBarClass))
-#define IS_MENU_BAR(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_MENU_BAR))
-#define IS_MENU_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_MENU_BAR))
-#define MENU_BAR_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_MENU_BAR, MenuBarClass))
-
-typedef struct _MenuBar MenuBar;
-typedef struct _MenuBarClass MenuBarClass;
-
 #define TYPE_ANIMATE_TIMER (animate_timer_get_type ())
 #define ANIMATE_TIMER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_ANIMATE_TIMER, AnimateTimer))
 #define ANIMATE_TIMER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_ANIMATE_TIMER, AnimateTimerClass))
@@ -234,7 +224,6 @@ struct _GreeterListClass {
 
 struct _GreeterListPrivate {
 	Background* _background;
-	MenuBar* _menubar;
 	PromptBox* _selected_entry;
 	gboolean _start_scrolling;
 	ListDBusInterface* dbus_object;
@@ -289,8 +278,8 @@ enum  {
 };
 ListDBusInterface* list_dbus_interface_new (GreeterList* list);
 ListDBusInterface* list_dbus_interface_construct (GType object_type, GreeterList* list);
-static void __lambda61_ (ListDBusInterface* self, const gchar* name);
-static void ___lambda61__greeter_list_entry_selected (GreeterList* _sender, const gchar* name, gpointer self);
+static void __lambda58_ (ListDBusInterface* self, const gchar* name);
+static void ___lambda58__greeter_list_entry_selected (GreeterList* _sender, const gchar* name, gpointer self);
 gchar* list_dbus_interface_get_active_entry (ListDBusInterface* self);
 GType prompt_box_get_type (void) G_GNUC_CONST;
 PromptBox* greeter_list_get_selected_entry (GreeterList* self);
@@ -310,13 +299,11 @@ GType fadable_get_type (void) G_GNUC_CONST;
 GType dash_box_get_type (void) G_GNUC_CONST;
 GType greeter_list_mode_get_type (void) G_GNUC_CONST;
 GType background_get_type (void) G_GNUC_CONST;
-GType menu_bar_get_type (void) G_GNUC_CONST;
 GType animate_timer_get_type (void) G_GNUC_CONST;
 #define GREETER_LIST_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_GREETER_LIST, GreeterListPrivate))
 enum  {
 	GREETER_LIST_DUMMY_PROPERTY,
 	GREETER_LIST_BACKGROUND,
-	GREETER_LIST_MENUBAR,
 	GREETER_LIST_SELECTED_ENTRY,
 	GREETER_LIST_START_SCROLLING,
 	GREETER_LIST_ALWAYS_SHOW_MANUAL,
@@ -330,7 +317,7 @@ static void _g_list_free__g_object_unref0_ (GList* self);
 #define GREETER_LIST_DEFAULT_BOX_HEIGHT 3
 gchar* greeter_list_get_selected_id (GreeterList* self);
 static gchar* greeter_list_real_get_selected_id (GreeterList* self);
-GreeterList* greeter_list_construct (GType object_type, Background* bg, MenuBar* mb);
+GreeterList* greeter_list_construct (GType object_type, Background* bg);
 static void greeter_list_on_bus_acquired (GreeterList* self, GObject* obj, GAsyncResult* res);
 static void greeter_list_real_get_preferred_width (GtkWidget* base, gint* min, gint* nat);
 static void greeter_list_real_get_preferred_height (GtkWidget* base, gint* min, gint* nat);
@@ -393,8 +380,8 @@ void fadable_set_alpha (Fadable* self, gdouble alpha);
 void prompt_box_set_position (PromptBox* self, gdouble value);
 void greeter_list_greeter_box_size_allocate_cb (GreeterList* self, GtkAllocation* allocation);
 static PromptBox* greeter_list_get_scrolling_entry (GreeterList* self);
-static gboolean ___lambda62_ (GreeterList* self);
-static gboolean ____lambda62__gsource_func (gpointer self);
+static gboolean ___lambda59_ (GreeterList* self);
+static gboolean ____lambda59__gsource_func (gpointer self);
 gboolean dash_box_get_has_base (DashBox* self);
 gdouble dash_box_get_base_alpha (DashBox* self);
 static void greeter_list_animate_scrolling (GreeterList* self, gdouble progress);
@@ -447,18 +434,16 @@ void background_set_draw_grid (Background* self, gboolean value);
 static gchar* greeter_list_real_get_lightdm_session (GreeterList* self);
 static void greeter_list_real_test_start_authentication (GreeterList* self);
 static void greeter_list_set_background (GreeterList* self, Background* value);
-MenuBar* greeter_list_get_menubar (GreeterList* self);
-static void greeter_list_set_menubar (GreeterList* self, MenuBar* value);
 void greeter_list_set_start_scrolling (GreeterList* self, gboolean value);
 gboolean greeter_list_get_always_show_manual (GreeterList* self);
 void greeter_list_set_always_show_manual (GreeterList* self, gboolean value);
-#define MAIN_WINDOW_MENUBAR_HEIGHT 32
+#define MAIN_WINDOW_BUTTONBOX_HEIGHT 80
 void prompt_box_set_options_image (PromptBox* self, GdkPixbuf* image);
 static GObject * greeter_list_constructor (GType type, guint n_construct_properties, GObjectConstructParam * construct_properties);
 DashBox* dash_box_new (Background* bg);
 DashBox* dash_box_construct (GType object_type, Background* bg);
-static void _greeter_list___lambda63_ (GreeterList* self);
-static void __greeter_list___lambda63__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
+static void _greeter_list___lambda60_ (GreeterList* self);
+static void __greeter_list___lambda60__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
 static void _greeter_list_greeter_box_size_allocate_cb_gtk_widget_size_allocate (GtkWidget* _sender, GtkAllocation* allocation, gpointer self);
 gdouble animate_timer_ease_out_quint (gdouble x);
 static gdouble _animate_timer_ease_out_quint_animate_timer_easing_func (gdouble x, gpointer self);
@@ -502,15 +487,15 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-static void __lambda61_ (ListDBusInterface* self, const gchar* name) {
+static void __lambda58_ (ListDBusInterface* self, const gchar* name) {
 	const gchar* _tmp0_ = NULL;
 	_tmp0_ = name;
 	g_signal_emit_by_name (self, "entry-selected", _tmp0_);
 }
 
 
-static void ___lambda61__greeter_list_entry_selected (GreeterList* _sender, const gchar* name, gpointer self) {
-	__lambda61_ (self, name);
+static void ___lambda58__greeter_list_entry_selected (GreeterList* _sender, const gchar* name, gpointer self) {
+	__lambda58_ (self, name);
 }
 
 
@@ -526,7 +511,7 @@ ListDBusInterface* list_dbus_interface_construct (GType object_type, GreeterList
 	_g_object_unref0 (self->priv->list);
 	self->priv->list = _tmp1_;
 	_tmp2_ = self->priv->list;
-	g_signal_connect_object (_tmp2_, "entry-selected", (GCallback) ___lambda61__greeter_list_entry_selected, self, 0);
+	g_signal_connect_object (_tmp2_, "entry-selected", (GCallback) ___lambda58__greeter_list_entry_selected, self, 0);
 	return self;
 }
 
@@ -814,15 +799,12 @@ gchar* greeter_list_get_selected_id (GreeterList* self) {
 }
 
 
-GreeterList* greeter_list_construct (GType object_type, Background* bg, MenuBar* mb) {
+GreeterList* greeter_list_construct (GType object_type, Background* bg) {
 	GreeterList * self = NULL;
 	Background* _tmp0_ = NULL;
-	MenuBar* _tmp1_ = NULL;
 	g_return_val_if_fail (bg != NULL, NULL);
-	g_return_val_if_fail (mb != NULL, NULL);
 	_tmp0_ = bg;
-	_tmp1_ = mb;
-	self = (GreeterList*) g_object_new (object_type, "background", _tmp0_, "menubar", _tmp1_, NULL);
+	self = (GreeterList*) g_object_new (object_type, "background", _tmp0_, NULL);
 	return self;
 }
 
@@ -1899,7 +1881,7 @@ static void greeter_list_move_entry (GreeterList* self, PromptBox* entry, gdoubl
 }
 
 
-static gboolean ___lambda62_ (GreeterList* self) {
+static gboolean ___lambda59_ (GreeterList* self) {
 	gboolean result = FALSE;
 	greeter_list_move_names (self);
 	result = FALSE;
@@ -1907,9 +1889,9 @@ static gboolean ___lambda62_ (GreeterList* self) {
 }
 
 
-static gboolean ____lambda62__gsource_func (gpointer self) {
+static gboolean ____lambda59__gsource_func (gpointer self) {
 	gboolean result;
-	result = ___lambda62_ (self);
+	result = ___lambda59_ (self);
 	return result;
 }
 
@@ -1938,7 +1920,7 @@ void greeter_list_greeter_box_size_allocate_cb (GreeterList* self, GtkAllocation
 	}
 	_tmp6_ = _tmp0_;
 	if (_tmp6_) {
-		g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, ____lambda62__gsource_func, g_object_ref (self), g_object_unref);
+		g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, ____lambda59__gsource_func, g_object_ref (self), g_object_unref);
 	}
 	_tmp7_ = *allocation;
 	_tmp8_ = _tmp7_.height;
@@ -2961,28 +2943,6 @@ static void greeter_list_set_background (GreeterList* self, Background* value) {
 }
 
 
-MenuBar* greeter_list_get_menubar (GreeterList* self) {
-	MenuBar* result;
-	MenuBar* _tmp0_ = NULL;
-	g_return_val_if_fail (self != NULL, NULL);
-	_tmp0_ = self->priv->_menubar;
-	result = _tmp0_;
-	return result;
-}
-
-
-static void greeter_list_set_menubar (GreeterList* self, MenuBar* value) {
-	MenuBar* _tmp0_ = NULL;
-	MenuBar* _tmp1_ = NULL;
-	g_return_if_fail (self != NULL);
-	_tmp0_ = value;
-	_tmp1_ = _g_object_ref0 (_tmp0_);
-	_g_object_unref0 (self->priv->_menubar);
-	self->priv->_menubar = _tmp1_;
-	g_object_notify ((GObject *) self, "menubar");
-}
-
-
 PromptBox* greeter_list_get_selected_entry (GreeterList* self) {
 	PromptBox* result;
 	PromptBox* _tmp0_ = NULL;
@@ -3071,13 +3031,13 @@ static gint greeter_list_get_box_y (GreeterList* self) {
 	gint _tmp3_ = 0;
 	g_return_val_if_fail (self != NULL, 0);
 	_tmp0_ = gtk_widget_get_allocated_height ((GtkWidget*) self);
-	row = (MAIN_WINDOW_MENUBAR_HEIGHT + _tmp0_) / grid_size;
+	row = (MAIN_WINDOW_BUTTONBOX_HEIGHT + _tmp0_) / grid_size;
 	_tmp1_ = row;
 	row = _tmp1_ - GREETER_LIST_DEFAULT_BOX_HEIGHT;
 	_tmp2_ = row;
 	row = _tmp2_ / 2;
 	_tmp3_ = row;
-	result = (_tmp3_ * grid_size) - MAIN_WINDOW_MENUBAR_HEIGHT;
+	result = (_tmp3_ * grid_size) - MAIN_WINDOW_BUTTONBOX_HEIGHT;
 	return result;
 }
 
@@ -3142,13 +3102,13 @@ static void greeter_list_set_scrolling_entry (GreeterList* self, PromptBox* valu
 }
 
 
-static void _greeter_list___lambda63_ (GreeterList* self) {
+static void _greeter_list___lambda60_ (GreeterList* self) {
 	gtk_widget_queue_draw ((GtkWidget*) self);
 }
 
 
-static void __greeter_list___lambda63__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self) {
-	_greeter_list___lambda63_ (self);
+static void __greeter_list___lambda60__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self) {
+	_greeter_list___lambda60_ (self);
 }
 
 
@@ -3210,7 +3170,7 @@ static GObject * greeter_list_constructor (GType type, guint n_construct_propert
 	_g_object_unref0 (self->greeter_box);
 	self->greeter_box = _tmp4_;
 	_tmp5_ = self->greeter_box;
-	g_signal_connect_object ((GObject*) _tmp5_, "notify::base-alpha", (GCallback) __greeter_list___lambda63__g_object_notify, self, 0);
+	g_signal_connect_object ((GObject*) _tmp5_, "notify::base-alpha", (GCallback) __greeter_list___lambda60__g_object_notify, self, 0);
 	_tmp6_ = self->greeter_box;
 	gtk_widget_show ((GtkWidget*) _tmp6_);
 	_tmp7_ = self->greeter_box;
@@ -3273,7 +3233,6 @@ static void greeter_list_class_init (GreeterListClass * klass) {
 	G_OBJECT_CLASS (klass)->constructor = greeter_list_constructor;
 	G_OBJECT_CLASS (klass)->finalize = greeter_list_finalize;
 	g_object_class_install_property (G_OBJECT_CLASS (klass), GREETER_LIST_BACKGROUND, g_param_spec_object ("background", "background", "background", TYPE_BACKGROUND, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-	g_object_class_install_property (G_OBJECT_CLASS (klass), GREETER_LIST_MENUBAR, g_param_spec_object ("menubar", "menubar", "menubar", TYPE_MENU_BAR, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 	g_object_class_install_property (G_OBJECT_CLASS (klass), GREETER_LIST_SELECTED_ENTRY, g_param_spec_object ("selected-entry", "selected-entry", "selected-entry", TYPE_PROMPT_BOX, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 	g_object_class_install_property (G_OBJECT_CLASS (klass), GREETER_LIST_START_SCROLLING, g_param_spec_boolean ("start-scrolling", "start-scrolling", "start-scrolling", TRUE, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
 	g_object_class_install_property (G_OBJECT_CLASS (klass), GREETER_LIST_ALWAYS_SHOW_MANUAL, g_param_spec_boolean ("always-show-manual", "always-show-manual", "always-show-manual", FALSE, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
@@ -3308,7 +3267,6 @@ static void greeter_list_finalize (GObject* obj) {
 	GreeterList * self;
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TYPE_GREETER_LIST, GreeterList);
 	_g_object_unref0 (self->priv->_background);
-	_g_object_unref0 (self->priv->_menubar);
 	_g_object_unref0 (self->priv->_selected_entry);
 	_g_free0 (self->greeter_authenticating_user);
 	__g_list_free__g_object_unref0_0 (self->entries);
@@ -3342,9 +3300,6 @@ static void _vala_greeter_list_get_property (GObject * object, guint property_id
 		case GREETER_LIST_BACKGROUND:
 		g_value_set_object (value, greeter_list_get_background (self));
 		break;
-		case GREETER_LIST_MENUBAR:
-		g_value_set_object (value, greeter_list_get_menubar (self));
-		break;
 		case GREETER_LIST_SELECTED_ENTRY:
 		g_value_set_object (value, greeter_list_get_selected_entry (self));
 		break;
@@ -3370,9 +3325,6 @@ static void _vala_greeter_list_set_property (GObject * object, guint property_id
 	switch (property_id) {
 		case GREETER_LIST_BACKGROUND:
 		greeter_list_set_background (self, g_value_get_object (value));
-		break;
-		case GREETER_LIST_MENUBAR:
-		greeter_list_set_menubar (self, g_value_get_object (value));
 		break;
 		case GREETER_LIST_SELECTED_ENTRY:
 		greeter_list_set_selected_entry (self, g_value_get_object (value));

@@ -177,6 +177,10 @@ public class UnityGreeter
     public static void add_style_class (Gtk.Widget widget)
     {
         /* Add style context class lightdm-user-list */
+/*
+为widget设置主题风格，即使用一个css文件指定样式
+*/
+        
         var ctx = widget.get_style_context ();
         ctx.add_class ("lightdm");
     }
@@ -332,16 +336,16 @@ public class UnityGreeter
             {
                 /* Check to see if this window is our onboard window, since we don't want to focus it. */
                 X.Window keyboard_xid = 0;
-                if (main_window.menubar.keyboard_window != null)
-                    keyboard_xid = Gdk.X11Window.get_xid (main_window.menubar.keyboard_window.get_window ());
+                if (main_window.keyboard_window != null)
+                    keyboard_xid = Gdk.X11Window.get_xid (main_window.keyboard_window.get_window ());
 
                 if (xwin != keyboard_xid && win.get_type_hint() != Gdk.WindowTypeHint.NOTIFICATION)
                 {
                     win.focus (Gdk.CURRENT_TIME);
 
                     /* Make sure to keep keyboard above */
-                    if (main_window.menubar.keyboard_window != null)
-                        main_window.menubar.keyboard_window.get_window ().raise ();
+                    if (main_window.keyboard_window != null)
+                        main_window.keyboard_window.get_window ().raise ();
                 }
             }
         }
@@ -364,8 +368,8 @@ public class UnityGreeter
                 main_window.get_window ().focus (Gdk.CURRENT_TIME);
 
                 /* Make sure to keep keyboard above */
-                if (main_window.menubar.keyboard_window != null)
-                    main_window.menubar.keyboard_window.get_window ().raise ();
+                if (main_window.keyboard_window != null)
+                    main_window.keyboard_window.get_window ().raise ();
             }
         }
         return Gdk.FilterReturn.CONTINUE;

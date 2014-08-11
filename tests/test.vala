@@ -6,7 +6,7 @@ public class Test
         GLib.Test.log_set_fatal_handler (ignore_warnings);
 
         TestMainWindow main_window = new TestMainWindow ();
-        var list = new TestList (main_window.get_background (), main_window.menubar);
+        var list = new TestList (main_window.get_background ());
         main_window.push_list (list);
         main_window.show_all();
         // Make sure we are really shown

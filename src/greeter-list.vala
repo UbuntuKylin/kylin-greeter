@@ -58,7 +58,7 @@ public class ListDBusInterface : Object
 public abstract class GreeterList : FadableBox
 {
     public Background background { get; construct; }
-    public MenuBar menubar { get; construct; }
+    
     public PromptBox? selected_entry { get; private set; default = null; }
     public bool start_scrolling { get; set; default = true; }
 
@@ -116,12 +116,12 @@ public abstract class GreeterList : FadableBox
     {
         get
         {
-            /* First, get grid row number as if menubar weren't there */
-            var row = (MainWindow.MENUBAR_HEIGHT + get_allocated_height ()) / grid_size;
+            /* First, get grid row number as if buttonbox weren't there */
+            var row = (MainWindow.BUTTONBOX_HEIGHT + get_allocated_height ()) / grid_size;
             row = row - DEFAULT_BOX_HEIGHT; /* and no default dash box */
             row = row / 2; /* and in the middle */
-            /* Now calculate y pixel spot keeping in mind menubar's allocation */
-            return row * grid_size - MainWindow.MENUBAR_HEIGHT;
+            /* Now calculate y pixel spot keeping in mind buttonbox's allocation */
+            return row * grid_size - MainWindow.BUTTONBOX_HEIGHT;
         }
     }
 
@@ -162,9 +162,9 @@ public abstract class GreeterList : FadableBox
         }
     }
 
-    public GreeterList (Background bg, MenuBar mb)
+    public GreeterList (Background bg)
     {
-        Object (background: bg, menubar: mb);
+        Object (background: bg);
     }
 
     construct

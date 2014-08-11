@@ -1,9 +1,9 @@
 
 public class TestList : UserList
 {
-    public TestList (Background bg, MenuBar mb)
+    public TestList (Background bg)
     {
-        Object (background: bg, menubar: mb);
+        Object (background: bg);
     }
 
     public uint num_entries ()

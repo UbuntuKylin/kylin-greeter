@@ -128,21 +128,21 @@ void settings_daemon_start (SettingsDaemon* self);
 static void settings_daemon_set_plugin_enabled (SettingsDaemon* self, const gchar* schema_name, gboolean enabled);
 SessionManagerInterface* session_manager_interface_new (void);
 SessionManagerInterface* session_manager_interface_construct (GType object_type);
-static void __lambda8_ (SettingsDaemon* self, GDBusConnection* c);
-static void ___lambda8__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
-static void __lambda9_ (SettingsDaemon* self);
-static void settings_daemon_start_settings_daemon (SettingsDaemon* self);
-static void ___lambda9__gbus_name_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
+static void __lambda9_ (SettingsDaemon* self, GDBusConnection* c);
+static void ___lambda9__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
 static void __lambda10_ (SettingsDaemon* self);
-static void ___lambda10__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self);
+static void settings_daemon_start_settings_daemon (SettingsDaemon* self);
+static void ___lambda10__gbus_name_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
+static void __lambda11_ (SettingsDaemon* self);
+static void ___lambda11__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self);
 ScreenSaverInterface* screen_saver_interface_new (void);
 ScreenSaverInterface* screen_saver_interface_construct (GType object_type);
-static void __lambda11_ (SettingsDaemon* self, GDBusConnection* c);
-static void ___lambda11__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
-static void __lambda12_ (SettingsDaemon* self);
-static void ___lambda12__gbus_name_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
+static void __lambda12_ (SettingsDaemon* self, GDBusConnection* c);
+static void ___lambda12__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
 static void __lambda13_ (SettingsDaemon* self);
-static void ___lambda13__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self);
+static void ___lambda13__gbus_name_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self);
+static void __lambda14_ (SettingsDaemon* self);
+static void ___lambda14__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self);
 SettingsDaemon* settings_daemon_new (void);
 SettingsDaemon* settings_daemon_construct (GType object_type);
 static void settings_daemon_finalize (GObject* obj);
@@ -151,13 +151,13 @@ enum  {
 	SCREEN_SAVER_INTERFACE_DUMMY_PROPERTY
 };
 static void _screen_saver_interface_set_active (ScreenSaverInterface* self, gboolean value);
-static void ___lambda6_ (ScreenSaverInterface* self);
+static void ___lambda7_ (ScreenSaverInterface* self);
 void screen_saver_interface_set_active (ScreenSaverInterface* self, gboolean value);
-static void ____lambda6__gnome_idle_monitor_watch_func (GnomeIdleMonitor* monitor, guint id, gpointer self);
+static void ____lambda7__gnome_idle_monitor_watch_func (GnomeIdleMonitor* monitor, guint id, gpointer self);
 gint ug_settings_get_integer (const gchar* key);
 #define UG_SETTINGS_KEY_IDLE_TIMEOUT "idle-timeout"
-static void ____lambda7_ (ScreenSaverInterface* self);
-static void _____lambda7__gnome_idle_monitor_watch_func (GnomeIdleMonitor* monitor, guint id, gpointer self);
+static void ____lambda8_ (ScreenSaverInterface* self);
+static void _____lambda8__gnome_idle_monitor_watch_func (GnomeIdleMonitor* monitor, guint id, gpointer self);
 gboolean screen_saver_interface_get_active (ScreenSaverInterface* self);
 guint32 screen_saver_interface_get_active_time (ScreenSaverInterface* self);
 void screen_saver_interface_lock (ScreenSaverInterface* self);
@@ -236,7 +236,7 @@ static const GDBusPropertyInfo * const _session_manager_interface_dbus_property_
 static const GDBusInterfaceInfo _session_manager_interface_dbus_interface_info = {-1, "org.gnome.SessionManager", (GDBusMethodInfo **) (&_session_manager_interface_dbus_method_info), (GDBusSignalInfo **) (&_session_manager_interface_dbus_signal_info), (GDBusPropertyInfo **) (&_session_manager_interface_dbus_property_info)};
 static const GDBusInterfaceVTable _session_manager_interface_dbus_interface_vtable = {session_manager_interface_dbus_interface_method_call, session_manager_interface_dbus_interface_get_property, session_manager_interface_dbus_interface_set_property};
 
-static void __lambda8_ (SettingsDaemon* self, GDBusConnection* c) {
+static void __lambda9_ (SettingsDaemon* self, GDBusConnection* c) {
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (c != NULL);
 	{
@@ -246,11 +246,11 @@ static void __lambda8_ (SettingsDaemon* self, GDBusConnection* c) {
 		_tmp1_ = self->priv->session_manager;
 		session_manager_interface_register_object (_tmp1_, _tmp0_, "/org/gnome/SessionManager", &_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch22_g_error;
+			goto __catch17_g_error;
 		}
 	}
-	goto __finally22;
-	__catch22_g_error:
+	goto __finally17;
+	__catch17_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp2_ = NULL;
@@ -263,7 +263,7 @@ static void __lambda8_ (SettingsDaemon* self, GDBusConnection* c) {
 " %s", _tmp3_);
 		_g_error_free0 (e);
 	}
-	__finally22:
+	__finally17:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -272,34 +272,34 @@ static void __lambda8_ (SettingsDaemon* self, GDBusConnection* c) {
 }
 
 
-static void ___lambda8__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
-	__lambda8_ (self, connection);
+static void ___lambda9__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
+	__lambda9_ (self, connection);
 }
 
 
-static void __lambda9_ (SettingsDaemon* self) {
+static void __lambda10_ (SettingsDaemon* self) {
 	g_debug ("settings-daemon.vala:75: Acquired org.gnome.SessionManager");
 	settings_daemon_start_settings_daemon (self);
 }
 
 
-static void ___lambda9__gbus_name_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
-	__lambda9_ (self);
+static void ___lambda10__gbus_name_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
+	__lambda10_ (self);
 }
 
 
-static void __lambda10_ (SettingsDaemon* self) {
+static void __lambda11_ (SettingsDaemon* self) {
 	g_debug ("settings-daemon.vala:78: Failed to acquire name org.gnome.SessionManag" \
 "er");
 }
 
 
-static void ___lambda10__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
-	__lambda10_ (self);
+static void ___lambda11__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
+	__lambda11_ (self);
 }
 
 
-static void __lambda11_ (SettingsDaemon* self, GDBusConnection* c) {
+static void __lambda12_ (SettingsDaemon* self, GDBusConnection* c) {
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (c != NULL);
 	{
@@ -309,11 +309,11 @@ static void __lambda11_ (SettingsDaemon* self, GDBusConnection* c) {
 		_tmp1_ = self->priv->screen_saver;
 		screen_saver_interface_register_object (_tmp1_, _tmp0_, "/org/gnome/ScreenSaver", &_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch23_g_error;
+			goto __catch18_g_error;
 		}
 	}
-	goto __finally23;
-	__catch23_g_error:
+	goto __finally18;
+	__catch18_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp2_ = NULL;
@@ -325,7 +325,7 @@ static void __lambda11_ (SettingsDaemon* self, GDBusConnection* c) {
 		g_warning ("settings-daemon.vala:97: Failed to register /org/gnome/ScreenSaver: %s", _tmp3_);
 		_g_error_free0 (e);
 	}
-	__finally23:
+	__finally18:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -334,29 +334,29 @@ static void __lambda11_ (SettingsDaemon* self, GDBusConnection* c) {
 }
 
 
-static void ___lambda11__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
-	__lambda11_ (self, connection);
+static void ___lambda12__gbus_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
+	__lambda12_ (self, connection);
 }
 
 
-static void __lambda12_ (SettingsDaemon* self) {
+static void __lambda13_ (SettingsDaemon* self) {
 	g_debug ("settings-daemon.vala:102: Acquired org.gnome.ScreenSaver");
 	settings_daemon_start_settings_daemon (self);
 }
 
 
-static void ___lambda12__gbus_name_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
-	__lambda12_ (self);
+static void ___lambda13__gbus_name_acquired_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
+	__lambda13_ (self);
 }
 
 
-static void __lambda13_ (SettingsDaemon* self) {
+static void __lambda14_ (SettingsDaemon* self) {
 	g_debug ("settings-daemon.vala:105: Failed to acquire name org.gnome.ScreenSaver");
 }
 
 
-static void ___lambda13__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
-	__lambda13_ (self);
+static void ___lambda14__gbus_name_lost_callback (GDBusConnection* connection, const gchar* name, gpointer self) {
+	__lambda14_ (self);
 }
 
 
@@ -499,13 +499,13 @@ void settings_daemon_start (SettingsDaemon* self) {
 	self->priv->session_manager = _tmp29_;
 	_tmp30_ = self->priv->n_names;
 	self->priv->n_names = _tmp30_ + 1;
-	g_bus_own_name_with_closures (G_BUS_TYPE_SESSION, "org.gnome.SessionManager", G_BUS_NAME_OWNER_FLAGS_NONE, (GClosure*) ((___lambda8__gbus_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda8__gbus_acquired_callback, g_object_ref (self), g_object_unref)), (GClosure*) ((___lambda9__gbus_name_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda9__gbus_name_acquired_callback, g_object_ref (self), g_object_unref)), (GClosure*) ((___lambda10__gbus_name_lost_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda10__gbus_name_lost_callback, g_object_ref (self), g_object_unref)));
+	g_bus_own_name_with_closures (G_BUS_TYPE_SESSION, "org.gnome.SessionManager", G_BUS_NAME_OWNER_FLAGS_NONE, (GClosure*) ((___lambda9__gbus_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda9__gbus_acquired_callback, g_object_ref (self), g_object_unref)), (GClosure*) ((___lambda10__gbus_name_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda10__gbus_name_acquired_callback, g_object_ref (self), g_object_unref)), (GClosure*) ((___lambda11__gbus_name_lost_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda11__gbus_name_lost_callback, g_object_ref (self), g_object_unref)));
 	_tmp31_ = screen_saver_interface_new ();
 	_g_object_unref0 (self->priv->screen_saver);
 	self->priv->screen_saver = _tmp31_;
 	_tmp32_ = self->priv->n_names;
 	self->priv->n_names = _tmp32_ + 1;
-	g_bus_own_name_with_closures (G_BUS_TYPE_SESSION, "org.gnome.ScreenSaver", G_BUS_NAME_OWNER_FLAGS_NONE, (GClosure*) ((___lambda11__gbus_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda11__gbus_acquired_callback, g_object_ref (self), g_object_unref)), (GClosure*) ((___lambda12__gbus_name_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda12__gbus_name_acquired_callback, g_object_ref (self), g_object_unref)), (GClosure*) ((___lambda13__gbus_name_lost_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda13__gbus_name_lost_callback, g_object_ref (self), g_object_unref)));
+	g_bus_own_name_with_closures (G_BUS_TYPE_SESSION, "org.gnome.ScreenSaver", G_BUS_NAME_OWNER_FLAGS_NONE, (GClosure*) ((___lambda12__gbus_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda12__gbus_acquired_callback, g_object_ref (self), g_object_unref)), (GClosure*) ((___lambda13__gbus_name_acquired_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda13__gbus_name_acquired_callback, g_object_ref (self), g_object_unref)), (GClosure*) ((___lambda14__gbus_name_lost_callback == NULL) ? NULL : g_cclosure_new ((GCallback) ___lambda14__gbus_name_lost_callback, g_object_ref (self), g_object_unref)));
 	{
 		GDBusConnection* b = NULL;
 		GDBusConnection* _tmp33_ = NULL;
@@ -529,7 +529,7 @@ void settings_daemon_start (SettingsDaemon* self) {
 		_tmp33_ = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, &_inner_error_);
 		b = _tmp33_;
 		if (_inner_error_ != NULL) {
-			goto __catch24_g_error;
+			goto __catch19_g_error;
 		}
 		_tmp34_ = b;
 		_tmp35_ = g_get_user_name ();
@@ -548,7 +548,7 @@ void settings_daemon_start (SettingsDaemon* self) {
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (fd_list);
 			_g_object_unref0 (b);
-			goto __catch24_g_error;
+			goto __catch19_g_error;
 		}
 		index = (gint32) (-1);
 		_tmp43_ = _result_;
@@ -561,15 +561,15 @@ void settings_daemon_start (SettingsDaemon* self) {
 			_g_variant_unref0 (_result_);
 			_g_object_unref0 (fd_list);
 			_g_object_unref0 (b);
-			goto __catch24_g_error;
+			goto __catch19_g_error;
 		}
 		self->priv->logind_inhibit_fd = _tmp44_;
 		_g_variant_unref0 (_result_);
 		_g_object_unref0 (fd_list);
 		_g_object_unref0 (b);
 	}
-	goto __finally24;
-	__catch24_g_error:
+	goto __finally19;
+	__catch19_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp48_ = NULL;
@@ -581,7 +581,7 @@ void settings_daemon_start (SettingsDaemon* self) {
 		g_warning ("settings-daemon.vala:138: Failed to inhibit power keys: %s", _tmp49_);
 		_g_error_free0 (e);
 	}
-	__finally24:
+	__finally19:
 	if (_inner_error_ != NULL) {
 		enabled = (_vala_array_free (enabled, enabled_length1, (GDestroyNotify) g_free), NULL);
 		disabled = (_vala_array_free (disabled, disabled_length1, (GDestroyNotify) g_free), NULL);
@@ -654,15 +654,15 @@ static void settings_daemon_start_settings_daemon (SettingsDaemon* self) {
 		g_spawn_command_line_async (USD_BINARY, &_inner_error_);
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == G_SPAWN_ERROR) {
-				goto __catch25_g_spawn_error;
+				goto __catch20_g_spawn_error;
 			}
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 			g_clear_error (&_inner_error_);
 			return;
 		}
 	}
-	goto __finally25;
-	__catch25_g_spawn_error:
+	goto __finally20;
+	__catch20_g_spawn_error:
 	{
 		GError* e = NULL;
 		GError* _tmp2_ = NULL;
@@ -674,7 +674,7 @@ static void settings_daemon_start_settings_daemon (SettingsDaemon* self) {
 		g_debug ("settings-daemon.vala:167: Could not start unity-settings-daemon: %s", _tmp3_);
 		_g_error_free0 (e);
 	}
-	__finally25:
+	__finally20:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -747,23 +747,23 @@ ScreenSaverInterface* screen_saver_interface_new (void) {
 }
 
 
-static void ___lambda6_ (ScreenSaverInterface* self) {
+static void ___lambda7_ (ScreenSaverInterface* self) {
 	screen_saver_interface_set_active (self, FALSE);
 }
 
 
-static void ____lambda6__gnome_idle_monitor_watch_func (GnomeIdleMonitor* monitor, guint id, gpointer self) {
-	___lambda6_ (self);
+static void ____lambda7__gnome_idle_monitor_watch_func (GnomeIdleMonitor* monitor, guint id, gpointer self) {
+	___lambda7_ (self);
 }
 
 
-static void ____lambda7_ (ScreenSaverInterface* self) {
+static void ____lambda8_ (ScreenSaverInterface* self) {
 	screen_saver_interface_set_active (self, TRUE);
 }
 
 
-static void _____lambda7__gnome_idle_monitor_watch_func (GnomeIdleMonitor* monitor, guint id, gpointer self) {
-	____lambda7_ (self);
+static void _____lambda8__gnome_idle_monitor_watch_func (GnomeIdleMonitor* monitor, guint id, gpointer self) {
+	____lambda8_ (self);
 }
 
 
@@ -787,7 +787,7 @@ static void _screen_saver_interface_set_active (ScreenSaverInterface* self, gboo
 	if (_tmp4_) {
 		GnomeIdleMonitor* _tmp5_ = NULL;
 		_tmp5_ = self->priv->idle_monitor;
-		gnome_idle_monitor_add_user_active_watch (_tmp5_, ____lambda6__gnome_idle_monitor_watch_func, self, NULL);
+		gnome_idle_monitor_add_user_active_watch (_tmp5_, ____lambda7__gnome_idle_monitor_watch_func, self, NULL);
 	} else {
 		gint timeout = 0;
 		gint _tmp6_ = 0;
@@ -801,7 +801,7 @@ static void _screen_saver_interface_set_active (ScreenSaverInterface* self, gboo
 			guint _tmp10_ = 0U;
 			_tmp8_ = self->priv->idle_monitor;
 			_tmp9_ = timeout;
-			_tmp10_ = gnome_idle_monitor_add_idle_watch (_tmp8_, (guint64) (_tmp9_ * 1000), _____lambda7__gnome_idle_monitor_watch_func, self, NULL);
+			_tmp10_ = gnome_idle_monitor_add_idle_watch (_tmp8_, (guint64) (_tmp9_ * 1000), _____lambda8__gnome_idle_monitor_watch_func, self, NULL);
 			self->priv->idle_watch = _tmp10_;
 		}
 	}

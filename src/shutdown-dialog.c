@@ -217,47 +217,47 @@ static void shutdown_dialog_rebuild_background (ShutdownDialog* self);
 static void _shutdown_dialog_rebuild_background_g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
 static void shutdown_dialog_update_background_color (ShutdownDialog* self);
 static void _shutdown_dialog_update_background_color_g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
-static gboolean __lambda14_ (ShutdownDialog* self);
+static gboolean __lambda15_ (ShutdownDialog* self);
 void shutdown_dialog_close (ShutdownDialog* self);
-static gboolean ___lambda14__gtk_widget_button_press_event (GtkWidget* _sender, GdkEventButton* event, gpointer self);
-static gboolean __lambda17_ (ShutdownDialog* self);
-static gboolean ___lambda17__gtk_widget_button_press_event (GtkWidget* _sender, GdkEventButton* event, gpointer self);
+static gboolean ___lambda15__gtk_widget_button_press_event (GtkWidget* _sender, GdkEventButton* event, gpointer self);
+static gboolean __lambda18_ (ShutdownDialog* self);
+static gboolean ___lambda18__gtk_widget_button_press_event (GtkWidget* _sender, GdkEventButton* event, gpointer self);
 static void _vala_PangoFontDescription_free (PangoFontDescription* self);
 static DialogButton* shutdown_dialog_add_button (ShutdownDialog* self, const gchar* text, const gchar* inactive_filename, const gchar* active_filename);
-static void ____lambda18_ (ShutdownDialog* self);
-static void _____lambda18__gtk_button_clicked (GtkButton* _sender, gpointer self);
 static void ____lambda19_ (ShutdownDialog* self);
 static void _____lambda19__gtk_button_clicked (GtkButton* _sender, gpointer self);
-static void ___lambda20_ (ShutdownDialog* self);
-static void ____lambda20__gtk_button_clicked (GtkButton* _sender, gpointer self);
-static Block5Data* block5_data_ref (Block5Data* _data5_);
-static void block5_data_unref (void * _userdata_);
+static void ____lambda20_ (ShutdownDialog* self);
+static void _____lambda20__gtk_button_clicked (GtkButton* _sender, gpointer self);
 static void ___lambda21_ (ShutdownDialog* self);
 static void ____lambda21__gtk_button_clicked (GtkButton* _sender, gpointer self);
-static void ____lambda22_ (Block5Data* _data5_);
-static void _____lambda22__gtk_widget_show (GtkWidget* _sender, gpointer self);
+static Block5Data* block5_data_ref (Block5Data* _data5_);
+static void block5_data_unref (void * _userdata_);
+static void ___lambda22_ (ShutdownDialog* self);
+static void ____lambda22__gtk_button_clicked (GtkButton* _sender, gpointer self);
+static void ____lambda23_ (Block5Data* _data5_);
+static void _____lambda23__gtk_widget_show (GtkWidget* _sender, gpointer self);
 DialogButton* dialog_button_new (const gchar* inactive_filename, const gchar* focused_filename, const gchar* active_filename, GtkLabel* label);
 DialogButton* dialog_button_construct (GType object_type, const gchar* inactive_filename, const gchar* focused_filename, const gchar* active_filename, GtkLabel* label);
-static void __lambda23_ (ShutdownDialog* self);
-static void ___lambda23__gtk_button_clicked (GtkButton* _sender, gpointer self);
-static gdouble __lambda24_ (ShutdownDialog* self, gdouble x);
-static gdouble ___lambda24__animate_timer_easing_func (gdouble x, gpointer self);
+static void __lambda24_ (ShutdownDialog* self);
+static void ___lambda24__gtk_button_clicked (GtkButton* _sender, gpointer self);
+static gdouble __lambda25_ (ShutdownDialog* self, gdouble x);
+static gdouble ___lambda25__animate_timer_easing_func (gdouble x, gpointer self);
 #define ANIMATE_TIMER_INSTANT 150
 AnimateTimer* animate_timer_new (AnimateTimerEasingFunc func, void* func_target, gint speed);
 AnimateTimer* animate_timer_construct (GType object_type, AnimateTimerEasingFunc func, void* func_target, gint speed);
-static void __lambda25_ (ShutdownDialog* self);
-static void ___lambda25__animate_timer_animate (AnimateTimer* _sender, gdouble progress, gpointer self);
 static void __lambda26_ (ShutdownDialog* self);
+static void ___lambda26__animate_timer_animate (AnimateTimer* _sender, gdouble progress, gpointer self);
+static void __lambda27_ (ShutdownDialog* self);
 void animate_timer_reset (AnimateTimer* self, gint temp_speed);
-static void ___lambda26__gtk_widget_show (GtkWidget* _sender, gpointer self);
+static void ___lambda27__gtk_widget_show (GtkWidget* _sender, gpointer self);
 static Block6Data* block6_data_ref (Block6Data* _data6_);
 static void block6_data_unref (void * _userdata_);
 gdouble animate_timer_get_progress (AnimateTimer* self);
-static gdouble __lambda15_ (Block6Data* _data6_, gdouble x);
-static gdouble ___lambda15__animate_timer_easing_func (gdouble x, gpointer self);
-static void __lambda16_ (ShutdownDialog* self, gdouble p);
+static gdouble __lambda16_ (Block6Data* _data6_, gdouble x);
+static gdouble ___lambda16__animate_timer_easing_func (gdouble x, gpointer self);
+static void __lambda17_ (ShutdownDialog* self, gdouble p);
 void animate_timer_stop (AnimateTimer* self);
-static void ___lambda16__animate_timer_animate (AnimateTimer* _sender, gdouble progress, gpointer self);
+static void ___lambda17__animate_timer_animate (AnimateTimer* _sender, gdouble progress, gpointer self);
 void background_get_average_color (Background* self, GdkRGBA* result);
 void shutdown_dialog_set_active_monitor (ShutdownDialog* self, Monitor* m);
 gboolean monitor_equals (Monitor* self, Monitor* other);
@@ -304,7 +304,7 @@ static void _shutdown_dialog_update_background_color_g_object_notify (GObject* _
 }
 
 
-static gboolean __lambda14_ (ShutdownDialog* self) {
+static gboolean __lambda15_ (ShutdownDialog* self) {
 	gboolean result = FALSE;
 	shutdown_dialog_close (self);
 	result = TRUE;
@@ -312,23 +312,23 @@ static gboolean __lambda14_ (ShutdownDialog* self) {
 }
 
 
-static gboolean ___lambda14__gtk_widget_button_press_event (GtkWidget* _sender, GdkEventButton* event, gpointer self) {
+static gboolean ___lambda15__gtk_widget_button_press_event (GtkWidget* _sender, GdkEventButton* event, gpointer self) {
 	gboolean result;
-	result = __lambda14_ (self);
+	result = __lambda15_ (self);
 	return result;
 }
 
 
-static gboolean __lambda17_ (ShutdownDialog* self) {
+static gboolean __lambda18_ (ShutdownDialog* self) {
 	gboolean result = FALSE;
 	result = TRUE;
 	return result;
 }
 
 
-static gboolean ___lambda17__gtk_widget_button_press_event (GtkWidget* _sender, GdkEventButton* event, gpointer self) {
+static gboolean ___lambda18__gtk_widget_button_press_event (GtkWidget* _sender, GdkEventButton* event, gpointer self) {
 	gboolean result;
-	result = __lambda17_ (self);
+	result = __lambda18_ (self);
 	return result;
 }
 
@@ -338,17 +338,17 @@ static void _vala_PangoFontDescription_free (PangoFontDescription* self) {
 }
 
 
-static void ____lambda18_ (ShutdownDialog* self) {
+static void ____lambda19_ (ShutdownDialog* self) {
 	GError * _inner_error_ = NULL;
 	{
 		lightdm_suspend (&_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch27_g_error;
+			goto __catch22_g_error;
 		}
 		shutdown_dialog_close (self);
 	}
-	goto __finally27;
-	__catch27_g_error:
+	goto __finally22;
+	__catch22_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp0_ = NULL;
@@ -360,43 +360,7 @@ static void ____lambda18_ (ShutdownDialog* self) {
 		g_warning ("shutdown-dialog.vala:165: Failed to suspend: %s", _tmp1_);
 		_g_error_free0 (e);
 	}
-	__finally27:
-	if (_inner_error_ != NULL) {
-		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return;
-	}
-}
-
-
-static void _____lambda18__gtk_button_clicked (GtkButton* _sender, gpointer self) {
-	____lambda18_ (self);
-}
-
-
-static void ____lambda19_ (ShutdownDialog* self) {
-	GError * _inner_error_ = NULL;
-	{
-		lightdm_hibernate (&_inner_error_);
-		if (_inner_error_ != NULL) {
-			goto __catch28_g_error;
-		}
-		shutdown_dialog_close (self);
-	}
-	goto __finally28;
-	__catch28_g_error:
-	{
-		GError* e = NULL;
-		GError* _tmp0_ = NULL;
-		const gchar* _tmp1_ = NULL;
-		e = _inner_error_;
-		_inner_error_ = NULL;
-		_tmp0_ = e;
-		_tmp1_ = _tmp0_->message;
-		g_warning ("shutdown-dialog.vala:182: Failed to hibernate: %s", _tmp1_);
-		_g_error_free0 (e);
-	}
-	__finally28:
+	__finally22:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -410,17 +374,53 @@ static void _____lambda19__gtk_button_clicked (GtkButton* _sender, gpointer self
 }
 
 
-static void ___lambda20_ (ShutdownDialog* self) {
+static void ____lambda20_ (ShutdownDialog* self) {
+	GError * _inner_error_ = NULL;
+	{
+		lightdm_hibernate (&_inner_error_);
+		if (_inner_error_ != NULL) {
+			goto __catch23_g_error;
+		}
+		shutdown_dialog_close (self);
+	}
+	goto __finally23;
+	__catch23_g_error:
+	{
+		GError* e = NULL;
+		GError* _tmp0_ = NULL;
+		const gchar* _tmp1_ = NULL;
+		e = _inner_error_;
+		_inner_error_ = NULL;
+		_tmp0_ = e;
+		_tmp1_ = _tmp0_->message;
+		g_warning ("shutdown-dialog.vala:182: Failed to hibernate: %s", _tmp1_);
+		_g_error_free0 (e);
+	}
+	__finally23:
+	if (_inner_error_ != NULL) {
+		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+		g_clear_error (&_inner_error_);
+		return;
+	}
+}
+
+
+static void _____lambda20__gtk_button_clicked (GtkButton* _sender, gpointer self) {
+	____lambda20_ (self);
+}
+
+
+static void ___lambda21_ (ShutdownDialog* self) {
 	GError * _inner_error_ = NULL;
 	{
 		lightdm_restart (&_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch29_g_error;
+			goto __catch24_g_error;
 		}
 		shutdown_dialog_close (self);
 	}
-	goto __finally29;
-	__catch29_g_error:
+	goto __finally24;
+	__catch24_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp0_ = NULL;
@@ -432,7 +432,7 @@ static void ___lambda20_ (ShutdownDialog* self) {
 		g_warning ("shutdown-dialog.vala:200: Failed to restart: %s", _tmp1_);
 		_g_error_free0 (e);
 	}
-	__finally29:
+	__finally24:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -441,8 +441,8 @@ static void ___lambda20_ (ShutdownDialog* self) {
 }
 
 
-static void ____lambda20__gtk_button_clicked (GtkButton* _sender, gpointer self) {
-	___lambda20_ (self);
+static void ____lambda21__gtk_button_clicked (GtkButton* _sender, gpointer self) {
+	___lambda21_ (self);
 }
 
 
@@ -465,17 +465,17 @@ static void block5_data_unref (void * _userdata_) {
 }
 
 
-static void ___lambda21_ (ShutdownDialog* self) {
+static void ___lambda22_ (ShutdownDialog* self) {
 	GError * _inner_error_ = NULL;
 	{
 		lightdm_shutdown (&_inner_error_);
 		if (_inner_error_ != NULL) {
-			goto __catch30_g_error;
+			goto __catch25_g_error;
 		}
 		shutdown_dialog_close (self);
 	}
-	goto __finally30;
-	__catch30_g_error:
+	goto __finally25;
+	__catch25_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp0_ = NULL;
@@ -487,7 +487,7 @@ static void ___lambda21_ (ShutdownDialog* self) {
 		g_warning ("shutdown-dialog.vala:217: Failed to shutdown: %s", _tmp1_);
 		_g_error_free0 (e);
 	}
-	__finally30:
+	__finally25:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -496,12 +496,12 @@ static void ___lambda21_ (ShutdownDialog* self) {
 }
 
 
-static void ____lambda21__gtk_button_clicked (GtkButton* _sender, gpointer self) {
-	___lambda21_ (self);
+static void ____lambda22__gtk_button_clicked (GtkButton* _sender, gpointer self) {
+	___lambda22_ (self);
 }
 
 
-static void ____lambda22_ (Block5Data* _data5_) {
+static void ____lambda23_ (Block5Data* _data5_) {
 	ShutdownDialog * self;
 	DialogButton* _tmp0_ = NULL;
 	self = _data5_->self;
@@ -510,22 +510,22 @@ static void ____lambda22_ (Block5Data* _data5_) {
 }
 
 
-static void _____lambda22__gtk_widget_show (GtkWidget* _sender, gpointer self) {
-	____lambda22_ (self);
+static void _____lambda23__gtk_widget_show (GtkWidget* _sender, gpointer self) {
+	____lambda23_ (self);
 }
 
 
-static void __lambda23_ (ShutdownDialog* self) {
+static void __lambda24_ (ShutdownDialog* self) {
 	shutdown_dialog_close (self);
 }
 
 
-static void ___lambda23__gtk_button_clicked (GtkButton* _sender, gpointer self) {
-	__lambda23_ (self);
+static void ___lambda24__gtk_button_clicked (GtkButton* _sender, gpointer self) {
+	__lambda24_ (self);
 }
 
 
-static gdouble __lambda24_ (ShutdownDialog* self, gdouble x) {
+static gdouble __lambda25_ (ShutdownDialog* self, gdouble x) {
 	gdouble result = 0.0;
 	gdouble _tmp0_ = 0.0;
 	_tmp0_ = x;
@@ -534,32 +534,32 @@ static gdouble __lambda24_ (ShutdownDialog* self, gdouble x) {
 }
 
 
-static gdouble ___lambda24__animate_timer_easing_func (gdouble x, gpointer self) {
+static gdouble ___lambda25__animate_timer_easing_func (gdouble x, gpointer self) {
 	gdouble result;
-	result = __lambda24_ (self, x);
+	result = __lambda25_ (self, x);
 	return result;
 }
 
 
-static void __lambda25_ (ShutdownDialog* self) {
+static void __lambda26_ (ShutdownDialog* self) {
 	gtk_widget_queue_draw ((GtkWidget*) self);
 }
 
 
-static void ___lambda25__animate_timer_animate (AnimateTimer* _sender, gdouble progress, gpointer self) {
-	__lambda25_ (self);
+static void ___lambda26__animate_timer_animate (AnimateTimer* _sender, gdouble progress, gpointer self) {
+	__lambda26_ (self);
 }
 
 
-static void __lambda26_ (ShutdownDialog* self) {
+static void __lambda27_ (ShutdownDialog* self) {
 	AnimateTimer* _tmp0_ = NULL;
 	_tmp0_ = self->priv->animation;
 	animate_timer_reset (_tmp0_, -1);
 }
 
 
-static void ___lambda26__gtk_widget_show (GtkWidget* _sender, gpointer self) {
-	__lambda26_ (self);
+static void ___lambda27__gtk_widget_show (GtkWidget* _sender, gpointer self) {
+	__lambda27_ (self);
 }
 
 
@@ -669,7 +669,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 	_tmp9_ = _tmp8_;
 	gtk_widget_set_events ((GtkWidget*) _tmp7_, _tmp9_ | GDK_BUTTON_PRESS_MASK);
 	_tmp10_ = self->priv->monitor_events;
-	g_signal_connect_object ((GtkWidget*) _tmp10_, "button-press-event", (GCallback) ___lambda14__gtk_widget_button_press_event, self, 0);
+	g_signal_connect_object ((GtkWidget*) _tmp10_, "button-press-event", (GCallback) ___lambda15__gtk_widget_button_press_event, self, 0);
 	_tmp11_ = self->priv->monitor_events;
 	gtk_container_add ((GtkContainer*) self, (GtkWidget*) _tmp11_);
 	_tmp12_ = (GtkBox*) gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
@@ -714,7 +714,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 	_tmp37_ = _tmp36_;
 	gtk_widget_set_events ((GtkWidget*) _tmp35_, _tmp37_ | GDK_BUTTON_PRESS_MASK);
 	_tmp38_ = self->priv->vbox_events;
-	g_signal_connect_object ((GtkWidget*) _tmp38_, "button-press-event", (GCallback) ___lambda17__gtk_widget_button_press_event, self, 0);
+	g_signal_connect_object ((GtkWidget*) _tmp38_, "button-press-event", (GCallback) ___lambda18__gtk_widget_button_press_event, self, 0);
 	_tmp39_ = self->priv->vbox_events;
 	_tmp40_ = self->priv->vbox;
 	gtk_container_add ((GtkContainer*) _tmp39_, (GtkWidget*) _tmp40_);
@@ -791,7 +791,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 		_tmp59_ = g_bus_get_sync (G_BUS_TYPE_SYSTEM, NULL, &_inner_error_);
 		b = _tmp59_;
 		if (_inner_error_ != NULL) {
-			goto __catch26_g_error;
+			goto __catch21_g_error;
 		}
 		_tmp60_ = b;
 		_tmp61_ = g_variant_new ("(ss)", "org.freedesktop.DisplayManager", "Sessions", NULL);
@@ -806,7 +806,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 		_result_ = _tmp66_;
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (b);
-			goto __catch26_g_error;
+			goto __catch21_g_error;
 		}
 		_tmp67_ = _result_;
 		g_variant_get (_tmp67_, "(v)", &value, NULL);
@@ -817,8 +817,8 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 		_g_variant_unref0 (_result_);
 		_g_object_unref0 (b);
 	}
-	goto __finally26;
-	__catch26_g_error:
+	goto __finally21;
+	__catch21_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp70_ = NULL;
@@ -830,7 +830,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 		g_warning ("shutdown-dialog.vala:134: Failed to check sessions from logind: %s", _tmp71_);
 		_g_error_free0 (e);
 	}
-	__finally26:
+	__finally21:
 	if (_inner_error_ != NULL) {
 		_g_free0 (text);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
@@ -908,7 +908,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 			_g_free0 (_tmp96_);
 			button = _tmp100_;
 			_tmp101_ = button;
-			g_signal_connect_object ((GtkButton*) _tmp101_, "clicked", (GCallback) _____lambda18__gtk_button_clicked, self, 0);
+			g_signal_connect_object ((GtkButton*) _tmp101_, "clicked", (GCallback) _____lambda19__gtk_button_clicked, self, 0);
 			_g_object_unref0 (button);
 		}
 		_tmp102_ = lightdm_get_can_hibernate ();
@@ -933,7 +933,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 			_g_free0 (_tmp105_);
 			button = _tmp109_;
 			_tmp110_ = button;
-			g_signal_connect_object ((GtkButton*) _tmp110_, "clicked", (GCallback) _____lambda19__gtk_button_clicked, self, 0);
+			g_signal_connect_object ((GtkButton*) _tmp110_, "clicked", (GCallback) _____lambda20__gtk_button_clicked, self, 0);
 			_g_object_unref0 (button);
 		}
 	}
@@ -959,7 +959,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 		_g_free0 (_tmp114_);
 		button = _tmp118_;
 		_tmp119_ = button;
-		g_signal_connect_object ((GtkButton*) _tmp119_, "clicked", (GCallback) ____lambda20__gtk_button_clicked, self, 0);
+		g_signal_connect_object ((GtkButton*) _tmp119_, "clicked", (GCallback) ____lambda21__gtk_button_clicked, self, 0);
 		_g_object_unref0 (button);
 	}
 	_tmp120_ = lightdm_get_can_shutdown ();
@@ -988,10 +988,10 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 		_g_free0 (_tmp123_);
 		_data5_->button = _tmp127_;
 		_tmp128_ = _data5_->button;
-		g_signal_connect_object ((GtkButton*) _tmp128_, "clicked", (GCallback) ____lambda21__gtk_button_clicked, self, 0);
+		g_signal_connect_object ((GtkButton*) _tmp128_, "clicked", (GCallback) ____lambda22__gtk_button_clicked, self, 0);
 		_tmp129_ = type;
 		if (_tmp129_ != SHUTDOWN_DIALOG_TYPE_SHUTDOWN) {
-			g_signal_connect_data ((GtkWidget*) self, "show", (GCallback) _____lambda22__gtk_widget_show, block5_data_ref (_data5_), (GClosureNotify) block5_data_unref, 0);
+			g_signal_connect_data ((GtkWidget*) self, "show", (GCallback) _____lambda23__gtk_widget_show, block5_data_ref (_data5_), (GClosureNotify) block5_data_unref, 0);
 		}
 		block5_data_unref (_data5_);
 		_data5_ = NULL;
@@ -1012,17 +1012,17 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 	_tmp137_ = self->priv->close_button;
 	g_object_set ((GtkWidget*) _tmp137_, "can-focus", FALSE, NULL);
 	_tmp138_ = self->priv->close_button;
-	g_signal_connect_object ((GtkButton*) _tmp138_, "clicked", (GCallback) ___lambda23__gtk_button_clicked, self, 0);
+	g_signal_connect_object ((GtkButton*) _tmp138_, "clicked", (GCallback) ___lambda24__gtk_button_clicked, self, 0);
 	_tmp139_ = self->priv->close_button;
 	gtk_widget_set_visible ((GtkWidget*) _tmp139_, TRUE);
 	_tmp140_ = self->priv->close_button;
 	gtk_container_add ((GtkContainer*) self, (GtkWidget*) _tmp140_);
-	_tmp141_ = animate_timer_new (___lambda24__animate_timer_easing_func, self, ANIMATE_TIMER_INSTANT);
+	_tmp141_ = animate_timer_new (___lambda25__animate_timer_easing_func, self, ANIMATE_TIMER_INSTANT);
 	_g_object_unref0 (self->priv->animation);
 	self->priv->animation = _tmp141_;
 	_tmp142_ = self->priv->animation;
-	g_signal_connect_object (_tmp142_, "animate", (GCallback) ___lambda25__animate_timer_animate, self, 0);
-	g_signal_connect_object ((GtkWidget*) self, "show", (GCallback) ___lambda26__gtk_widget_show, self, 0);
+	g_signal_connect_object (_tmp142_, "animate", (GCallback) ___lambda26__animate_timer_animate, self, 0);
+	g_signal_connect_object ((GtkWidget*) self, "show", (GCallback) ___lambda27__gtk_widget_show, self, 0);
 	_g_object_unref0 (label);
 	_g_free0 (text);
 	return self;
@@ -1052,7 +1052,7 @@ static void block6_data_unref (void * _userdata_) {
 }
 
 
-static gdouble __lambda15_ (Block6Data* _data6_, gdouble x) {
+static gdouble __lambda16_ (Block6Data* _data6_, gdouble x) {
 	ShutdownDialog * self;
 	gdouble result = 0.0;
 	gdouble _tmp0_ = 0.0;
@@ -1063,14 +1063,14 @@ static gdouble __lambda15_ (Block6Data* _data6_, gdouble x) {
 }
 
 
-static gdouble ___lambda15__animate_timer_easing_func (gdouble x, gpointer self) {
+static gdouble ___lambda16__animate_timer_easing_func (gdouble x, gpointer self) {
 	gdouble result;
-	result = __lambda15_ (self, x);
+	result = __lambda16_ (self, x);
 	return result;
 }
 
 
-static void __lambda16_ (ShutdownDialog* self, gdouble p) {
+static void __lambda17_ (ShutdownDialog* self, gdouble p) {
 	gdouble _tmp0_ = 0.0;
 	gtk_widget_queue_draw ((GtkWidget*) self);
 	_tmp0_ = p;
@@ -1083,8 +1083,8 @@ static void __lambda16_ (ShutdownDialog* self, gdouble p) {
 }
 
 
-static void ___lambda16__animate_timer_animate (AnimateTimer* _sender, gdouble progress, gpointer self) {
-	__lambda16_ (self, progress);
+static void ___lambda17__animate_timer_animate (AnimateTimer* _sender, gdouble progress, gpointer self) {
+	__lambda17_ (self, progress);
 }
 
 
@@ -1104,11 +1104,11 @@ void shutdown_dialog_close (ShutdownDialog* self) {
 	_tmp1_ = animate_timer_get_progress (_tmp0_);
 	_tmp2_ = _tmp1_;
 	_data6_->start_value = 1.0f - _tmp2_;
-	_tmp3_ = animate_timer_new (___lambda15__animate_timer_easing_func, _data6_, ANIMATE_TIMER_INSTANT);
+	_tmp3_ = animate_timer_new (___lambda16__animate_timer_easing_func, _data6_, ANIMATE_TIMER_INSTANT);
 	_g_object_unref0 (self->priv->animation);
 	self->priv->animation = _tmp3_;
 	_tmp4_ = self->priv->animation;
-	g_signal_connect_object (_tmp4_, "animate", (GCallback) ___lambda16__animate_timer_animate, self, 0);
+	g_signal_connect_object (_tmp4_, "animate", (GCallback) ___lambda17__animate_timer_animate, self, 0);
 	self->priv->closing = TRUE;
 	_tmp5_ = self->priv->animation;
 	animate_timer_reset (_tmp5_, -1);
@@ -2159,14 +2159,14 @@ DialogButton* dialog_button_construct (GType object_type, const gchar* inactive_
 		gtk_css_provider_load_from_data (style, "* {padding: 0px 0px 0px 0px; border: 0px; }", (gssize) (-1), &_inner_error_);
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (style);
-			goto __catch31_g_error;
+			goto __catch26_g_error;
 		}
 		_tmp27_ = gtk_widget_get_style_context ((GtkWidget*) self);
 		gtk_style_context_add_provider (_tmp27_, (GtkStyleProvider*) style, (guint) GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 		_g_object_unref0 (style);
 	}
-	goto __finally31;
-	__catch31_g_error:
+	goto __finally26;
+	__catch26_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp28_ = NULL;
@@ -2179,7 +2179,7 @@ DialogButton* dialog_button_construct (GType object_type, const gchar* inactive_
 ": %s", _tmp29_);
 		_g_error_free0 (e);
 	}
-	__finally31:
+	__finally26:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);

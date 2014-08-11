@@ -138,14 +138,18 @@ public class UserList : GreeterList
         }
     }
 
-    public UserList (Background bg, MenuBar mb)
+//~     public UserList (Background bg, MenuBar mb)
+//~     {
+//~         Object (background: bg, menubar: mb);
+//~     }
+public UserList (Background bg)
     {
-        Object (background: bg, menubar: mb);
+        Object (background: bg);
     }
-
     construct
     {
-        menubar.notify["high-contrast"].connect (() => { change_background (); });
+		//暂时去除高对比对的功能
+        //menubar.notify["high-contrast"].connect (() => { change_background (); });
         entry_displayed_start.connect (() => { change_background (); });
         entry_displayed_done.connect (() => { change_background (); });
 
@@ -582,7 +586,10 @@ public class UserList : GreeterList
     private bool change_background_timeout_cb ()
     {
         string? new_background_file = null;
-        if (menubar.high_contrast || !UGSettings.get_boolean (UGSettings.KEY_DRAW_USER_BACKGROUNDS))
+    //暂时去除高对比度功能
+    //    if (menubar.high_contrast || !UGSettings.get_boolean (UGSettings.KEY_DRAW_USER_BACKGROUNDS))
+         if (!UGSettings.get_boolean (UGSettings.KEY_DRAW_USER_BACKGROUNDS))
+
             new_background_file = null;
         else if (selected_entry is UserPromptBox)
             new_background_file = (selected_entry as UserPromptBox).background;
@@ -908,7 +915,7 @@ public class UserList : GreeterList
 
     private void prompt_box_show_options_cb ()
     {
-        var session_chooser = new SessionList (background, menubar, session, default_session);
+        var session_chooser = new SessionList (background,  session, default_session);
         session_chooser.session_clicked.connect (session_clicked_cb);
         UnityGreeter.singleton.push_list (session_chooser);
     }

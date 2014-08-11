@@ -9,7 +9,6 @@ unity_greeter_test_SOURCES = \
 	test.vala \
 	test-list.vala \
 	test-main-window.vala \
-	menubar.vala \
 	unity-greeter.vala \
 	../src/flat-button.vala \
 	../src/toggle-box.vala \

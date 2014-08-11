@@ -24,14 +24,19 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <gtk/gtkx.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#include <X11/Xutil.h>
+#include <X11/Xregion.h>
 #include <gdk/gdk.h>
 #include <cairo.h>
-#include <string.h>
-#include <stdlib.h>
 #include <atk/atk.h>
 #include <glib/gi18n-lib.h>
 #include "config.h"
-#include <glib/gstdio.h>
 
 
 #define TYPE_MAIN_WINDOW (main_window_get_type ())
@@ -44,16 +49,6 @@
 typedef struct _MainWindow MainWindow;
 typedef struct _MainWindowClass MainWindowClass;
 typedef struct _MainWindowPrivate MainWindowPrivate;
-
-#define TYPE_MENU_BAR (menu_bar_get_type ())
-#define MENU_BAR(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_MENU_BAR, MenuBar))
-#define MENU_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_MENU_BAR, MenuBarClass))
-#define IS_MENU_BAR(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_MENU_BAR))
-#define IS_MENU_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_MENU_BAR))
-#define MENU_BAR_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_MENU_BAR, MenuBarClass))
-
-typedef struct _MenuBar MenuBar;
-typedef struct _MenuBarClass MenuBarClass;
 
 #define TYPE_LIST_STACK (list_stack_get_type ())
 #define LIST_STACK(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_LIST_STACK, ListStack))
@@ -94,9 +89,9 @@ typedef struct _BackgroundClass BackgroundClass;
 
 typedef struct _ShutdownDialog ShutdownDialog;
 typedef struct _ShutdownDialogClass ShutdownDialogClass;
-#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define __g_list_free__monitor_unref0_0(var) ((var == NULL) ? NULL : (var = (_g_list_free__monitor_unref0_ (var), NULL)))
 #define _monitor_unref0(var) ((var == NULL) ? NULL : (var = (monitor_unref (var), NULL)))
+#define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 
 #define TYPE_FADABLE_BOX (fadable_box_get_type ())
 #define FADABLE_BOX(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_FADABLE_BOX, FadableBox))
@@ -117,6 +112,10 @@ typedef struct _FadableBoxClass FadableBoxClass;
 
 typedef struct _GreeterList GreeterList;
 typedef struct _GreeterListClass GreeterListClass;
+
+#define TYPE_SHUTDOWN_DIALOG_TYPE (shutdown_dialog_type_get_type ())
+#define _fclose0(var) ((var == NULL) ? NULL : (var = (fclose (var), NULL)))
+#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 typedef struct _MonitorPrivate MonitorPrivate;
 
 #define TYPE_USER_LIST (user_list_get_type ())
@@ -131,8 +130,6 @@ typedef struct _UserListClass UserListClass;
 
 #define GREETER_LIST_TYPE_SCROLL_TARGET (greeter_list_scroll_target_get_type ())
 
-#define TYPE_SHUTDOWN_DIALOG_TYPE (shutdown_dialog_type_get_type ())
-
 #define TYPE_UNITY_GREETER (unity_greeter_get_type ())
 #define UNITY_GREETER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_UNITY_GREETER, UnityGreeter))
 #define UNITY_GREETER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_UNITY_GREETER, UnityGreeterClass))
@@ -145,7 +142,6 @@ typedef struct _UnityGreeterClass UnityGreeterClass;
 typedef struct _UnityGreeterPrivate UnityGreeterPrivate;
 #define _g_free0(var) (var = (g_free (var), NULL))
 #define _cairo_destroy0(var) ((var == NULL) ? NULL : (var = (cairo_destroy (var), NULL)))
-#define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 
 #define TYPE_FLAT_BUTTON (flat_button_get_type ())
 #define FLAT_BUTTON(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_FLAT_BUTTON, FlatButton))
@@ -160,7 +156,6 @@ typedef struct _FlatButtonClass FlatButtonClass;
 struct _MainWindow {
 	GtkWindow parent_instance;
 	MainWindowPrivate * priv;
-	MenuBar* menubar;
 	ListStack* stack;
 };
 
@@ -177,7 +172,17 @@ struct _MainWindowPrivate {
 	GtkBox* hbox;
 	GtkButton* back_button;
 	ShutdownDialog* shutdown_dialog;
+	GtkWindow* _keyboard_window;
+	GPid keyboard_pid;
+	GtkButton* shutdownbutton;
+	GtkToggleButton* a11ybutton;
 };
+
+typedef enum  {
+	SHUTDOWN_DIALOG_TYPE_LOGOUT,
+	SHUTDOWN_DIALOG_TYPE_SHUTDOWN,
+	SHUTDOWN_DIALOG_TYPE_RESTART
+} ShutdownDialogType;
 
 struct _Monitor {
 	GTypeInstance parent_instance;
@@ -201,12 +206,6 @@ typedef enum  {
 	GREETER_LIST_SCROLL_TARGET_DOWN
 } GreeterListScrollTarget;
 
-typedef enum  {
-	SHUTDOWN_DIALOG_TYPE_LOGOUT,
-	SHUTDOWN_DIALOG_TYPE_SHUTDOWN,
-	SHUTDOWN_DIALOG_TYPE_RESTART
-} ShutdownDialogType;
-
 struct _UnityGreeter {
 	GTypeInstance parent_instance;
 	volatile int ref_count;
@@ -225,7 +224,6 @@ static gpointer main_window_parent_class = NULL;
 extern UnityGreeter* unity_greeter_singleton;
 
 GType main_window_get_type (void) G_GNUC_CONST;
-GType menu_bar_get_type (void) G_GNUC_CONST;
 GType list_stack_get_type (void) G_GNUC_CONST;
 gpointer monitor_ref (gpointer instance);
 void monitor_unref (gpointer instance);
@@ -238,11 +236,12 @@ GType background_get_type (void) G_GNUC_CONST;
 GType shutdown_dialog_get_type (void) G_GNUC_CONST;
 #define MAIN_WINDOW_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_MAIN_WINDOW, MainWindowPrivate))
 enum  {
-	MAIN_WINDOW_DUMMY_PROPERTY
+	MAIN_WINDOW_DUMMY_PROPERTY,
+	MAIN_WINDOW_KEYBOARD_WINDOW
 };
 static void _monitor_unref0_ (gpointer var);
 static void _g_list_free__monitor_unref0_ (GList* self);
-#define MAIN_WINDOW_MENUBAR_HEIGHT 32
+#define MAIN_WINDOW_BUTTONBOX_HEIGHT 80
 GType fadable_box_get_type (void) G_GNUC_CONST;
 GType greeter_list_get_type (void) G_GNUC_CONST;
 void main_window_push_list (MainWindow* self, GreeterList* widget);
@@ -253,6 +252,14 @@ void list_stack_pop (ListStack* self);
 static void main_window_real_size_allocate (GtkWidget* base, GtkAllocation* allocation);
 gint get_grid_offset (gint size);
 #define grid_size 40
+static void main_window_shutdownbutton_clicked_cb (MainWindow* self, GtkButton* button);
+GType shutdown_dialog_type_get_type (void) G_GNUC_CONST;
+void main_window_show_shutdown_dialog (MainWindow* self, ShutdownDialogType type);
+static void main_window_keyboardbutton_clicked_cb (MainWindow* self, GtkToggleButton* button);
+gboolean ug_settings_set_boolean (const gchar* key, gboolean value);
+#define UG_SETTINGS_KEY_ONSCREEN_KEYBOARD "onscreen-keyboard"
+GtkWindow* main_window_get_keyboard_window (MainWindow* self);
+static void main_window_set_keyboard_window (MainWindow* self, GtkWindow* value);
 static void main_window_monitors_changed_cb (MainWindow* self, GdkScreen* screen);
 static gboolean main_window_monitor_is_unique_position (MainWindow* self, GdkScreen* screen, gint n);
 Monitor* monitor_new (gint x, gint y, gint width, gint height);
@@ -263,8 +270,8 @@ static gboolean main_window_real_motion_notify_event (GtkWidget* base, GdkEventM
 void background_set_active_monitor (Background* self, Monitor* monitor);
 void shutdown_dialog_set_active_monitor (ShutdownDialog* self, Monitor* m);
 static void main_window_add_user_list (MainWindow* self);
-UserList* user_list_new (Background* bg, MenuBar* mb);
-UserList* user_list_construct (GType object_type, Background* bg, MenuBar* mb);
+UserList* user_list_new (Background* bg);
+UserList* user_list_construct (GType object_type, Background* bg);
 GType user_list_get_type (void) G_GNUC_CONST;
 void unity_greeter_add_style_class (GtkWidget* widget);
 static gboolean main_window_real_key_press_event (GtkWidget* base, GdkEventKey* event);
@@ -277,8 +284,6 @@ GType greeter_list_scroll_target_get_type (void) G_GNUC_CONST;
 void greeter_list_scroll (GreeterList* self, GreeterListScrollTarget target);
 void shutdown_dialog_focus_prev (ShutdownDialog* self);
 void shutdown_dialog_focus_next (ShutdownDialog* self);
-GType shutdown_dialog_type_get_type (void) G_GNUC_CONST;
-void main_window_show_shutdown_dialog (MainWindow* self, ShutdownDialogType type);
 gpointer unity_greeter_ref (gpointer instance);
 void unity_greeter_unref (gpointer instance);
 GParamSpec* param_spec_unity_greeter (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
@@ -287,7 +292,7 @@ void value_take_unity_greeter (GValue* value, gpointer v_object);
 gpointer value_get_unity_greeter (const GValue* value);
 GType unity_greeter_get_type (void) G_GNUC_CONST;
 void main_window_set_keyboard_state (MainWindow* self);
-void menu_bar_set_keyboard_state (MenuBar* self);
+gboolean ug_settings_get_boolean (const gchar* key);
 ShutdownDialog* shutdown_dialog_new (ShutdownDialogType type, Background* bg);
 ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType type, Background* bg);
 void main_window_close_shutdown_dialog (MainWindow* self);
@@ -299,7 +304,6 @@ gchar* ug_settings_get_string (const gchar* key);
 #define UG_SETTINGS_KEY_BACKGROUND_COLOR "background-color"
 Background* background_new (cairo_surface_t* target_surface);
 Background* background_construct (GType object_type, cairo_surface_t* target_surface);
-gboolean ug_settings_get_boolean (const gchar* key);
 #define UG_SETTINGS_KEY_DRAW_GRID "draw-grid"
 void background_set_draw_grid (Background* self, gboolean value);
 #define UG_SETTINGS_KEY_BACKGROUND "background"
@@ -307,8 +311,8 @@ void background_set_default_background (Background* self, const gchar* value);
 void background_set_logo (Background* self, const gchar* version_logo, const gchar* background_logo);
 #define UG_SETTINGS_KEY_LOGO "logo"
 #define UG_SETTINGS_KEY_BACKGROUND_LOGO "background-logo"
-MenuBar* menu_bar_new (Background* bg, GtkAccelGroup* ag);
-MenuBar* menu_bar_construct (GType object_type, Background* bg, GtkAccelGroup* ag);
+static void _main_window_keyboardbutton_clicked_cb_gtk_toggle_button_toggled (GtkToggleButton* _sender, gpointer self);
+static void _main_window_shutdownbutton_clicked_cb_gtk_button_clicked (GtkButton* _sender, gpointer self);
 FlatButton* flat_button_new (void);
 FlatButton* flat_button_construct (GType object_type);
 GType flat_button_get_type (void) G_GNUC_CONST;
@@ -318,6 +322,10 @@ ListStack* list_stack_new (void);
 ListStack* list_stack_construct (GType object_type);
 static void _main_window_monitors_changed_cb_gdk_screen_monitors_changed (GdkScreen* _sender, gpointer self);
 static void main_window_finalize (GObject* obj);
+static void _vala_main_window_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
+static void _vala_main_window_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
+static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
+static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
 
 
 static void _monitor_unref0_ (gpointer var) {
@@ -414,6 +422,210 @@ static void main_window_real_size_allocate (GtkWidget* base, GtkAllocation* allo
 }
 
 
+static void main_window_shutdownbutton_clicked_cb (MainWindow* self, GtkButton* button) {
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (button != NULL);
+	g_debug ("main-window.vala:218: shutdownbutton_clicked~~~~~~~~~~~~~~~~~~~~~~~~~~" \
+"~~");
+	main_window_show_shutdown_dialog (self, SHUTDOWN_DIALOG_TYPE_SHUTDOWN);
+}
+
+
+static gpointer _g_object_ref0 (gpointer self) {
+	return self ? g_object_ref (self) : NULL;
+}
+
+
+static void main_window_keyboardbutton_clicked_cb (MainWindow* self, GtkToggleButton* button) {
+	GtkToggleButton* _tmp0_ = NULL;
+	gboolean _tmp1_ = FALSE;
+	gboolean _tmp2_ = FALSE;
+	GtkWindow* _tmp3_ = NULL;
+	GtkWindow* _tmp47_ = NULL;
+	GtkToggleButton* _tmp48_ = NULL;
+	gboolean _tmp49_ = FALSE;
+	gboolean _tmp50_ = FALSE;
+	GError * _inner_error_ = NULL;
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (button != NULL);
+	_tmp0_ = button;
+	_tmp1_ = gtk_toggle_button_get_active (_tmp0_);
+	_tmp2_ = _tmp1_;
+	ug_settings_set_boolean (UG_SETTINGS_KEY_ONSCREEN_KEYBOARD, _tmp2_);
+	_tmp3_ = self->priv->_keyboard_window;
+	if (_tmp3_ == NULL) {
+		gint id = 0;
+		GtkSocket* keyboard_socket = NULL;
+		GtkSocket* _tmp19_ = NULL;
+		GtkSocket* _tmp20_ = NULL;
+		GtkWindow* _tmp21_ = NULL;
+		GtkWindow* _tmp22_ = NULL;
+		GtkWindow* _tmp23_ = NULL;
+		GtkWindow* _tmp24_ = NULL;
+		GtkWindow* _tmp25_ = NULL;
+		GtkSocket* _tmp26_ = NULL;
+		GtkSocket* _tmp27_ = NULL;
+		gint _tmp28_ = 0;
+		GdkScreen* screen = NULL;
+		GdkScreen* _tmp29_ = NULL;
+		GdkScreen* _tmp30_ = NULL;
+		gint monitor = 0;
+		GdkScreen* _tmp31_ = NULL;
+		GdkWindow* _tmp32_ = NULL;
+		gint _tmp33_ = 0;
+		GdkRectangle geom = {0};
+		GdkScreen* _tmp34_ = NULL;
+		gint _tmp35_ = 0;
+		GdkRectangle _tmp36_ = {0};
+		GtkWindow* _tmp37_ = NULL;
+		GdkRectangle _tmp38_ = {0};
+		gint _tmp39_ = 0;
+		GdkRectangle _tmp40_ = {0};
+		gint _tmp41_ = 0;
+		GdkRectangle _tmp42_ = {0};
+		gint _tmp43_ = 0;
+		GtkWindow* _tmp44_ = NULL;
+		GdkRectangle _tmp45_ = {0};
+		gint _tmp46_ = 0;
+		id = 0;
+		{
+			gchar** argv = NULL;
+			gint argv_length1 = 0;
+			gint _argv_size_ = 0;
+			gint onboard_stdout_fd = 0;
+			gchar** _tmp4_ = NULL;
+			gint _tmp5_ = 0;
+			gchar** _tmp6_ = NULL;
+			gint _tmp6__length1 = 0;
+			GPid _tmp7_ = 0;
+			gint _tmp8_ = 0;
+			FILE* f = NULL;
+			gint _tmp9_ = 0;
+			FILE* _tmp10_ = NULL;
+			gchar* stdout_text = NULL;
+			gchar* _tmp11_ = NULL;
+			gint stdout_text_length1 = 0;
+			gint _stdout_text_size_ = 0;
+			FILE* _tmp12_ = NULL;
+			gchar* _tmp13_ = NULL;
+			gint _tmp13__length1 = 0;
+			const gchar* _tmp14_ = NULL;
+			g_shell_parse_argv ("onboard --xid", &_tmp5_, &_tmp4_, &_inner_error_);
+			argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
+			argv = _tmp4_;
+			argv_length1 = _tmp5_;
+			_argv_size_ = argv_length1;
+			if (_inner_error_ != NULL) {
+				argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
+				goto __catch11_g_error;
+			}
+			_tmp6_ = argv;
+			_tmp6__length1 = argv_length1;
+			g_spawn_async_with_pipes (NULL, _tmp6_, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, &_tmp7_, NULL, &_tmp8_, NULL, &_inner_error_);
+			self->priv->keyboard_pid = _tmp7_;
+			onboard_stdout_fd = _tmp8_;
+			if (_inner_error_ != NULL) {
+				argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
+				goto __catch11_g_error;
+			}
+			_tmp9_ = onboard_stdout_fd;
+			_tmp10_ = fdopen (_tmp9_, "r");
+			f = _tmp10_;
+			_tmp11_ = g_new0 (gchar, 1024);
+			stdout_text = _tmp11_;
+			stdout_text_length1 = 1024;
+			_stdout_text_size_ = stdout_text_length1;
+			_tmp12_ = f;
+			_tmp13_ = stdout_text;
+			_tmp13__length1 = stdout_text_length1;
+			_tmp14_ = fgets (_tmp13_, _tmp13__length1, _tmp12_);
+			if (_tmp14_ != NULL) {
+				gchar* _tmp15_ = NULL;
+				gint _tmp15__length1 = 0;
+				gint _tmp16_ = 0;
+				_tmp15_ = stdout_text;
+				_tmp15__length1 = stdout_text_length1;
+				_tmp16_ = atoi ((const gchar*) _tmp15_);
+				id = _tmp16_;
+			}
+			stdout_text = (g_free (stdout_text), NULL);
+			_fclose0 (f);
+			argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
+		}
+		goto __finally11;
+		__catch11_g_error:
+		{
+			GError* e = NULL;
+			GError* _tmp17_ = NULL;
+			const gchar* _tmp18_ = NULL;
+			e = _inner_error_;
+			_inner_error_ = NULL;
+			_tmp17_ = e;
+			_tmp18_ = _tmp17_->message;
+			g_warning ("main-window.vala:254: Error setting up keyboard: %s", _tmp18_);
+			_g_error_free0 (e);
+			return;
+		}
+		__finally11:
+		if (_inner_error_ != NULL) {
+			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+			g_clear_error (&_inner_error_);
+			return;
+		}
+		_tmp19_ = (GtkSocket*) gtk_socket_new ();
+		g_object_ref_sink (_tmp19_);
+		keyboard_socket = _tmp19_;
+		_tmp20_ = keyboard_socket;
+		gtk_widget_show ((GtkWidget*) _tmp20_);
+		_tmp21_ = (GtkWindow*) gtk_window_new (GTK_WINDOW_TOPLEVEL);
+		g_object_ref_sink (_tmp21_);
+		_tmp22_ = _tmp21_;
+		main_window_set_keyboard_window (self, _tmp22_);
+		_g_object_unref0 (_tmp22_);
+		_tmp23_ = self->priv->_keyboard_window;
+		gtk_window_set_accept_focus (_tmp23_, FALSE);
+		_tmp24_ = self->priv->_keyboard_window;
+		gtk_window_set_focus_on_map (_tmp24_, FALSE);
+		_tmp25_ = self->priv->_keyboard_window;
+		_tmp26_ = keyboard_socket;
+		gtk_container_add ((GtkContainer*) _tmp25_, (GtkWidget*) _tmp26_);
+		_tmp27_ = keyboard_socket;
+		_tmp28_ = id;
+		gtk_socket_add_id (_tmp27_, (Window) _tmp28_);
+		_tmp29_ = gtk_window_get_screen ((GtkWindow*) self);
+		_tmp30_ = _g_object_ref0 (_tmp29_);
+		screen = _tmp30_;
+		_tmp31_ = screen;
+		_tmp32_ = gtk_widget_get_window ((GtkWidget*) self);
+		_tmp33_ = gdk_screen_get_monitor_at_window (_tmp31_, _tmp32_);
+		monitor = _tmp33_;
+		_tmp34_ = screen;
+		_tmp35_ = monitor;
+		gdk_screen_get_monitor_geometry (_tmp34_, _tmp35_, &_tmp36_);
+		geom = _tmp36_;
+		_tmp37_ = self->priv->_keyboard_window;
+		_tmp38_ = geom;
+		_tmp39_ = _tmp38_.x;
+		_tmp40_ = geom;
+		_tmp41_ = _tmp40_.y;
+		_tmp42_ = geom;
+		_tmp43_ = _tmp42_.height;
+		gtk_window_move (_tmp37_, _tmp39_, (_tmp41_ + _tmp43_) - 200);
+		_tmp44_ = self->priv->_keyboard_window;
+		_tmp45_ = geom;
+		_tmp46_ = _tmp45_.width;
+		gtk_window_resize (_tmp44_, _tmp46_, 200);
+		_g_object_unref0 (screen);
+		_g_object_unref0 (keyboard_socket);
+	}
+	_tmp47_ = self->priv->_keyboard_window;
+	_tmp48_ = button;
+	_tmp49_ = gtk_toggle_button_get_active (_tmp48_);
+	_tmp50_ = _tmp49_;
+	gtk_widget_set_visible ((GtkWidget*) _tmp47_, _tmp50_);
+}
+
+
 static gpointer _monitor_ref0 (gpointer self) {
 	return self ? monitor_ref (self) : NULL;
 }
@@ -443,7 +655,7 @@ static void main_window_monitors_changed_cb (MainWindow* self, GdkScreen* screen
 	_tmp3_ = gdk_screen_get_width (_tmp2_);
 	_tmp4_ = screen;
 	_tmp5_ = gdk_screen_get_height (_tmp4_);
-	g_debug ("main-window.vala:185: Screen is %dx%d pixels", _tmp3_, _tmp5_);
+	g_debug ("main-window.vala:281: Screen is %dx%d pixels", _tmp3_, _tmp5_);
 	__g_list_free__monitor_unref0_0 (self->priv->monitors);
 	self->priv->monitors = NULL;
 	_monitor_unref0 (self->priv->primary_monitor);
@@ -501,7 +713,7 @@ static void main_window_monitors_changed_cb (MainWindow* self, GdkScreen* screen
 				_tmp21_ = _tmp20_.x;
 				_tmp22_ = geometry;
 				_tmp23_ = _tmp22_.y;
-				g_debug ("main-window.vala:193: Monitor %d is %dx%d pixels at %d,%d", _tmp15_, _tmp17_, _tmp19_, _tmp21_, _tmp23_);
+				g_debug ("main-window.vala:289: Monitor %d is %dx%d pixels at %d,%d", _tmp15_, _tmp17_, _tmp19_, _tmp21_, _tmp23_);
 				_tmp24_ = screen;
 				_tmp25_ = i;
 				_tmp26_ = main_window_monitor_is_unique_position (self, _tmp24_, _tmp25_);
@@ -867,15 +1079,13 @@ static void main_window_move_to_monitor (MainWindow* self, Monitor* monitor) {
 static void main_window_add_user_list (MainWindow* self) {
 	GreeterList* greeter_list = NULL;
 	Background* _tmp0_ = NULL;
-	MenuBar* _tmp1_ = NULL;
-	UserList* _tmp2_ = NULL;
+	UserList* _tmp1_ = NULL;
 	g_return_if_fail (self != NULL);
 	_tmp0_ = self->priv->background;
-	_tmp1_ = self->menubar;
-	_tmp2_ = user_list_new (_tmp0_, _tmp1_);
-	g_object_ref_sink (_tmp2_);
+	_tmp1_ = user_list_new (_tmp0_);
+	g_object_ref_sink (_tmp1_);
 	_g_object_unref0 (greeter_list);
-	greeter_list = (GreeterList*) _tmp2_;
+	greeter_list = (GreeterList*) _tmp1_;
 	gtk_widget_show ((GtkWidget*) greeter_list);
 	unity_greeter_add_style_class ((GtkWidget*) greeter_list);
 	main_window_push_list (self, greeter_list);
@@ -895,8 +1105,8 @@ static gboolean main_window_real_key_press_event (GtkWidget* base, GdkEventKey* 
 	gboolean _tmp5_ = FALSE;
 	GdkEventKey _tmp53_ = {0};
 	guint _tmp54_ = 0U;
-	GdkEventKey _tmp97_ = {0};
-	gboolean _tmp98_ = FALSE;
+	GdkEventKey _tmp96_ = {0};
+	gboolean _tmp97_ = FALSE;
 	self = (MainWindow*) base;
 	g_return_val_if_fail (event != NULL, FALSE);
 	_tmp0_ = self->stack;
@@ -1046,7 +1256,7 @@ static gboolean main_window_real_key_press_event (GtkWidget* base, GdkEventKey* 
 			_tmp51_ = _tmp12_;
 			if (_tmp51_) {
 				UserList* _tmp52_ = NULL;
-				g_debug ("main-window.vala:297: Hidden user key combination detected");
+				g_debug ("main-window.vala:393: Hidden user key combination detected");
 				_tmp52_ = user_list;
 				user_list_set_show_hidden_users (_tmp52_, TRUE);
 				result = TRUE;
@@ -1193,9 +1403,7 @@ static gboolean main_window_real_key_press_event (GtkWidget* base, GdkEventKey* 
 			_tmp82_ = gtk_widget_get_sensitive ((GtkWidget*) _tmp81_);
 			_tmp83_ = _tmp82_;
 			if (_tmp83_) {
-				MenuBar* _tmp84_ = NULL;
-				_tmp84_ = self->menubar;
-				gtk_menu_shell_select_first ((GtkMenuShell*) _tmp84_, FALSE);
+				main_window_show_shutdown_dialog (self, SHUTDOWN_DIALOG_TYPE_SHUTDOWN);
 			}
 			result = TRUE;
 			_g_object_unref0 (top);
@@ -1210,23 +1418,23 @@ static gboolean main_window_real_key_press_event (GtkWidget* base, GdkEventKey* 
 		}
 		case GDK_KEY_z:
 		{
-			gboolean _tmp85_ = FALSE;
-			UnityGreeter* _tmp86_ = NULL;
-			gboolean _tmp87_ = FALSE;
-			gboolean _tmp90_ = FALSE;
-			_tmp86_ = unity_greeter_singleton;
-			_tmp87_ = _tmp86_->test_mode;
-			if (_tmp87_) {
-				GdkEventKey _tmp88_ = {0};
-				GdkModifierType _tmp89_ = 0;
-				_tmp88_ = *event;
-				_tmp89_ = _tmp88_.state;
-				_tmp85_ = (_tmp89_ & GDK_MOD1_MASK) != 0;
+			gboolean _tmp84_ = FALSE;
+			UnityGreeter* _tmp85_ = NULL;
+			gboolean _tmp86_ = FALSE;
+			gboolean _tmp89_ = FALSE;
+			_tmp85_ = unity_greeter_singleton;
+			_tmp86_ = _tmp85_->test_mode;
+			if (_tmp86_) {
+				GdkEventKey _tmp87_ = {0};
+				GdkModifierType _tmp88_ = 0;
+				_tmp87_ = *event;
+				_tmp88_ = _tmp87_.state;
+				_tmp84_ = (_tmp88_ & GDK_MOD1_MASK) != 0;
 			} else {
-				_tmp85_ = FALSE;
+				_tmp84_ = FALSE;
 			}
-			_tmp90_ = _tmp85_;
-			if (_tmp90_) {
+			_tmp89_ = _tmp84_;
+			if (_tmp89_) {
 				main_window_show_shutdown_dialog (self, SHUTDOWN_DIALOG_TYPE_SHUTDOWN);
 				result = TRUE;
 				_g_object_unref0 (top);
@@ -1236,23 +1444,23 @@ static gboolean main_window_real_key_press_event (GtkWidget* base, GdkEventKey* 
 		}
 		case GDK_KEY_Z:
 		{
-			gboolean _tmp91_ = FALSE;
-			UnityGreeter* _tmp92_ = NULL;
-			gboolean _tmp93_ = FALSE;
-			gboolean _tmp96_ = FALSE;
-			_tmp92_ = unity_greeter_singleton;
-			_tmp93_ = _tmp92_->test_mode;
-			if (_tmp93_) {
-				GdkEventKey _tmp94_ = {0};
-				GdkModifierType _tmp95_ = 0;
-				_tmp94_ = *event;
-				_tmp95_ = _tmp94_.state;
-				_tmp91_ = (_tmp95_ & GDK_MOD1_MASK) != 0;
+			gboolean _tmp90_ = FALSE;
+			UnityGreeter* _tmp91_ = NULL;
+			gboolean _tmp92_ = FALSE;
+			gboolean _tmp95_ = FALSE;
+			_tmp91_ = unity_greeter_singleton;
+			_tmp92_ = _tmp91_->test_mode;
+			if (_tmp92_) {
+				GdkEventKey _tmp93_ = {0};
+				GdkModifierType _tmp94_ = 0;
+				_tmp93_ = *event;
+				_tmp94_ = _tmp93_.state;
+				_tmp90_ = (_tmp94_ & GDK_MOD1_MASK) != 0;
 			} else {
-				_tmp91_ = FALSE;
+				_tmp90_ = FALSE;
 			}
-			_tmp96_ = _tmp91_;
-			if (_tmp96_) {
+			_tmp95_ = _tmp90_;
+			if (_tmp95_) {
 				main_window_show_shutdown_dialog (self, SHUTDOWN_DIALOG_TYPE_RESTART);
 				result = TRUE;
 				_g_object_unref0 (top);
@@ -1263,19 +1471,22 @@ static gboolean main_window_real_key_press_event (GtkWidget* base, GdkEventKey* 
 		default:
 		break;
 	}
-	_tmp97_ = *event;
-	_tmp98_ = GTK_WIDGET_CLASS (main_window_parent_class)->key_press_event ((GtkWidget*) G_TYPE_CHECK_INSTANCE_CAST (self, GTK_TYPE_WINDOW, GtkWindow), &_tmp97_);
-	result = _tmp98_;
+	_tmp96_ = *event;
+	_tmp97_ = GTK_WIDGET_CLASS (main_window_parent_class)->key_press_event ((GtkWidget*) G_TYPE_CHECK_INSTANCE_CAST (self, GTK_TYPE_WINDOW, GtkWindow), &_tmp96_);
+	result = _tmp97_;
 	_g_object_unref0 (top);
 	return result;
 }
 
 
 void main_window_set_keyboard_state (MainWindow* self) {
-	MenuBar* _tmp0_ = NULL;
+	GtkToggleButton* _tmp0_ = NULL;
+	gboolean _tmp1_ = FALSE;
 	g_return_if_fail (self != NULL);
-	_tmp0_ = self->menubar;
-	menu_bar_set_keyboard_state (_tmp0_);
+	g_debug ("main-window.vala:466: ~~~~~~~~~set_keyboard_state~~~~~~~~~~`");
+	_tmp0_ = self->priv->a11ybutton;
+	_tmp1_ = ug_settings_get_boolean (UG_SETTINGS_KEY_ONSCREEN_KEYBOARD);
+	gtk_toggle_button_set_active (_tmp0_, _tmp1_);
 }
 
 
@@ -1352,8 +1563,35 @@ MainWindow* main_window_new (void) {
 }
 
 
-static gpointer _g_object_ref0 (gpointer self) {
-	return self ? g_object_ref (self) : NULL;
+GtkWindow* main_window_get_keyboard_window (MainWindow* self) {
+	GtkWindow* result;
+	GtkWindow* _tmp0_ = NULL;
+	g_return_val_if_fail (self != NULL, NULL);
+	_tmp0_ = self->priv->_keyboard_window;
+	result = _tmp0_;
+	return result;
+}
+
+
+static void main_window_set_keyboard_window (MainWindow* self, GtkWindow* value) {
+	GtkWindow* _tmp0_ = NULL;
+	GtkWindow* _tmp1_ = NULL;
+	g_return_if_fail (self != NULL);
+	_tmp0_ = value;
+	_tmp1_ = _g_object_ref0 (_tmp0_);
+	_g_object_unref0 (self->priv->_keyboard_window);
+	self->priv->_keyboard_window = _tmp1_;
+	g_object_notify ((GObject *) self, "keyboard-window");
+}
+
+
+static void _main_window_keyboardbutton_clicked_cb_gtk_toggle_button_toggled (GtkToggleButton* _sender, gpointer self) {
+	main_window_keyboardbutton_clicked_cb (self, _sender);
+}
+
+
+static void _main_window_shutdownbutton_clicked_cb_gtk_button_clicked (GtkButton* _sender, gpointer self) {
+	main_window_shutdownbutton_clicked_cb (self, _sender);
 }
 
 
@@ -1404,71 +1642,100 @@ static GObject * main_window_constructor (GType type, guint n_construct_properti
 	GtkBox* _tmp28_ = NULL;
 	Background* _tmp29_ = NULL;
 	GtkBox* _tmp30_ = NULL;
-	GtkEventBox* menubox = NULL;
-	GtkEventBox* _tmp31_ = NULL;
-	GtkAlignment* menualign = NULL;
-	GtkAlignment* _tmp32_ = NULL;
-	gchar* shadow_path = NULL;
-	gchar* _tmp33_ = NULL;
+	GtkHButtonBox* buttonbox = NULL;
+	GtkHButtonBox* _tmp31_ = NULL;
+	GtkHButtonBox* _tmp32_ = NULL;
+	GtkHButtonBox* _tmp33_ = NULL;
 	gchar* shadow_style = NULL;
 	gchar* _tmp34_ = NULL;
-	const gchar* _tmp35_ = NULL;
-	gboolean _tmp36_ = FALSE;
-	GtkEventBox* _tmp51_ = NULL;
-	GtkEventBox* _tmp52_ = NULL;
+	GtkHButtonBox* _tmp47_ = NULL;
+	GtkHButtonBox* _tmp48_ = NULL;
+	GtkAlignment* buttonbox_align = NULL;
+	GtkAlignment* _tmp49_ = NULL;
+	GtkAlignment* _tmp50_ = NULL;
+	GtkBox* _tmp51_ = NULL;
+	GtkAlignment* _tmp52_ = NULL;
 	GtkAlignment* _tmp53_ = NULL;
-	GtkEventBox* _tmp54_ = NULL;
-	GtkAlignment* _tmp55_ = NULL;
-	GtkBox* _tmp56_ = NULL;
-	GtkEventBox* _tmp57_ = NULL;
-	GtkAlignment* _tmp58_ = NULL;
-	GtkEventBox* _tmp59_ = NULL;
-	Background* _tmp60_ = NULL;
-	GtkAccelGroup* _tmp61_ = NULL;
-	MenuBar* _tmp62_ = NULL;
-	MenuBar* _tmp63_ = NULL;
-	GtkAlignment* _tmp64_ = NULL;
-	MenuBar* _tmp65_ = NULL;
-	MenuBar* _tmp66_ = NULL;
-	GtkBox* _tmp67_ = NULL;
-	GtkBox* _tmp68_ = NULL;
-	GtkBox* _tmp69_ = NULL;
-	GtkBox* _tmp70_ = NULL;
-	GtkBox* _tmp71_ = NULL;
-	GtkAlignment* align = NULL;
-	GtkAlignment* _tmp72_ = NULL;
+	GtkHButtonBox* _tmp54_ = NULL;
+	GtkHButtonBox* _tmp55_ = NULL;
+	GtkAlignment* a11yalign = NULL;
+	GtkAlignment* _tmp56_ = NULL;
+	GtkAlignment* _tmp57_ = NULL;
+	GtkHButtonBox* _tmp58_ = NULL;
+	GtkAlignment* _tmp59_ = NULL;
+	GtkToggleButton* _tmp60_ = NULL;
+	GtkToggleButton* _tmp61_ = NULL;
+	GtkImage* a11ybuttonimage = NULL;
+	gchar* _tmp62_ = NULL;
+	gchar* _tmp63_ = NULL;
+	GtkImage* _tmp64_ = NULL;
+	GtkImage* _tmp65_ = NULL;
+	GtkImage* _tmp66_ = NULL;
+	GtkToggleButton* _tmp67_ = NULL;
+	GtkImage* _tmp68_ = NULL;
+	GtkToggleButton* _tmp69_ = NULL;
+	GtkAlignment* _tmp70_ = NULL;
+	GtkToggleButton* _tmp71_ = NULL;
+	GtkToggleButton* _tmp72_ = NULL;
+	GtkAlignment* shutdownbutton_align = NULL;
 	GtkAlignment* _tmp73_ = NULL;
 	GtkAlignment* _tmp74_ = NULL;
-	GtkAlignment* _tmp75_ = NULL;
-	GtkBox* _tmp76_ = NULL;
+	GtkHButtonBox* _tmp75_ = NULL;
+	GtkAlignment* _tmp76_ = NULL;
 	GtkAlignment* _tmp77_ = NULL;
-	FlatButton* _tmp78_ = NULL;
+	GtkButton* _tmp78_ = NULL;
 	GtkButton* _tmp79_ = NULL;
-	AtkObject* _tmp80_ = NULL;
-	const gchar* _tmp81_ = NULL;
-	GtkButton* _tmp82_ = NULL;
-	GtkImage* image = NULL;
-	gchar* _tmp83_ = NULL;
-	gchar* _tmp84_ = NULL;
-	GtkImage* _tmp85_ = NULL;
+	GtkImage* shutdownbutton_image = NULL;
+	gchar* _tmp80_ = NULL;
+	gchar* _tmp81_ = NULL;
+	GtkImage* _tmp82_ = NULL;
+	GtkImage* _tmp83_ = NULL;
+	GtkImage* _tmp84_ = NULL;
+	GtkButton* _tmp85_ = NULL;
 	GtkImage* _tmp86_ = NULL;
-	GtkImage* _tmp87_ = NULL;
-	GtkButton* _tmp88_ = NULL;
+	GtkButton* _tmp87_ = NULL;
+	GtkAlignment* _tmp88_ = NULL;
 	GtkButton* _tmp89_ = NULL;
-	GtkImage* _tmp90_ = NULL;
-	GtkButton* _tmp91_ = NULL;
-	GtkAlignment* _tmp92_ = NULL;
-	GtkButton* _tmp93_ = NULL;
-	GtkAlignment* _tmp94_ = NULL;
-	GtkAlignment* _tmp95_ = NULL;
-	GtkBox* _tmp96_ = NULL;
+	GtkButton* _tmp90_ = NULL;
+	GtkBox* _tmp91_ = NULL;
+	GtkBox* _tmp92_ = NULL;
+	GtkBox* _tmp93_ = NULL;
+	GtkBox* _tmp94_ = NULL;
+	GtkBox* _tmp95_ = NULL;
+	GtkAlignment* align = NULL;
+	GtkAlignment* _tmp96_ = NULL;
 	GtkAlignment* _tmp97_ = NULL;
-	ListStack* _tmp98_ = NULL;
-	ListStack* _tmp99_ = NULL;
-	GtkAlignment* _tmp100_ = NULL;
-	ListStack* _tmp101_ = NULL;
-	UnityGreeter* _tmp102_ = NULL;
-	gboolean _tmp103_ = FALSE;
+	GtkAlignment* _tmp98_ = NULL;
+	GtkAlignment* _tmp99_ = NULL;
+	GtkBox* _tmp100_ = NULL;
+	GtkAlignment* _tmp101_ = NULL;
+	FlatButton* _tmp102_ = NULL;
+	GtkButton* _tmp103_ = NULL;
+	AtkObject* _tmp104_ = NULL;
+	const gchar* _tmp105_ = NULL;
+	GtkButton* _tmp106_ = NULL;
+	GtkImage* image = NULL;
+	gchar* _tmp107_ = NULL;
+	gchar* _tmp108_ = NULL;
+	GtkImage* _tmp109_ = NULL;
+	GtkImage* _tmp110_ = NULL;
+	GtkImage* _tmp111_ = NULL;
+	GtkButton* _tmp112_ = NULL;
+	GtkButton* _tmp113_ = NULL;
+	GtkImage* _tmp114_ = NULL;
+	GtkButton* _tmp115_ = NULL;
+	GtkAlignment* _tmp116_ = NULL;
+	GtkButton* _tmp117_ = NULL;
+	GtkAlignment* _tmp118_ = NULL;
+	GtkAlignment* _tmp119_ = NULL;
+	GtkBox* _tmp120_ = NULL;
+	GtkAlignment* _tmp121_ = NULL;
+	ListStack* _tmp122_ = NULL;
+	ListStack* _tmp123_ = NULL;
+	GtkAlignment* _tmp124_ = NULL;
+	ListStack* _tmp125_ = NULL;
+	UnityGreeter* _tmp126_ = NULL;
+	gboolean _tmp127_ = FALSE;
 	GError * _inner_error_ = NULL;
 	parent_class = G_OBJECT_CLASS (main_window_parent_class);
 	obj = parent_class->constructor (type, n_construct_properties, construct_properties);
@@ -1533,230 +1800,275 @@ static GObject * main_window_constructor (GType type, guint n_construct_properti
 	_tmp29_ = self->priv->background;
 	_tmp30_ = self->priv->login_box;
 	gtk_container_add ((GtkContainer*) _tmp29_, (GtkWidget*) _tmp30_);
-	_tmp31_ = (GtkEventBox*) gtk_event_box_new ();
+	_tmp31_ = (GtkHButtonBox*) gtk_hbutton_box_new ();
 	g_object_ref_sink (_tmp31_);
-	menubox = _tmp31_;
-	_tmp32_ = (GtkAlignment*) gtk_alignment_new (0.0f, 0.0f, 1.0f, 0.0f);
-	g_object_ref_sink (_tmp32_);
-	menualign = _tmp32_;
-	_tmp33_ = g_build_filename (PKGDATADIR, "shadow.png", NULL, NULL);
-	shadow_path = _tmp33_;
+	buttonbox = _tmp31_;
+	_tmp32_ = buttonbox;
+	gtk_button_box_set_layout ((GtkButtonBox*) _tmp32_, GTK_BUTTONBOX_END);
+	_tmp33_ = buttonbox;
+	gtk_box_set_spacing ((GtkBox*) _tmp33_, -1);
 	_tmp34_ = g_strdup ("");
 	shadow_style = _tmp34_;
-	_tmp35_ = shadow_path;
-	_tmp36_ = g_file_test (_tmp35_, G_FILE_TEST_EXISTS);
-	if (_tmp36_) {
-		const gchar* _tmp37_ = NULL;
-		gchar* _tmp38_ = NULL;
-		_tmp37_ = shadow_path;
-		_tmp38_ = g_strdup_printf ("background-image: url('%s');\n" \
-"                            background-repeat: repeat;", _tmp37_);
-		_g_free0 (shadow_style);
-		shadow_style = _tmp38_;
-	}
 	{
 		GtkCssProvider* style = NULL;
-		GtkCssProvider* _tmp39_ = NULL;
-		GtkCssProvider* _tmp40_ = NULL;
-		const gchar* _tmp41_ = NULL;
-		gchar* _tmp42_ = NULL;
-		gchar* _tmp43_ = NULL;
+		GtkCssProvider* _tmp35_ = NULL;
+		GtkCssProvider* _tmp36_ = NULL;
+		const gchar* _tmp37_ = NULL;
+		gchar* _tmp38_ = NULL;
+		gchar* _tmp39_ = NULL;
 		GtkStyleContext* context = NULL;
-		GtkEventBox* _tmp44_ = NULL;
-		GtkStyleContext* _tmp45_ = NULL;
-		GtkStyleContext* _tmp46_ = NULL;
-		GtkStyleContext* _tmp47_ = NULL;
-		GtkCssProvider* _tmp48_ = NULL;
-		_tmp39_ = gtk_css_provider_new ();
-		style = _tmp39_;
-		_tmp40_ = style;
-		_tmp41_ = shadow_style;
-		_tmp42_ = g_strdup_printf ("* {background-color: transparent;\n" \
+		GtkHButtonBox* _tmp40_ = NULL;
+		GtkStyleContext* _tmp41_ = NULL;
+		GtkStyleContext* _tmp42_ = NULL;
+		GtkStyleContext* _tmp43_ = NULL;
+		GtkCssProvider* _tmp44_ = NULL;
+		_tmp35_ = gtk_css_provider_new ();
+		style = _tmp35_;
+		_tmp36_ = style;
+		_tmp37_ = shadow_style;
+		_tmp38_ = g_strdup_printf ("* {background-color: transparent;\n" \
 "                                      %s\n" \
-"                                     }", _tmp41_);
-		_tmp43_ = _tmp42_;
-		gtk_css_provider_load_from_data (_tmp40_, _tmp43_, (gssize) (-1), &_inner_error_);
-		_g_free0 (_tmp43_);
+"                                     }", _tmp37_);
+		_tmp39_ = _tmp38_;
+		gtk_css_provider_load_from_data (_tmp36_, _tmp39_, (gssize) (-1), &_inner_error_);
+		_g_free0 (_tmp39_);
 		if (_inner_error_ != NULL) {
 			_g_object_unref0 (style);
-			goto __catch11_g_error;
+			goto __catch12_g_error;
 		}
-		_tmp44_ = menubox;
-		_tmp45_ = gtk_widget_get_style_context ((GtkWidget*) _tmp44_);
-		_tmp46_ = _g_object_ref0 (_tmp45_);
-		context = _tmp46_;
-		_tmp47_ = context;
-		_tmp48_ = style;
-		gtk_style_context_add_provider (_tmp47_, (GtkStyleProvider*) _tmp48_, (guint) GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+		_tmp40_ = buttonbox;
+		_tmp41_ = gtk_widget_get_style_context ((GtkWidget*) _tmp40_);
+		_tmp42_ = _g_object_ref0 (_tmp41_);
+		context = _tmp42_;
+		_tmp43_ = context;
+		_tmp44_ = style;
+		gtk_style_context_add_provider (_tmp43_, (GtkStyleProvider*) _tmp44_, (guint) GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 		_g_object_unref0 (context);
 		_g_object_unref0 (style);
 	}
-	goto __finally11;
-	__catch11_g_error:
+	goto __finally12;
+	__catch12_g_error:
 	{
 		GError* e = NULL;
-		GError* _tmp49_ = NULL;
-		const gchar* _tmp50_ = NULL;
+		GError* _tmp45_ = NULL;
+		const gchar* _tmp46_ = NULL;
 		e = _inner_error_;
 		_inner_error_ = NULL;
-		_tmp49_ = e;
-		_tmp50_ = _tmp49_->message;
-		g_debug ("main-window.vala:89: Internal error loading menubox style: %s", _tmp50_);
+		_tmp45_ = e;
+		_tmp46_ = _tmp45_->message;
+		g_debug ("main-window.vala:89: Internal error loading buttonbox style: %s", _tmp46_);
 		_g_error_free0 (e);
 	}
-	__finally11:
+	__finally12:
 	if (_inner_error_ != NULL) {
 		_g_free0 (shadow_style);
-		_g_free0 (shadow_path);
-		_g_object_unref0 (menualign);
-		_g_object_unref0 (menubox);
+		_g_object_unref0 (buttonbox);
 		_g_object_unref0 (accel_group);
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 	}
-	_tmp51_ = menubox;
-	gtk_widget_set_size_request ((GtkWidget*) _tmp51_, -1, MAIN_WINDOW_MENUBAR_HEIGHT);
-	_tmp52_ = menubox;
-	gtk_widget_show ((GtkWidget*) _tmp52_);
-	_tmp53_ = menualign;
-	gtk_widget_show ((GtkWidget*) _tmp53_);
-	_tmp54_ = menubox;
-	_tmp55_ = menualign;
-	gtk_container_add ((GtkContainer*) _tmp54_, (GtkWidget*) _tmp55_);
-	_tmp56_ = self->priv->login_box;
-	_tmp57_ = menubox;
-	gtk_container_add ((GtkContainer*) _tmp56_, (GtkWidget*) _tmp57_);
-	_tmp58_ = menualign;
-	unity_greeter_add_style_class ((GtkWidget*) _tmp58_);
-	_tmp59_ = menubox;
-	unity_greeter_add_style_class ((GtkWidget*) _tmp59_);
-	_tmp60_ = self->priv->background;
-	_tmp61_ = accel_group;
-	_tmp62_ = menu_bar_new (_tmp60_, _tmp61_);
-	g_object_ref_sink (_tmp62_);
-	_g_object_unref0 (self->menubar);
-	self->menubar = _tmp62_;
-	_tmp63_ = self->menubar;
-	gtk_widget_show ((GtkWidget*) _tmp63_);
-	_tmp64_ = menualign;
-	_tmp65_ = self->menubar;
-	gtk_container_add ((GtkContainer*) _tmp64_, (GtkWidget*) _tmp65_);
-	_tmp66_ = self->menubar;
-	unity_greeter_add_style_class ((GtkWidget*) _tmp66_);
-	_tmp67_ = (GtkBox*) gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-	g_object_ref_sink (_tmp67_);
-	_g_object_unref0 (self->priv->hbox);
-	self->priv->hbox = _tmp67_;
-	_tmp68_ = self->priv->hbox;
-	g_object_set ((GtkWidget*) _tmp68_, "expand", TRUE, NULL);
-	_tmp69_ = self->priv->hbox;
-	gtk_widget_show ((GtkWidget*) _tmp69_);
-	_tmp70_ = self->priv->login_box;
-	_tmp71_ = self->priv->hbox;
+	_tmp47_ = buttonbox;
+	gtk_widget_set_size_request ((GtkWidget*) _tmp47_, -1, MAIN_WINDOW_BUTTONBOX_HEIGHT);
+	_tmp48_ = buttonbox;
+	gtk_widget_show ((GtkWidget*) _tmp48_);
+	_tmp49_ = (GtkAlignment*) gtk_alignment_new (0.95f, 1.0f, 0.0f, 0.0f);
+	g_object_ref_sink (_tmp49_);
+	buttonbox_align = _tmp49_;
+	_tmp50_ = buttonbox_align;
+	gtk_widget_show ((GtkWidget*) _tmp50_);
+	_tmp51_ = self->priv->login_box;
+	_tmp52_ = buttonbox_align;
+	gtk_container_add ((GtkContainer*) _tmp51_, (GtkWidget*) _tmp52_);
+	_tmp53_ = buttonbox_align;
+	_tmp54_ = buttonbox;
+	gtk_container_add ((GtkContainer*) _tmp53_, (GtkWidget*) _tmp54_);
+	_tmp55_ = buttonbox;
+	unity_greeter_add_style_class ((GtkWidget*) _tmp55_);
+	_tmp56_ = (GtkAlignment*) gtk_alignment_new (1.0f, 1.0f, 0.0f, 0.0f);
+	g_object_ref_sink (_tmp56_);
+	a11yalign = _tmp56_;
+	_tmp57_ = a11yalign;
+	gtk_widget_show ((GtkWidget*) _tmp57_);
+	_tmp58_ = buttonbox;
+	_tmp59_ = a11yalign;
+	gtk_container_add ((GtkContainer*) _tmp58_, (GtkWidget*) _tmp59_);
+	_tmp60_ = (GtkToggleButton*) gtk_toggle_button_new ();
+	g_object_ref_sink (_tmp60_);
+	_g_object_unref0 (self->priv->a11ybutton);
+	self->priv->a11ybutton = _tmp60_;
+	_tmp61_ = self->priv->a11ybutton;
+	gtk_widget_show ((GtkWidget*) _tmp61_);
+	_tmp62_ = g_build_filename ("/home/xin/a11y.png", NULL);
+	_tmp63_ = _tmp62_;
+	_tmp64_ = (GtkImage*) gtk_image_new_from_file (_tmp63_);
+	g_object_ref_sink (_tmp64_);
+	_tmp65_ = _tmp64_;
+	_g_free0 (_tmp63_);
+	a11ybuttonimage = _tmp65_;
+	_tmp66_ = a11ybuttonimage;
+	gtk_widget_show ((GtkWidget*) _tmp66_);
+	_tmp67_ = self->priv->a11ybutton;
+	_tmp68_ = a11ybuttonimage;
+	gtk_container_add ((GtkContainer*) _tmp67_, (GtkWidget*) _tmp68_);
+	_tmp69_ = self->priv->a11ybutton;
+	g_signal_connect_object (_tmp69_, "toggled", (GCallback) _main_window_keyboardbutton_clicked_cb_gtk_toggle_button_toggled, self, 0);
+	_tmp70_ = a11yalign;
+	_tmp71_ = self->priv->a11ybutton;
 	gtk_container_add ((GtkContainer*) _tmp70_, (GtkWidget*) _tmp71_);
-	_tmp72_ = (GtkAlignment*) gtk_alignment_new (0.5f, 0.5f, 0.0f, 0.0f);
-	g_object_ref_sink (_tmp72_);
-	align = _tmp72_;
-	_tmp73_ = align;
-	gtk_widget_set_size_request ((GtkWidget*) _tmp73_, grid_size, -1);
-	_tmp74_ = align;
-	gtk_widget_set_margin_bottom ((GtkWidget*) _tmp74_, MAIN_WINDOW_MENUBAR_HEIGHT);
-	_tmp75_ = align;
-	gtk_widget_show ((GtkWidget*) _tmp75_);
-	_tmp76_ = self->priv->hbox;
-	_tmp77_ = align;
-	gtk_container_add ((GtkContainer*) _tmp76_, (GtkWidget*) _tmp77_);
-	_tmp78_ = flat_button_new ();
+	_tmp72_ = self->priv->a11ybutton;
+	unity_greeter_add_style_class ((GtkWidget*) _tmp72_);
+	_tmp73_ = (GtkAlignment*) gtk_alignment_new (1.0f, 1.0f, 0.0f, 0.0f);
+	g_object_ref_sink (_tmp73_);
+	shutdownbutton_align = _tmp73_;
+	_tmp74_ = shutdownbutton_align;
+	gtk_widget_show ((GtkWidget*) _tmp74_);
+	_tmp75_ = buttonbox;
+	_tmp76_ = shutdownbutton_align;
+	gtk_container_add ((GtkContainer*) _tmp75_, (GtkWidget*) _tmp76_);
+	_tmp77_ = shutdownbutton_align;
+	unity_greeter_add_style_class ((GtkWidget*) _tmp77_);
+	_tmp78_ = (GtkButton*) gtk_button_new ();
 	g_object_ref_sink (_tmp78_);
-	_g_object_unref0 (self->priv->back_button);
-	self->priv->back_button = (GtkButton*) _tmp78_;
-	_tmp79_ = self->priv->back_button;
-	_tmp80_ = gtk_widget_get_accessible ((GtkWidget*) _tmp79_);
-	_tmp81_ = _ ("Back");
-	atk_object_set_name (_tmp80_, _tmp81_);
-	_tmp82_ = self->priv->back_button;
-	gtk_button_set_focus_on_click (_tmp82_, FALSE);
-	_tmp83_ = g_build_filename (PKGDATADIR, "arrow_left.png", NULL, NULL);
-	_tmp84_ = _tmp83_;
-	_tmp85_ = (GtkImage*) gtk_image_new_from_file (_tmp84_);
-	g_object_ref_sink (_tmp85_);
-	_tmp86_ = _tmp85_;
-	_g_free0 (_tmp84_);
-	image = _tmp86_;
-	_tmp87_ = image;
-	gtk_widget_show ((GtkWidget*) _tmp87_);
-	_tmp88_ = self->priv->back_button;
-	gtk_widget_set_size_request ((GtkWidget*) _tmp88_, grid_size - (GREETER_LIST_BORDER * 2), grid_size - (GREETER_LIST_BORDER * 2));
-	_tmp89_ = self->priv->back_button;
-	_tmp90_ = image;
-	gtk_container_add ((GtkContainer*) _tmp89_, (GtkWidget*) _tmp90_);
-	_tmp91_ = self->priv->back_button;
-	g_signal_connect_object (_tmp91_, "clicked", (GCallback) _main_window_pop_list_gtk_button_clicked, self, 0);
-	_tmp92_ = align;
-	_tmp93_ = self->priv->back_button;
-	gtk_container_add ((GtkContainer*) _tmp92_, (GtkWidget*) _tmp93_);
-	_tmp94_ = (GtkAlignment*) gtk_alignment_new (0.0f, 0.5f, 0.0f, 1.0f);
-	g_object_ref_sink (_tmp94_);
-	_g_object_unref0 (align);
-	align = _tmp94_;
-	_tmp95_ = align;
-	gtk_widget_show ((GtkWidget*) _tmp95_);
-	_tmp96_ = self->priv->hbox;
+	_g_object_unref0 (self->priv->shutdownbutton);
+	self->priv->shutdownbutton = _tmp78_;
+	_tmp79_ = self->priv->shutdownbutton;
+	gtk_widget_show ((GtkWidget*) _tmp79_);
+	_tmp80_ = g_build_filename ("/home/xin/shutdown.png", NULL);
+	_tmp81_ = _tmp80_;
+	_tmp82_ = (GtkImage*) gtk_image_new_from_file (_tmp81_);
+	g_object_ref_sink (_tmp82_);
+	_tmp83_ = _tmp82_;
+	_g_free0 (_tmp81_);
+	shutdownbutton_image = _tmp83_;
+	_tmp84_ = shutdownbutton_image;
+	gtk_widget_show ((GtkWidget*) _tmp84_);
+	_tmp85_ = self->priv->shutdownbutton;
+	_tmp86_ = shutdownbutton_image;
+	gtk_container_add ((GtkContainer*) _tmp85_, (GtkWidget*) _tmp86_);
+	_tmp87_ = self->priv->shutdownbutton;
+	g_signal_connect_object (_tmp87_, "clicked", (GCallback) _main_window_shutdownbutton_clicked_cb_gtk_button_clicked, self, 0);
+	_tmp88_ = shutdownbutton_align;
+	_tmp89_ = self->priv->shutdownbutton;
+	gtk_container_add ((GtkContainer*) _tmp88_, (GtkWidget*) _tmp89_);
+	_tmp90_ = self->priv->shutdownbutton;
+	unity_greeter_add_style_class ((GtkWidget*) _tmp90_);
+	_tmp91_ = (GtkBox*) gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+	g_object_ref_sink (_tmp91_);
+	_g_object_unref0 (self->priv->hbox);
+	self->priv->hbox = _tmp91_;
+	_tmp92_ = self->priv->hbox;
+	g_object_set ((GtkWidget*) _tmp92_, "expand", TRUE, NULL);
+	_tmp93_ = self->priv->hbox;
+	gtk_widget_show ((GtkWidget*) _tmp93_);
+	_tmp94_ = self->priv->login_box;
+	_tmp95_ = self->priv->hbox;
+	gtk_container_add ((GtkContainer*) _tmp94_, (GtkWidget*) _tmp95_);
+	_tmp96_ = (GtkAlignment*) gtk_alignment_new (0.5f, 0.5f, 0.0f, 0.0f);
+	g_object_ref_sink (_tmp96_);
+	align = _tmp96_;
 	_tmp97_ = align;
-	gtk_container_add ((GtkContainer*) _tmp96_, (GtkWidget*) _tmp97_);
-	_tmp98_ = list_stack_new ();
-	g_object_ref_sink (_tmp98_);
-	_g_object_unref0 (self->stack);
-	self->stack = _tmp98_;
-	_tmp99_ = self->stack;
+	gtk_widget_set_size_request ((GtkWidget*) _tmp97_, grid_size, -1);
+	_tmp98_ = align;
+	gtk_widget_set_margin_bottom ((GtkWidget*) _tmp98_, MAIN_WINDOW_BUTTONBOX_HEIGHT);
+	_tmp99_ = align;
 	gtk_widget_show ((GtkWidget*) _tmp99_);
-	_tmp100_ = align;
-	_tmp101_ = self->stack;
+	_tmp100_ = self->priv->hbox;
+	_tmp101_ = align;
 	gtk_container_add ((GtkContainer*) _tmp100_, (GtkWidget*) _tmp101_);
+	_tmp102_ = flat_button_new ();
+	g_object_ref_sink (_tmp102_);
+	_g_object_unref0 (self->priv->back_button);
+	self->priv->back_button = (GtkButton*) _tmp102_;
+	_tmp103_ = self->priv->back_button;
+	_tmp104_ = gtk_widget_get_accessible ((GtkWidget*) _tmp103_);
+	_tmp105_ = _ ("Back");
+	atk_object_set_name (_tmp104_, _tmp105_);
+	_tmp106_ = self->priv->back_button;
+	gtk_button_set_focus_on_click (_tmp106_, FALSE);
+	_tmp107_ = g_build_filename (PKGDATADIR, "arrow_left.png", NULL, NULL);
+	_tmp108_ = _tmp107_;
+	_tmp109_ = (GtkImage*) gtk_image_new_from_file (_tmp108_);
+	g_object_ref_sink (_tmp109_);
+	_tmp110_ = _tmp109_;
+	_g_free0 (_tmp108_);
+	image = _tmp110_;
+	_tmp111_ = image;
+	gtk_widget_show ((GtkWidget*) _tmp111_);
+	_tmp112_ = self->priv->back_button;
+	gtk_widget_set_size_request ((GtkWidget*) _tmp112_, grid_size - (GREETER_LIST_BORDER * 2), grid_size - (GREETER_LIST_BORDER * 2));
+	_tmp113_ = self->priv->back_button;
+	_tmp114_ = image;
+	gtk_container_add ((GtkContainer*) _tmp113_, (GtkWidget*) _tmp114_);
+	_tmp115_ = self->priv->back_button;
+	g_signal_connect_object (_tmp115_, "clicked", (GCallback) _main_window_pop_list_gtk_button_clicked, self, 0);
+	_tmp116_ = align;
+	_tmp117_ = self->priv->back_button;
+	gtk_container_add ((GtkContainer*) _tmp116_, (GtkWidget*) _tmp117_);
+	_tmp118_ = (GtkAlignment*) gtk_alignment_new (0.0f, 0.5f, 0.0f, 1.0f);
+	g_object_ref_sink (_tmp118_);
+	_g_object_unref0 (align);
+	align = _tmp118_;
+	_tmp119_ = align;
+	gtk_widget_show ((GtkWidget*) _tmp119_);
+	_tmp120_ = self->priv->hbox;
+	_tmp121_ = align;
+	gtk_container_add ((GtkContainer*) _tmp120_, (GtkWidget*) _tmp121_);
+	_tmp122_ = list_stack_new ();
+	g_object_ref_sink (_tmp122_);
+	_g_object_unref0 (self->stack);
+	self->stack = _tmp122_;
+	_tmp123_ = self->stack;
+	gtk_widget_show ((GtkWidget*) _tmp123_);
+	_tmp124_ = align;
+	_tmp125_ = self->stack;
+	gtk_container_add ((GtkContainer*) _tmp124_, (GtkWidget*) _tmp125_);
 	main_window_add_user_list (self);
-	_tmp102_ = unity_greeter_singleton;
-	_tmp103_ = _tmp102_->test_mode;
-	if (_tmp103_) {
-		Monitor* _tmp104_ = NULL;
-		Monitor* _tmp105_ = NULL;
-		Background* _tmp106_ = NULL;
-		GList* _tmp107_ = NULL;
-		GList* _tmp108_ = NULL;
-		gconstpointer _tmp109_ = NULL;
+	_tmp126_ = unity_greeter_singleton;
+	_tmp127_ = _tmp126_->test_mode;
+	if (_tmp127_) {
+		Monitor* _tmp128_ = NULL;
+		Monitor* _tmp129_ = NULL;
+		Background* _tmp130_ = NULL;
+		GList* _tmp131_ = NULL;
+		GList* _tmp132_ = NULL;
+		gconstpointer _tmp133_ = NULL;
 		__g_list_free__monitor_unref0_0 (self->priv->monitors);
 		self->priv->monitors = NULL;
-		_tmp104_ = monitor_new (0, 0, 800, 600);
-		self->priv->monitors = g_list_append (self->priv->monitors, _tmp104_);
-		_tmp105_ = monitor_new (800, 120, 640, 480);
-		self->priv->monitors = g_list_append (self->priv->monitors, _tmp105_);
-		_tmp106_ = self->priv->background;
-		_tmp107_ = self->priv->monitors;
-		background_set_monitors (_tmp106_, _tmp107_);
-		_tmp108_ = self->priv->monitors;
-		_tmp109_ = g_list_nth_data (_tmp108_, (guint) 0);
-		main_window_move_to_monitor (self, (Monitor*) _tmp109_);
+		_tmp128_ = monitor_new (0, 0, 800, 600);
+		self->priv->monitors = g_list_append (self->priv->monitors, _tmp128_);
+		_tmp129_ = monitor_new (800, 120, 640, 480);
+		self->priv->monitors = g_list_append (self->priv->monitors, _tmp129_);
+		_tmp130_ = self->priv->background;
+		_tmp131_ = self->priv->monitors;
+		background_set_monitors (_tmp130_, _tmp131_);
+		_tmp132_ = self->priv->monitors;
+		_tmp133_ = g_list_nth_data (_tmp132_, (guint) 0);
+		main_window_move_to_monitor (self, (Monitor*) _tmp133_);
 		gtk_window_resize ((GtkWindow*) self, 800 + 640, 600);
 	} else {
 		GdkScreen* screen = NULL;
-		GdkScreen* _tmp110_ = NULL;
-		GdkScreen* _tmp111_ = NULL;
-		GdkScreen* _tmp112_ = NULL;
-		GdkScreen* _tmp113_ = NULL;
-		_tmp110_ = gtk_window_get_screen ((GtkWindow*) self);
-		_tmp111_ = _g_object_ref0 (_tmp110_);
-		screen = _tmp111_;
-		_tmp112_ = screen;
-		g_signal_connect_object (_tmp112_, "monitors-changed", (GCallback) _main_window_monitors_changed_cb_gdk_screen_monitors_changed, self, 0);
-		_tmp113_ = screen;
-		main_window_monitors_changed_cb (self, _tmp113_);
+		GdkScreen* _tmp134_ = NULL;
+		GdkScreen* _tmp135_ = NULL;
+		GdkScreen* _tmp136_ = NULL;
+		GdkScreen* _tmp137_ = NULL;
+		_tmp134_ = gtk_window_get_screen ((GtkWindow*) self);
+		_tmp135_ = _g_object_ref0 (_tmp134_);
+		screen = _tmp135_;
+		_tmp136_ = screen;
+		g_signal_connect_object (_tmp136_, "monitors-changed", (GCallback) _main_window_monitors_changed_cb_gdk_screen_monitors_changed, self, 0);
+		_tmp137_ = screen;
+		main_window_monitors_changed_cb (self, _tmp137_);
 		_g_object_unref0 (screen);
 	}
 	_g_object_unref0 (image);
 	_g_object_unref0 (align);
+	_g_object_unref0 (shutdownbutton_image);
+	_g_object_unref0 (shutdownbutton_align);
+	_g_object_unref0 (a11ybuttonimage);
+	_g_object_unref0 (a11yalign);
+	_g_object_unref0 (buttonbox_align);
 	_g_free0 (shadow_style);
-	_g_free0 (shadow_path);
-	_g_object_unref0 (menualign);
-	_g_object_unref0 (menubox);
+	_g_object_unref0 (buttonbox);
 	_g_object_unref0 (accel_group);
 	return obj;
 }
@@ -1768,21 +2080,25 @@ static void main_window_class_init (MainWindowClass * klass) {
 	GTK_WIDGET_CLASS (klass)->size_allocate = main_window_real_size_allocate;
 	GTK_WIDGET_CLASS (klass)->motion_notify_event = main_window_real_motion_notify_event;
 	GTK_WIDGET_CLASS (klass)->key_press_event = main_window_real_key_press_event;
+	G_OBJECT_CLASS (klass)->get_property = _vala_main_window_get_property;
+	G_OBJECT_CLASS (klass)->set_property = _vala_main_window_set_property;
 	G_OBJECT_CLASS (klass)->constructor = main_window_constructor;
 	G_OBJECT_CLASS (klass)->finalize = main_window_finalize;
+	g_object_class_install_property (G_OBJECT_CLASS (klass), MAIN_WINDOW_KEYBOARD_WINDOW, g_param_spec_object ("keyboard-window", "keyboard-window", "keyboard-window", GTK_TYPE_WINDOW, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE));
 }
 
 
 static void main_window_instance_init (MainWindow * self) {
 	self->priv = MAIN_WINDOW_GET_PRIVATE (self);
 	self->priv->shutdown_dialog = NULL;
+	self->priv->_keyboard_window = NULL;
+	self->priv->keyboard_pid = (GPid) 0;
 }
 
 
 static void main_window_finalize (GObject* obj) {
 	MainWindow * self;
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TYPE_MAIN_WINDOW, MainWindow);
-	_g_object_unref0 (self->menubar);
 	__g_list_free__monitor_unref0_0 (self->priv->monitors);
 	_monitor_unref0 (self->priv->primary_monitor);
 	_monitor_unref0 (self->priv->active_monitor);
@@ -1792,6 +2108,9 @@ static void main_window_finalize (GObject* obj) {
 	_g_object_unref0 (self->priv->back_button);
 	_g_object_unref0 (self->priv->shutdown_dialog);
 	_g_object_unref0 (self->stack);
+	_g_object_unref0 (self->priv->_keyboard_window);
+	_g_object_unref0 (self->priv->shutdownbutton);
+	_g_object_unref0 (self->priv->a11ybutton);
 	G_OBJECT_CLASS (main_window_parent_class)->finalize (obj);
 }
 
@@ -1805,6 +2124,52 @@ GType main_window_get_type (void) {
 		g_once_init_leave (&main_window_type_id__volatile, main_window_type_id);
 	}
 	return main_window_type_id__volatile;
+}
+
+
+static void _vala_main_window_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
+	MainWindow * self;
+	self = G_TYPE_CHECK_INSTANCE_CAST (object, TYPE_MAIN_WINDOW, MainWindow);
+	switch (property_id) {
+		case MAIN_WINDOW_KEYBOARD_WINDOW:
+		g_value_set_object (value, main_window_get_keyboard_window (self));
+		break;
+		default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
+}
+
+
+static void _vala_main_window_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
+	MainWindow * self;
+	self = G_TYPE_CHECK_INSTANCE_CAST (object, TYPE_MAIN_WINDOW, MainWindow);
+	switch (property_id) {
+		case MAIN_WINDOW_KEYBOARD_WINDOW:
+		main_window_set_keyboard_window (self, g_value_get_object (value));
+		break;
+		default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
+}
+
+
+static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func) {
+	if ((array != NULL) && (destroy_func != NULL)) {
+		int i;
+		for (i = 0; i < array_length; i = i + 1) {
+			if (((gpointer*) array)[i] != NULL) {
+				destroy_func (((gpointer*) array)[i]);
+			}
+		}
+	}
+}
+
+
+static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func) {
+	_vala_array_destroy (array, array_length, destroy_func);
+	g_free (array);
 }
 
 

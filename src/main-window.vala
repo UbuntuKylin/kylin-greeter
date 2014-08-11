@@ -20,7 +20,7 @@
 
 public class MainWindow : Gtk.Window
 {
-    public MenuBar menubar;
+   //public MenuBar menubar;
 
     private List<Monitor> monitors;
     private Monitor? primary_monitor;
@@ -33,8 +33,12 @@ public class MainWindow : Gtk.Window
 
     public ListStack stack;
 
+	public Gtk.Window? keyboard_window { get; private set; default = null; }
+	private Pid keyboard_pid = 0;
+	private Gtk.Button shutdownbutton;
+	private Gtk.ToggleButton a11ybutton;
     // Menubar is smaller, but with shadow, we reserve more space
-    public static const int MENUBAR_HEIGHT = 32;
+    public static const int BUTTONBOX_HEIGHT = 80;
 
     construct
     {
@@ -63,44 +67,72 @@ public class MainWindow : Gtk.Window
         login_box.show ();
         background.add (login_box);
 
-        /* Box for menubar shadow */
-        var menubox = new Gtk.EventBox ();
-        var menualign = new Gtk.Alignment (0.0f, 0.0f, 1.0f, 0.0f);
-        var shadow_path = Path.build_filename (Config.PKGDATADIR,
-                                               "shadow.png", null);
+        /* 删除原有菜单栏及其中的indicator，新增两个按钮 作为代替*/
+      //  var buttonbox = new Gtk.EventBox ();
+        var buttonbox =new Gtk.HButtonBox ();
+       
+        buttonbox.set_layout (Gtk.ButtonBoxStyle.END);
+        buttonbox.set_spacing(-1);
         var shadow_style = "";
-        if (FileUtils.test (shadow_path, FileTest.EXISTS))
-        {
-            shadow_style = "background-image: url('%s');
-                            background-repeat: repeat;".printf(shadow_path);
-        }
         try
         {
             var style = new Gtk.CssProvider ();
             style.load_from_data ("* {background-color: transparent;
                                       %s
                                      }".printf(shadow_style), -1);
-            var context = menubox.get_style_context ();
+            var context = buttonbox.get_style_context ();
             context.add_provider (style,
                                   Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }
         catch (Error e)
         {
-            debug ("Internal error loading menubox style: %s", e.message);
+            debug ("Internal error loading buttonbox style: %s", e.message);
         }
-        menubox.set_size_request (-1, MENUBAR_HEIGHT);
-        menubox.show ();
-        menualign.show ();
-        menubox.add (menualign);
-        login_box.add (menubox);
-        UnityGreeter.add_style_class (menualign);
-        UnityGreeter.add_style_class (menubox);
+        buttonbox.set_size_request (-1,BUTTONBOX_HEIGHT);
+        buttonbox.show ();
+       var buttonbox_align = new Gtk.Alignment (0.95f,1.0f, 0.0f, 0.0f);
+       buttonbox_align.show();
+       
+        login_box.add (buttonbox_align);
+       buttonbox_align.add(buttonbox);
+        UnityGreeter.add_style_class (buttonbox);
+        
+         //TOFIX：menubar已经不需要
+       // menubar = new MenuBar (background, accel_group);
+		
+        
+        //a11y按钮
+        var a11yalign = new Gtk.Alignment (1.0f,1.0f, 0.0f, 0.0f);
+        a11yalign.show();
+        buttonbox.add(a11yalign);
+        a11ybutton = new Gtk.ToggleButton ();
+        
+		a11ybutton.show();
+		var a11ybuttonimage = new Gtk.Image.from_file (Path.build_filename ("/home/xin/a11y.png"));
+        a11ybuttonimage.show ();
+        a11ybutton.add (a11ybuttonimage);
+        a11ybutton.toggled.connect (keyboardbutton_clicked_cb);
+        a11yalign.add (a11ybutton);
+        UnityGreeter.add_style_class (a11ybutton);
+        
+        
+        //关机按钮
+		var shutdownbutton_align = new Gtk.Alignment (1.0f, 1.0f, 0.0f,0.0f);
+        shutdownbutton_align.show ();
+        buttonbox.add (shutdownbutton_align);
+        UnityGreeter.add_style_class (shutdownbutton_align);
+		shutdownbutton = new Gtk.Button ();
+		shutdownbutton.show();
+		var shutdownbutton_image = new Gtk.Image.from_file (Path.build_filename ("/home/xin/shutdown.png"));
+        shutdownbutton_image.show ();
+        shutdownbutton.add (shutdownbutton_image);
+        shutdownbutton.clicked.connect (shutdownbutton_clicked_cb);
+        shutdownbutton_align.add (shutdownbutton);
+        
+       
+        UnityGreeter.add_style_class (shutdownbutton);
 
-        menubar = new MenuBar (background, accel_group);
-        menubar.show ();
-        menualign.add (menubar);
-        UnityGreeter.add_style_class (menubar);
-
+       
         hbox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
         hbox.expand = true;
         hbox.show ();
@@ -108,9 +140,11 @@ public class MainWindow : Gtk.Window
 
         var align = new Gtk.Alignment (0.5f, 0.5f, 0.0f, 0.0f);
         align.set_size_request (grid_size, -1);
-        align.margin_bottom = MENUBAR_HEIGHT; /* offset for menubar at top */
+        align.margin_bottom = BUTTONBOX_HEIGHT; /* offset for BUTTONBOX at top */
         align.show ();
         hbox.add (align);
+
+
 
         back_button = new FlatButton ();
         back_button.get_accessible ().set_name (_("Back"));
@@ -179,6 +213,68 @@ public class MainWindow : Gtk.Window
         }
     }
 
+	private void shutdownbutton_clicked_cb (Gtk.Button button)
+    {
+      debug ("shutdownbutton_clicked~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+			
+			show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
+    }
+    
+    private void keyboardbutton_clicked_cb (Gtk.ToggleButton button)
+    {
+       UGSettings.set_boolean (UGSettings.KEY_ONSCREEN_KEYBOARD, button.active);
+
+        if (keyboard_window == null)
+        {
+            int id = 0;
+
+            try
+            {
+                string[] argv;
+                int onboard_stdout_fd;
+
+                Shell.parse_argv ("onboard --xid", out argv);
+                Process.spawn_async_with_pipes (null,
+                                                argv,
+                                                null,
+                                                SpawnFlags.SEARCH_PATH,
+                                                null,
+                                                out keyboard_pid,
+                                                null,
+                                                out onboard_stdout_fd,
+                                                null);
+                var f = FileStream.fdopen (onboard_stdout_fd, "r");
+                var stdout_text = new char[1024];
+                if (f.gets (stdout_text) != null)
+                    id = int.parse ((string) stdout_text);
+
+            }
+            catch (Error e)
+            {
+                warning ("Error setting up keyboard: %s", e.message);
+                return;
+            }
+
+            var keyboard_socket = new Gtk.Socket ();
+            keyboard_socket.show ();
+            keyboard_window = new Gtk.Window ();
+            keyboard_window.accept_focus = false;
+            keyboard_window.focus_on_map = false;
+            keyboard_window.add (keyboard_socket);
+            keyboard_socket.add_id (id);
+
+            /* Put keyboard at the bottom of the screen */
+            var screen = get_screen ();
+            var monitor = screen.get_monitor_at_window (get_window ());
+            Gdk.Rectangle geom;
+            screen.get_monitor_geometry (monitor, out geom);
+            keyboard_window.move (geom.x, geom.y + geom.height - 200);
+            keyboard_window.resize (geom.width, 200);
+        }
+
+        keyboard_window.visible = button.active;
+    }
+    
     private void monitors_changed_cb (Gdk.Screen screen)
     {
         int primary = screen.get_primary_monitor ();
@@ -272,7 +368,7 @@ public class MainWindow : Gtk.Window
     private void add_user_list ()
     {
         GreeterList greeter_list;
-        greeter_list = new UserList (background, menubar);
+        greeter_list = new UserList (background);
         greeter_list.show ();
         UnityGreeter.add_style_class (greeter_list);
         push_list (greeter_list);
@@ -340,8 +436,8 @@ public class MainWindow : Gtk.Window
                 shutdown_dialog.focus_next ();
             return true;
         case Gdk.Key.F10:
-            if (login_box.sensitive)
-                menubar.select_first (false);
+           if (login_box.sensitive)
+                show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
             return true;
         case Gdk.Key.PowerOff:
             show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
@@ -367,7 +463,8 @@ public class MainWindow : Gtk.Window
 
     public void set_keyboard_state ()
     {
-        menubar.set_keyboard_state ();
+		debug ("~~~~~~~~~set_keyboard_state~~~~~~~~~~`");
+        a11ybutton.set_active (UGSettings.get_boolean (UGSettings.KEY_ONSCREEN_KEYBOARD));
     }
 
     public void show_shutdown_dialog (ShutdownDialogType type)
