@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=kylin-greeter
+Comment=kylin-greeter theme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=kylin-greeter
+MetacityTheme=kylin-greeter
+IconTheme=ubuntu-mono-dark
+CursorTheme=DMZ-White
+ButtonLayout=close,minimize,maximize:

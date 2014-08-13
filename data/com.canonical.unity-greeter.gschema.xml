@@ -30,7 +30,7 @@
       <summary>Background logo file to use</summary>
     </key>
     <key name="theme-name" type="s">
-      <default>'Ambiance'</default>
+      <default>'kylin-greeter'</default>
       <summary>GTK+ theme to use</summary>
     </key>
     <key name="icon-theme-name" type="s">
