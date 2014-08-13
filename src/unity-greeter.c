@@ -1558,7 +1558,7 @@ static void _unity_greeter_log_cb_glog_func (const gchar* log_domain, GLogLevelF
 
 static gboolean __lambda56_ (void) {
 	gboolean result = FALSE;
-	g_debug ("unity-greeter.vala:609: Got a SIGTERM");
+	g_debug ("unity-greeter.vala:581: Got a SIGTERM");
 	gtk_main_quit ();
 	result = TRUE;
 	return result;
@@ -1633,8 +1633,8 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 	UnityGreeter* _tmp67_ = NULL;
 	UnityGreeter* _tmp68_ = NULL;
 	gboolean _tmp69_ = FALSE;
-	GPid _tmp78_ = 0;
-	GPid _tmp88_ = 0;
+	GPid _tmp70_ = 0;
+	GPid _tmp80_ = 0;
 	GError * _inner_error_ = NULL;
 	mlockall (MCL_CURRENT | MCL_FUTURE);
 	g_unsetenv ("UBUNTU_MENUPROXY");
@@ -1893,155 +1893,72 @@ gint unity_greeter_main (gchar** args, int args_length1) {
 	unity_greeter_show (_tmp68_);
 	_tmp69_ = do_test_mode;
 	if (!_tmp69_) {
-		{
-			gchar** argv = NULL;
-			gint argv_length1 = 0;
-			gint _argv_size_ = 0;
-			gchar** _tmp70_ = NULL;
-			gint _tmp71_ = 0;
-			gchar** _tmp72_ = NULL;
-			gint _tmp72__length1 = 0;
-			GPid _tmp73_ = 0;
-			g_shell_parse_argv ("init --user --startup-event indicator-services-start", &_tmp71_, &_tmp70_, &_inner_error_);
-			argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
-			argv = _tmp70_;
-			argv_length1 = _tmp71_;
-			_argv_size_ = argv_length1;
-			if (_inner_error_ != NULL) {
-				argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
-				goto __catch36_g_error;
-			}
-			_tmp72_ = argv;
-			_tmp72__length1 = argv_length1;
-			g_spawn_async (NULL, _tmp72_, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, &_tmp73_, &_inner_error_);
-			upstart_pid = _tmp73_;
-			if (_inner_error_ != NULL) {
-				argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
-				goto __catch36_g_error;
-			}
-			argv = (_vala_array_free (argv, argv_length1, (GDestroyNotify) g_free), NULL);
-		}
-		goto __finally36;
-		__catch36_g_error:
-		{
-			GError* e = NULL;
-			GError* _tmp74_ = NULL;
-			const gchar* _tmp75_ = NULL;
-			e = _inner_error_;
-			_inner_error_ = NULL;
-			_tmp74_ = e;
-			_tmp75_ = _tmp74_->message;
-			g_warning ("unity-greeter.vala:591: Error starting Upstart for indicators: %s", _tmp75_);
-			_g_error_free0 (e);
-		}
-		__finally36:
-		if (_inner_error_ != NULL) {
-			_unity_greeter_unref0 (greeter);
-			_g_free0 (value);
-			_g_object_unref0 (settings);
-			_g_option_context_free0 (c);
-			options = (g_free (options), NULL);
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-			g_clear_error (&_inner_error_);
-			return 0;
-		}
-		g_setenv ("NM_APPLET_HIDE_POLICY_ITEMS", "1", TRUE);
-		{
-			g_spawn_command_line_async ("nm-applet", &_inner_error_);
-			if (_inner_error_ != NULL) {
-				goto __catch37_g_error;
-			}
-		}
-		goto __finally37;
-		__catch37_g_error:
-		{
-			GError* e = NULL;
-			GError* _tmp76_ = NULL;
-			const gchar* _tmp77_ = NULL;
-			e = _inner_error_;
-			_inner_error_ = NULL;
-			_tmp76_ = e;
-			_tmp77_ = _tmp76_->message;
-			g_warning ("unity-greeter.vala:603: Error starting nm-applet: %s", _tmp77_);
-			_g_error_free0 (e);
-		}
-		__finally37:
-		if (_inner_error_ != NULL) {
-			_unity_greeter_unref0 (greeter);
-			_g_free0 (value);
-			_g_object_unref0 (settings);
-			_g_option_context_free0 (c);
-			options = (g_free (options), NULL);
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-			g_clear_error (&_inner_error_);
-			return 0;
-		}
 	}
 	g_unix_signal_add_full (G_PRIORITY_DEFAULT, (gint) SIGTERM, ___lambda56__gsource_func, NULL, NULL);
-	g_debug ("unity-greeter.vala:614: Starting main loop");
+	g_debug ("unity-greeter.vala:586: Starting main loop");
 	gtk_main ();
-	g_debug ("unity-greeter.vala:617: Cleaning up");
-	_tmp78_ = upstart_pid;
-	if (_tmp78_ != ((GPid) 0)) {
-		GPid _tmp79_ = 0;
+	g_debug ("unity-greeter.vala:589: Cleaning up");
+	_tmp70_ = upstart_pid;
+	if (_tmp70_ != ((GPid) 0)) {
+		GPid _tmp71_ = 0;
 		gint status = 0;
-		GPid _tmp80_ = 0;
-		gint _tmp81_ = 0;
-		gint _tmp82_ = 0;
-		gboolean _tmp83_ = FALSE;
-		_tmp79_ = upstart_pid;
-		kill ((pid_t) _tmp79_, SIGTERM);
-		_tmp80_ = upstart_pid;
-		waitpid ((pid_t) _tmp80_, &_tmp81_, 0);
-		status = _tmp81_;
-		_tmp82_ = status;
-		_tmp83_ = WIFEXITED (_tmp82_);
-		if (_tmp83_) {
-			gint _tmp84_ = 0;
-			gint _tmp85_ = 0;
-			_tmp84_ = status;
-			_tmp85_ = WEXITSTATUS (_tmp84_);
-			g_debug ("unity-greeter.vala:625: Upstart exited with return value %d", _tmp85_);
+		GPid _tmp72_ = 0;
+		gint _tmp73_ = 0;
+		gint _tmp74_ = 0;
+		gboolean _tmp75_ = FALSE;
+		_tmp71_ = upstart_pid;
+		kill ((pid_t) _tmp71_, SIGTERM);
+		_tmp72_ = upstart_pid;
+		waitpid ((pid_t) _tmp72_, &_tmp73_, 0);
+		status = _tmp73_;
+		_tmp74_ = status;
+		_tmp75_ = WIFEXITED (_tmp74_);
+		if (_tmp75_) {
+			gint _tmp76_ = 0;
+			gint _tmp77_ = 0;
+			_tmp76_ = status;
+			_tmp77_ = WEXITSTATUS (_tmp76_);
+			g_debug ("unity-greeter.vala:597: Upstart exited with return value %d", _tmp77_);
 		} else {
-			gint _tmp86_ = 0;
-			int _tmp87_ = 0;
-			_tmp86_ = status;
-			_tmp87_ = WTERMSIG (_tmp86_);
-			g_debug ("unity-greeter.vala:627: Upstart terminated with signal %d", (gint) _tmp87_);
+			gint _tmp78_ = 0;
+			int _tmp79_ = 0;
+			_tmp78_ = status;
+			_tmp79_ = WTERMSIG (_tmp78_);
+			g_debug ("unity-greeter.vala:599: Upstart terminated with signal %d", (gint) _tmp79_);
 		}
 		upstart_pid = (GPid) 0;
 	}
-	_tmp88_ = atspi_pid;
-	if (_tmp88_ != ((GPid) 0)) {
-		GPid _tmp89_ = 0;
+	_tmp80_ = atspi_pid;
+	if (_tmp80_ != ((GPid) 0)) {
+		GPid _tmp81_ = 0;
 		gint status = 0;
-		GPid _tmp90_ = 0;
-		gint _tmp91_ = 0;
-		gint _tmp92_ = 0;
-		gboolean _tmp93_ = FALSE;
-		_tmp89_ = atspi_pid;
-		kill ((pid_t) _tmp89_, SIGKILL);
-		_tmp90_ = atspi_pid;
-		waitpid ((pid_t) _tmp90_, &_tmp91_, 0);
-		status = _tmp91_;
-		_tmp92_ = status;
-		_tmp93_ = WIFEXITED (_tmp92_);
-		if (_tmp93_) {
-			gint _tmp94_ = 0;
-			gint _tmp95_ = 0;
-			_tmp94_ = status;
-			_tmp95_ = WEXITSTATUS (_tmp94_);
-			g_debug ("unity-greeter.vala:637: AT-SPI exited with return value %d", _tmp95_);
+		GPid _tmp82_ = 0;
+		gint _tmp83_ = 0;
+		gint _tmp84_ = 0;
+		gboolean _tmp85_ = FALSE;
+		_tmp81_ = atspi_pid;
+		kill ((pid_t) _tmp81_, SIGKILL);
+		_tmp82_ = atspi_pid;
+		waitpid ((pid_t) _tmp82_, &_tmp83_, 0);
+		status = _tmp83_;
+		_tmp84_ = status;
+		_tmp85_ = WIFEXITED (_tmp84_);
+		if (_tmp85_) {
+			gint _tmp86_ = 0;
+			gint _tmp87_ = 0;
+			_tmp86_ = status;
+			_tmp87_ = WEXITSTATUS (_tmp86_);
+			g_debug ("unity-greeter.vala:609: AT-SPI exited with return value %d", _tmp87_);
 		} else {
-			gint _tmp96_ = 0;
-			int _tmp97_ = 0;
-			_tmp96_ = status;
-			_tmp97_ = WTERMSIG (_tmp96_);
-			g_debug ("unity-greeter.vala:639: AT-SPI terminated with signal %d", (gint) _tmp97_);
+			gint _tmp88_ = 0;
+			int _tmp89_ = 0;
+			_tmp88_ = status;
+			_tmp89_ = WTERMSIG (_tmp88_);
+			g_debug ("unity-greeter.vala:611: AT-SPI terminated with signal %d", (gint) _tmp89_);
 		}
 		atspi_pid = (GPid) 0;
 	}
-	g_debug ("unity-greeter.vala:643: Exiting");
+	g_debug ("unity-greeter.vala:615: Exiting");
 	result = EXIT_SUCCESS;
 	_unity_greeter_unref0 (greeter);
 	_g_free0 (value);

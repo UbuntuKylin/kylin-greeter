@@ -540,7 +540,6 @@ static gboolean dash_box_real_draw (GtkWidget* base, cairo_t* c) {
 	DashBox * self;
 	gboolean result = FALSE;
 	Background* _tmp0_ = NULL;
-	gdouble box_r = 0.0;
 	gint box_y = 0;
 	gint box_w = 0;
 	gint box_h = 0;
@@ -552,15 +551,14 @@ static gboolean dash_box_real_draw (GtkWidget* base, cairo_t* c) {
 	gint _tmp27_ = 0;
 	gint _tmp28_ = 0;
 	gint _tmp29_ = 0;
-	gdouble _tmp30_ = 0.0;
+	cairo_t* _tmp30_ = NULL;
 	cairo_t* _tmp31_ = NULL;
 	cairo_t* _tmp32_ = NULL;
 	cairo_t* _tmp33_ = NULL;
 	cairo_t* _tmp34_ = NULL;
 	cairo_t* _tmp35_ = NULL;
 	cairo_t* _tmp36_ = NULL;
-	cairo_t* _tmp37_ = NULL;
-	gboolean _tmp38_ = FALSE;
+	gboolean _tmp37_ = FALSE;
 	self = (DashBox*) base;
 	g_return_val_if_fail (c != NULL, FALSE);
 	_tmp0_ = self->priv->_background;
@@ -593,7 +591,6 @@ static gboolean dash_box_real_draw (GtkWidget* base, cairo_t* c) {
 		_tmp10_ = c;
 		cairo_restore (_tmp10_);
 	}
-	box_r = 0.3 * grid_size;
 	box_y = 0;
 	gtk_widget_get_preferred_width ((GtkWidget*) self, NULL, &_tmp11_);
 	box_w = _tmp11_;
@@ -639,23 +636,22 @@ static gboolean dash_box_real_draw (GtkWidget* base, cairo_t* c) {
 	_tmp27_ = box_y;
 	_tmp28_ = box_w;
 	_tmp29_ = box_h;
-	_tmp30_ = box_r;
-	cairo_utils_rounded_rectangle (_tmp26_, (gdouble) 0, (gdouble) _tmp27_, (gdouble) _tmp28_, (gdouble) _tmp29_, _tmp30_);
+	cairo_utils_rounded_rectangle (_tmp26_, (gdouble) 0, (gdouble) _tmp27_, (gdouble) _tmp28_, (gdouble) _tmp29_, (gdouble) 0);
+	_tmp30_ = c;
+	cairo_set_source_rgba (_tmp30_, 0.1, 0.1, 0.1, 0.4);
 	_tmp31_ = c;
-	cairo_set_source_rgba (_tmp31_, 0.1, 0.1, 0.1, 0.4);
+	cairo_fill_preserve (_tmp31_);
 	_tmp32_ = c;
-	cairo_fill_preserve (_tmp32_);
+	cairo_set_source_rgba (_tmp32_, 0.4, 0.4, 0.4, 0.4);
 	_tmp33_ = c;
-	cairo_set_source_rgba (_tmp33_, 0.4, 0.4, 0.4, 0.4);
+	cairo_set_line_width (_tmp33_, (gdouble) 1);
 	_tmp34_ = c;
-	cairo_set_line_width (_tmp34_, (gdouble) 1);
+	cairo_stroke (_tmp34_);
 	_tmp35_ = c;
-	cairo_stroke (_tmp35_);
+	cairo_restore (_tmp35_);
 	_tmp36_ = c;
-	cairo_restore (_tmp36_);
-	_tmp37_ = c;
-	_tmp38_ = GTK_WIDGET_CLASS (dash_box_parent_class)->draw ((GtkWidget*) G_TYPE_CHECK_INSTANCE_CAST (self, GTK_TYPE_BOX, GtkBox), _tmp37_);
-	result = _tmp38_;
+	_tmp37_ = GTK_WIDGET_CLASS (dash_box_parent_class)->draw ((GtkWidget*) G_TYPE_CHECK_INSTANCE_CAST (self, GTK_TYPE_BOX, GtkBox), _tmp36_);
+	result = _tmp37_;
 	return result;
 }
 

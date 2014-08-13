@@ -38,6 +38,11 @@ public class SessionPrompt : PromptBox
 
         if (UnityGreeter.singleton.test_mode)
         {
+			 foreach (var session in LightDM.get_sessions ())
+            {
+                debug ("Adding session %s (%s)", session.key, session.name);
+                
+            }
             box.add_item ("gnome", "GNOME", SessionList.get_badge ("gnome"));
             box.add_item ("kde", "KDE", SessionList.get_badge ("kde"));
             box.add_item ("ubuntu", "Ubuntu", SessionList.get_badge ("ubuntu"));
@@ -96,6 +101,9 @@ public class SessionList : GreeterList
     {
         switch (session)
         {
+		case "cinnamon":
+        case "cinnamon2d":
+            return "custom_Cinnamon_badge.png";
         case "ubuntu":
         case "ubuntu-2d":
             return "ubuntu_badge.png";

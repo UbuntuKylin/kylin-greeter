@@ -1399,7 +1399,7 @@ static gboolean user_list_query_directory_servers_co (UserListQueryDirectoryServ
 		if (_data_->_inner_error_ != NULL) {
 			_data_->server_list = (_vala_RemoteServer_array_free (_data_->server_list, _data_->server_list_length1), NULL);
 			if (_data_->_inner_error_->domain == G_IO_ERROR) {
-				goto __catch38_g_io_error;
+				goto __catch36_g_io_error;
 			}
 			_data_->server_list = (_vala_RemoteServer_array_free (_data_->server_list, _data_->server_list_length1), NULL);
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
@@ -1409,8 +1409,8 @@ static gboolean user_list_query_directory_servers_co (UserListQueryDirectoryServ
 		user_list_set_remote_directory_servers (_data_->self, _data_->server_list, _data_->server_list_length1);
 		_data_->server_list = (_vala_RemoteServer_array_free (_data_->server_list, _data_->server_list_length1), NULL);
 	}
-	goto __finally38;
-	__catch38_g_io_error:
+	goto __finally36;
+	__catch36_g_io_error:
 	{
 		_data_->e = _data_->_inner_error_;
 		_data_->_inner_error_ = NULL;
@@ -1423,7 +1423,7 @@ static gboolean user_list_query_directory_servers_co (UserListQueryDirectoryServ
 		user_list_remove_remote_servers (_data_->self);
 		_g_error_free0 (_data_->e);
 	}
-	__finally38:
+	__finally36:
 	if (_data_->_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _data_->_inner_error_->message, g_quark_to_string (_data_->_inner_error_->domain), _data_->_inner_error_->code);
 		g_clear_error (&_data_->_inner_error_);
@@ -2133,7 +2133,7 @@ static void __lambda44_ (UserList* self, GObject* obj, GAsyncResult* res) {
 		_tmp0_ = (RemoteLoginService*) _tmp3_;
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == G_IO_ERROR) {
-				goto __catch39_g_io_error;
+				goto __catch37_g_io_error;
 			}
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 			g_clear_error (&_inner_error_);
@@ -2149,8 +2149,8 @@ static void __lambda44_ (UserList* self, GObject* obj, GAsyncResult* res) {
 		g_signal_connect_object (_tmp6_, "login-changed", (GCallback) _user_list_remote_login_changed_remote_login_service_login_changed, self, 0);
 		user_list_query_directory_servers (self, NULL, NULL);
 	}
-	goto __finally39;
-	__catch39_g_io_error:
+	goto __finally37;
+	__catch37_g_io_error:
 	{
 		GError* e = NULL;
 		GError* _tmp7_ = NULL;
@@ -2166,7 +2166,7 @@ static void __lambda44_ (UserList* self, GObject* obj, GAsyncResult* res) {
 		self->priv->remote_login_service = NULL;
 		_g_error_free0 (e);
 	}
-	__finally39:
+	__finally37:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -2383,7 +2383,7 @@ static gboolean user_list_remote_directory_respond_cb_co (UserListRemoteDirector
 		_data_->re = _data_->_tmp17_;
 		if (_data_->_inner_error_ != NULL) {
 			if (_data_->_inner_error_->domain == G_REGEX_ERROR) {
-				goto __catch40_g_regex_error;
+				goto __catch38_g_regex_error;
 			}
 			_g_free0 (_data_->email);
 			_data_->server_list = (_vala_RemoteServer_array_free (_data_->server_list, _data_->server_list_length1), NULL);
@@ -2436,8 +2436,8 @@ static gboolean user_list_remote_directory_respond_cb_co (UserListRemoteDirector
 		_g_match_info_unref0 (_data_->info);
 		_g_regex_unref0 (_data_->re);
 	}
-	goto __finally40;
-	__catch40_g_regex_error:
+	goto __finally38;
+	__catch38_g_regex_error:
 	{
 		_data_->e = _data_->_inner_error_;
 		_data_->_inner_error_ = NULL;
@@ -2448,7 +2448,7 @@ static gboolean user_list_remote_directory_respond_cb_co (UserListRemoteDirector
 		g_debug ("user-list.vala:435: Calling email regex match failed. Error: %s", _data_->_tmp34_);
 		_g_error_free0 (_data_->e);
 	}
-	__finally40:
+	__finally38:
 	if (_data_->_inner_error_ != NULL) {
 		_g_free0 (_data_->email);
 		_data_->server_list = (_vala_RemoteServer_array_free (_data_->server_list, _data_->server_list_length1), NULL);
@@ -2648,7 +2648,7 @@ static gboolean user_list_remote_directory_respond_cb_co (UserListRemoteDirector
 					_g_free0 (_data_->data_type);
 					_g_free0 (_data_->url);
 					if (_data_->_inner_error_->domain == G_IO_ERROR) {
-						goto __catch41_g_io_error;
+						goto __catch39_g_io_error;
 					}
 					_g_free0 (_data_->data_type);
 					_g_free0 (_data_->url);
@@ -2676,8 +2676,8 @@ static gboolean user_list_remote_directory_respond_cb_co (UserListRemoteDirector
 			_data_->self->priv->currently_browsing_server_email = _data_->_tmp98_;
 			_g_free0 (_data_->url);
 		}
-		goto __finally41;
-		__catch41_g_io_error:
+		goto __finally39;
+		__catch39_g_io_error:
 		{
 			_data_->_vala1_e = _data_->_inner_error_;
 			_data_->_inner_error_ = NULL;
@@ -2689,7 +2689,7 @@ static gboolean user_list_remote_directory_respond_cb_co (UserListRemoteDirector
 "bus service failed. Error: %s", _data_->_tmp100_);
 			_g_error_free0 (_data_->_vala1_e);
 		}
-		__finally41:
+		__finally39:
 		if (_data_->_inner_error_ != NULL) {
 			_g_free0 (_data_->email);
 			_data_->server_list = (_vala_RemoteServer_array_free (_data_->server_list, _data_->server_list_length1), NULL);
@@ -4116,7 +4116,7 @@ static gboolean user_list_create_remote_fields_for_current_item_co (UserListCrea
 														_data_->_email_domains_size_ = _data_->email_domains_length1;
 														if (_data_->_inner_error_ != NULL) {
 															if (_data_->_inner_error_->domain == G_IO_ERROR) {
-																goto __catch42_g_io_error;
+																goto __catch40_g_io_error;
 															}
 															_data_->email_domains = (_vala_array_free (_data_->email_domains, _data_->email_domains_length1, (GDestroyNotify) g_free), NULL);
 															_g_free0 (_data_->default_value);
@@ -4133,8 +4133,8 @@ static gboolean user_list_create_remote_fields_for_current_item_co (UserListCrea
 														}
 													}
 												}
-												goto __finally42;
-												__catch42_g_io_error:
+												goto __finally40;
+												__catch40_g_io_error:
 												{
 													_data_->e = _data_->_inner_error_;
 													_data_->_inner_error_ = NULL;
@@ -4152,7 +4152,7 @@ static gboolean user_list_create_remote_fields_for_current_item_co (UserListCrea
 "ical.RemoteLogin dbus service failed. Error: %s", _data_->_tmp225_);
 													_g_error_free0 (_data_->e);
 												}
-												__finally42:
+												__finally40:
 												if (_data_->_inner_error_ != NULL) {
 													_data_->email_domains = (_vala_array_free (_data_->email_domains, _data_->email_domains_length1, (GDestroyNotify) g_free), NULL);
 													_g_free0 (_data_->default_value);
@@ -5516,7 +5516,7 @@ static void user_list_test_fill_list (UserList* self) {
 		dir = _tmp0_;
 		if (_inner_error_ != NULL) {
 			if (_inner_error_->domain == G_FILE_ERROR) {
-				goto __catch43_g_file_error;
+				goto __catch41_g_file_error;
 			}
 			g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 			g_clear_error (&_inner_error_);
@@ -5546,15 +5546,15 @@ static void user_list_test_fill_list (UserList* self) {
 		}
 		_g_dir_close0 (dir);
 	}
-	goto __finally43;
-	__catch43_g_file_error:
+	goto __finally41;
+	__catch41_g_file_error:
 	{
 		GError* e = NULL;
 		e = _inner_error_;
 		_inner_error_ = NULL;
 		_g_error_free0 (e);
 	}
-	__finally43:
+	__finally41:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
@@ -7332,13 +7332,13 @@ static GObject * user_list_constructor (GType type, guint n_construct_properties
 		_g_free0 (_tmp2_);
 		_tmp0_ = _tmp4_;
 		if (_inner_error_ != NULL) {
-			goto __catch44_g_error;
+			goto __catch42_g_error;
 		}
 		_g_object_unref0 (self->priv->message_pixbuf);
 		self->priv->message_pixbuf = _tmp0_;
 	}
-	goto __finally44;
-	__catch44_g_error:
+	goto __finally42;
+	__catch42_g_error:
 	{
 		GError* e = NULL;
 		GError* _tmp5_ = NULL;
@@ -7350,7 +7350,7 @@ static GObject * user_list_constructor (GType type, guint n_construct_properties
 		g_debug ("user-list.vala:162: Error loading message image: %s", _tmp6_);
 		_g_error_free0 (e);
 	}
-	__finally44:
+	__finally42:
 	if (_inner_error_ != NULL) {
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);

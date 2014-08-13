@@ -1871,7 +1871,7 @@ static GObject * main_window_constructor (GType type, guint n_construct_properti
 	gtk_widget_set_size_request ((GtkWidget*) _tmp47_, -1, MAIN_WINDOW_BUTTONBOX_HEIGHT);
 	_tmp48_ = buttonbox;
 	gtk_widget_show ((GtkWidget*) _tmp48_);
-	_tmp49_ = (GtkAlignment*) gtk_alignment_new (0.95f, 1.0f, 0.0f, 0.0f);
+	_tmp49_ = (GtkAlignment*) gtk_alignment_new (1.0f, 1.0f, 0.0f, 0.0f);
 	g_object_ref_sink (_tmp49_);
 	buttonbox_align = _tmp49_;
 	_tmp50_ = buttonbox_align;
@@ -1898,7 +1898,7 @@ static GObject * main_window_constructor (GType type, guint n_construct_properti
 	self->priv->a11ybutton = _tmp60_;
 	_tmp61_ = self->priv->a11ybutton;
 	gtk_widget_show ((GtkWidget*) _tmp61_);
-	_tmp62_ = g_build_filename ("/home/xin/a11y.png", NULL);
+	_tmp62_ = g_build_filename (PKGDATADIR, "keyboardbutton.png", NULL);
 	_tmp63_ = _tmp62_;
 	_tmp64_ = (GtkImage*) gtk_image_new_from_file (_tmp63_);
 	g_object_ref_sink (_tmp64_);
@@ -1917,7 +1917,7 @@ static GObject * main_window_constructor (GType type, guint n_construct_properti
 	gtk_container_add ((GtkContainer*) _tmp70_, (GtkWidget*) _tmp71_);
 	_tmp72_ = self->priv->a11ybutton;
 	unity_greeter_add_style_class ((GtkWidget*) _tmp72_);
-	_tmp73_ = (GtkAlignment*) gtk_alignment_new (1.0f, 1.0f, 0.0f, 0.0f);
+	_tmp73_ = (GtkAlignment*) gtk_alignment_new (0.5f, 1.0f, 0.0f, 0.0f);
 	g_object_ref_sink (_tmp73_);
 	shutdownbutton_align = _tmp73_;
 	_tmp74_ = shutdownbutton_align;
@@ -1933,7 +1933,7 @@ static GObject * main_window_constructor (GType type, guint n_construct_properti
 	self->priv->shutdownbutton = _tmp78_;
 	_tmp79_ = self->priv->shutdownbutton;
 	gtk_widget_show ((GtkWidget*) _tmp79_);
-	_tmp80_ = g_build_filename ("/home/xin/shutdown.png", NULL);
+	_tmp80_ = g_build_filename (PKGDATADIR, "shutdownbutton.png", NULL);
 	_tmp81_ = _tmp80_;
 	_tmp82_ = (GtkImage*) gtk_image_new_from_file (_tmp81_);
 	g_object_ref_sink (_tmp82_);

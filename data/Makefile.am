@@ -17,6 +17,7 @@ dist_pkgdata_DATA = \
 	hibernate.png \
 	kde_badge.png \
 	logo.png \
+	custom_Cinnamon_badge.png \
 	message.png \
 	recovery_console_badge.png \
 	remote_login_help.png \
@@ -30,6 +31,8 @@ dist_pkgdata_DATA = \
 	switcher_corner.png \
 	switcher_left.png \
 	switcher_top.png \
+	keyboardbutton.png \
+	shutdownbutton.png \
 	ubuntu_badge.png \
 	unknown_badge.png
 

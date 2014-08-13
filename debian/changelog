@@ -1,3 +1,10 @@
+unity-greeter (14.04.10-0ubuntukylin2) trusty; urgency=medium
+
+  * 完成布局和功能
+  * 去除indictor
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Wed, 13 Aug 2014 08:54:51 +0800
+
 unity-greeter (14.04.10-0ubuntukylin1) trusty; urgency=medium
 
   * ready for ubuntukylin

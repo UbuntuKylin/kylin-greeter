@@ -6,7 +6,7 @@ noinst_PROGRAMS = logo-generator
 unity_greeter_SOURCES = \
 	config.vapi \
 	fixes.vapi \
-	indicator.vapi \
+	ido.vapi \
 	animate-timer.vala \
 	background.vala \
 	cached-image.vala \

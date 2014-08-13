@@ -90,7 +90,7 @@ public class MainWindow : Gtk.Window
         }
         buttonbox.set_size_request (-1,BUTTONBOX_HEIGHT);
         buttonbox.show ();
-       var buttonbox_align = new Gtk.Alignment (0.95f,1.0f, 0.0f, 0.0f);
+       var buttonbox_align = new Gtk.Alignment (1.0f,1.0f, 0.0f, 0.0f);
        buttonbox_align.show();
        
         login_box.add (buttonbox_align);
@@ -108,7 +108,7 @@ public class MainWindow : Gtk.Window
         a11ybutton = new Gtk.ToggleButton ();
         
 		a11ybutton.show();
-		var a11ybuttonimage = new Gtk.Image.from_file (Path.build_filename ("/home/xin/a11y.png"));
+		var a11ybuttonimage = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR, "keyboardbutton.png"));
         a11ybuttonimage.show ();
         a11ybutton.add (a11ybuttonimage);
         a11ybutton.toggled.connect (keyboardbutton_clicked_cb);
@@ -117,13 +117,13 @@ public class MainWindow : Gtk.Window
         
         
         //关机按钮
-		var shutdownbutton_align = new Gtk.Alignment (1.0f, 1.0f, 0.0f,0.0f);
+		var shutdownbutton_align = new Gtk.Alignment (0.5f, 1.0f, 0.0f,0.0f);
         shutdownbutton_align.show ();
         buttonbox.add (shutdownbutton_align);
         UnityGreeter.add_style_class (shutdownbutton_align);
 		shutdownbutton = new Gtk.Button ();
 		shutdownbutton.show();
-		var shutdownbutton_image = new Gtk.Image.from_file (Path.build_filename ("/home/xin/shutdown.png"));
+		var shutdownbutton_image = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"shutdownbutton.png"));
         shutdownbutton_image.show ();
         shutdownbutton.add (shutdownbutton_image);
         shutdownbutton.clicked.connect (shutdownbutton_clicked_cb);

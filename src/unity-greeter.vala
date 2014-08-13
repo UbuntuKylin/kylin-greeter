@@ -573,35 +573,7 @@ public class UnityGreeter
 
         if (!do_test_mode)
         {
-            /* Start the indicator services */
-            try
-            {
-                string[] argv;
 
-                Shell.parse_argv ("init --user --startup-event indicator-services-start", out argv);
-                Process.spawn_async (null,
-                                     argv,
-                                     null,
-                                     SpawnFlags.SEARCH_PATH,
-                                     null,
-                                     out upstart_pid);
-            }
-            catch (Error e)
-            {
-                warning ("Error starting Upstart for indicators: %s", e.message);
-            }
-
-            /* Make nm-applet hide items the user does not have permissions to interact with */
-            Environment.set_variable ("NM_APPLET_HIDE_POLICY_ITEMS", "1", true);
-
-            try
-            {
-                Process.spawn_command_line_async ("nm-applet");
-            }
-            catch (Error e)
-            {
-                warning ("Error starting nm-applet: %s", e.message);
-            }
         }
 
         /* Setup a handler for TERM so we quit cleanly */

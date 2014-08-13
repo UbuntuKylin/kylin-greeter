@@ -27,8 +27,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glib/gi18n-lib.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <lightdm.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <float.h>
 #include <math.h>
 #include "config.h"
@@ -474,9 +474,9 @@ static GObject * session_prompt_constructor (GType type, guint n_construct_prope
 	ToggleBox* _tmp4_ = NULL;
 	UnityGreeter* _tmp5_ = NULL;
 	gboolean _tmp6_ = FALSE;
-	ToggleBox* _tmp35_ = NULL;
-	ToggleBox* _tmp36_ = NULL;
-	ToggleBox* _tmp37_ = NULL;
+	ToggleBox* _tmp42_ = NULL;
+	ToggleBox* _tmp43_ = NULL;
+	ToggleBox* _tmp44_ = NULL;
 	parent_class = G_OBJECT_CLASS (session_prompt_parent_class);
 	obj = parent_class->constructor (type, n_construct_properties, construct_properties);
 	self = G_TYPE_CHECK_INSTANCE_CAST (obj, TYPE_SESSION_PROMPT, SessionPrompt);
@@ -493,90 +493,116 @@ static GObject * session_prompt_constructor (GType type, guint n_construct_prope
 	_tmp5_ = unity_greeter_singleton;
 	_tmp6_ = _tmp5_->test_mode;
 	if (_tmp6_) {
-		ToggleBox* _tmp7_ = NULL;
-		GdkPixbuf* _tmp8_ = NULL;
-		GdkPixbuf* _tmp9_ = NULL;
-		ToggleBox* _tmp10_ = NULL;
-		GdkPixbuf* _tmp11_ = NULL;
-		GdkPixbuf* _tmp12_ = NULL;
-		ToggleBox* _tmp13_ = NULL;
-		GdkPixbuf* _tmp14_ = NULL;
+		GList* _tmp7_ = NULL;
+		ToggleBox* _tmp14_ = NULL;
 		GdkPixbuf* _tmp15_ = NULL;
-		_tmp7_ = self->priv->box;
-		_tmp8_ = session_list_get_badge ("gnome");
-		_tmp9_ = _tmp8_;
-		toggle_box_add_item (_tmp7_, "gnome", "GNOME", _tmp9_);
-		_g_object_unref0 (_tmp9_);
-		_tmp10_ = self->priv->box;
-		_tmp11_ = session_list_get_badge ("kde");
-		_tmp12_ = _tmp11_;
-		toggle_box_add_item (_tmp10_, "kde", "KDE", _tmp12_);
-		_g_object_unref0 (_tmp12_);
-		_tmp13_ = self->priv->box;
-		_tmp14_ = session_list_get_badge ("ubuntu");
-		_tmp15_ = _tmp14_;
-		toggle_box_add_item (_tmp13_, "ubuntu", "Ubuntu", _tmp15_);
-		_g_object_unref0 (_tmp15_);
-	} else {
-		GList* _tmp16_ = NULL;
-		_tmp16_ = lightdm_get_sessions ();
+		GdkPixbuf* _tmp16_ = NULL;
+		ToggleBox* _tmp17_ = NULL;
+		GdkPixbuf* _tmp18_ = NULL;
+		GdkPixbuf* _tmp19_ = NULL;
+		ToggleBox* _tmp20_ = NULL;
+		GdkPixbuf* _tmp21_ = NULL;
+		GdkPixbuf* _tmp22_ = NULL;
+		_tmp7_ = lightdm_get_sessions ();
 		{
 			GList* session_collection = NULL;
 			GList* session_it = NULL;
-			session_collection = _tmp16_;
+			session_collection = _tmp7_;
 			for (session_it = session_collection; session_it != NULL; session_it = session_it->next) {
 				LightDMSession* session = NULL;
 				session = (LightDMSession*) session_it->data;
 				{
-					LightDMSession* _tmp17_ = NULL;
-					const gchar* _tmp18_ = NULL;
-					const gchar* _tmp19_ = NULL;
-					LightDMSession* _tmp20_ = NULL;
-					const gchar* _tmp21_ = NULL;
-					const gchar* _tmp22_ = NULL;
-					ToggleBox* _tmp23_ = NULL;
+					LightDMSession* _tmp8_ = NULL;
+					const gchar* _tmp9_ = NULL;
+					const gchar* _tmp10_ = NULL;
+					LightDMSession* _tmp11_ = NULL;
+					const gchar* _tmp12_ = NULL;
+					const gchar* _tmp13_ = NULL;
+					_tmp8_ = session;
+					_tmp9_ = lightdm_session_get_key (_tmp8_);
+					_tmp10_ = _tmp9_;
+					_tmp11_ = session;
+					_tmp12_ = lightdm_session_get_name (_tmp11_);
+					_tmp13_ = _tmp12_;
+					g_debug ("session-list.vala:43: Adding session %s (%s)", _tmp10_, _tmp13_);
+				}
+			}
+		}
+		_tmp14_ = self->priv->box;
+		_tmp15_ = session_list_get_badge ("gnome");
+		_tmp16_ = _tmp15_;
+		toggle_box_add_item (_tmp14_, "gnome", "GNOME", _tmp16_);
+		_g_object_unref0 (_tmp16_);
+		_tmp17_ = self->priv->box;
+		_tmp18_ = session_list_get_badge ("kde");
+		_tmp19_ = _tmp18_;
+		toggle_box_add_item (_tmp17_, "kde", "KDE", _tmp19_);
+		_g_object_unref0 (_tmp19_);
+		_tmp20_ = self->priv->box;
+		_tmp21_ = session_list_get_badge ("ubuntu");
+		_tmp22_ = _tmp21_;
+		toggle_box_add_item (_tmp20_, "ubuntu", "Ubuntu", _tmp22_);
+		_g_object_unref0 (_tmp22_);
+	} else {
+		GList* _tmp23_ = NULL;
+		_tmp23_ = lightdm_get_sessions ();
+		{
+			GList* session_collection = NULL;
+			GList* session_it = NULL;
+			session_collection = _tmp23_;
+			for (session_it = session_collection; session_it != NULL; session_it = session_it->next) {
+				LightDMSession* session = NULL;
+				session = (LightDMSession*) session_it->data;
+				{
 					LightDMSession* _tmp24_ = NULL;
 					const gchar* _tmp25_ = NULL;
 					const gchar* _tmp26_ = NULL;
 					LightDMSession* _tmp27_ = NULL;
 					const gchar* _tmp28_ = NULL;
 					const gchar* _tmp29_ = NULL;
-					LightDMSession* _tmp30_ = NULL;
-					const gchar* _tmp31_ = NULL;
+					ToggleBox* _tmp30_ = NULL;
+					LightDMSession* _tmp31_ = NULL;
 					const gchar* _tmp32_ = NULL;
-					GdkPixbuf* _tmp33_ = NULL;
-					GdkPixbuf* _tmp34_ = NULL;
-					_tmp17_ = session;
-					_tmp18_ = lightdm_session_get_key (_tmp17_);
-					_tmp19_ = _tmp18_;
-					_tmp20_ = session;
-					_tmp21_ = lightdm_session_get_name (_tmp20_);
-					_tmp22_ = _tmp21_;
-					g_debug ("session-list.vala:49: Adding session %s (%s)", _tmp19_, _tmp22_);
-					_tmp23_ = self->priv->box;
+					const gchar* _tmp33_ = NULL;
+					LightDMSession* _tmp34_ = NULL;
+					const gchar* _tmp35_ = NULL;
+					const gchar* _tmp36_ = NULL;
+					LightDMSession* _tmp37_ = NULL;
+					const gchar* _tmp38_ = NULL;
+					const gchar* _tmp39_ = NULL;
+					GdkPixbuf* _tmp40_ = NULL;
+					GdkPixbuf* _tmp41_ = NULL;
 					_tmp24_ = session;
 					_tmp25_ = lightdm_session_get_key (_tmp24_);
 					_tmp26_ = _tmp25_;
 					_tmp27_ = session;
 					_tmp28_ = lightdm_session_get_name (_tmp27_);
 					_tmp29_ = _tmp28_;
-					_tmp30_ = session;
-					_tmp31_ = lightdm_session_get_key (_tmp30_);
-					_tmp32_ = _tmp31_;
-					_tmp33_ = session_list_get_badge (_tmp32_);
-					_tmp34_ = _tmp33_;
-					toggle_box_add_item (_tmp23_, _tmp26_, _tmp29_, _tmp34_);
-					_g_object_unref0 (_tmp34_);
+					g_debug ("session-list.vala:54: Adding session %s (%s)", _tmp26_, _tmp29_);
+					_tmp30_ = self->priv->box;
+					_tmp31_ = session;
+					_tmp32_ = lightdm_session_get_key (_tmp31_);
+					_tmp33_ = _tmp32_;
+					_tmp34_ = session;
+					_tmp35_ = lightdm_session_get_name (_tmp34_);
+					_tmp36_ = _tmp35_;
+					_tmp37_ = session;
+					_tmp38_ = lightdm_session_get_key (_tmp37_);
+					_tmp39_ = _tmp38_;
+					_tmp40_ = session_list_get_badge (_tmp39_);
+					_tmp41_ = _tmp40_;
+					toggle_box_add_item (_tmp30_, _tmp33_, _tmp36_, _tmp41_);
+					_g_object_unref0 (_tmp41_);
 				}
 			}
 		}
 	}
-	_tmp35_ = self->priv->box;
-	g_signal_connect_object ((GObject*) _tmp35_, "notify::selected-key", (GCallback) _session_prompt_selected_cb_g_object_notify, self, 0);
-	_tmp36_ = self->priv->box;
-	gtk_widget_show ((GtkWidget*) _tmp36_);
-	_tmp37_ = self->priv->box;
-	prompt_box_attach_item ((PromptBox*) self, (GtkWidget*) _tmp37_, TRUE);
+	_tmp42_ = self->priv->box;
+	g_signal_connect_object ((GObject*) _tmp42_, "notify::selected-key", (GCallback) _session_prompt_selected_cb_g_object_notify, self, 0);
+	_tmp43_ = self->priv->box;
+	gtk_widget_show ((GtkWidget*) _tmp43_);
+	_tmp44_ = self->priv->box;
+	prompt_box_attach_item ((PromptBox*) self, (GtkWidget*) _tmp44_, TRUE);
 	return obj;
 }
 
@@ -741,57 +767,69 @@ static gchar* session_list_get_badge_name (const gchar* session) {
 	static GQuark _tmp2_label10 = 0;
 	static GQuark _tmp2_label11 = 0;
 	static GQuark _tmp2_label12 = 0;
+	static GQuark _tmp2_label13 = 0;
+	static GQuark _tmp2_label14 = 0;
 	g_return_val_if_fail (session != NULL, NULL);
 	_tmp0_ = session;
 	_tmp1_ = _tmp0_;
 	_tmp3_ = (NULL == _tmp1_) ? 0 : g_quark_from_string (_tmp1_);
-	if ((_tmp3_ == ((0 != _tmp2_label0) ? _tmp2_label0 : (_tmp2_label0 = g_quark_from_static_string ("ubuntu")))) || (_tmp3_ == ((0 != _tmp2_label1) ? _tmp2_label1 : (_tmp2_label1 = g_quark_from_static_string ("ubuntu-2d"))))) {
+	if ((_tmp3_ == ((0 != _tmp2_label0) ? _tmp2_label0 : (_tmp2_label0 = g_quark_from_static_string ("cinnamon")))) || (_tmp3_ == ((0 != _tmp2_label1) ? _tmp2_label1 : (_tmp2_label1 = g_quark_from_static_string ("cinnamon2d"))))) {
 		switch (0) {
 			default:
 			{
 				gchar* _tmp4_ = NULL;
-				_tmp4_ = g_strdup ("ubuntu_badge.png");
+				_tmp4_ = g_strdup ("custom_Cinnamon_badge.png");
 				result = _tmp4_;
 				return result;
 			}
 		}
-	} else if (((((((_tmp3_ == ((0 != _tmp2_label2) ? _tmp2_label2 : (_tmp2_label2 = g_quark_from_static_string ("gnome-classic")))) || (_tmp3_ == ((0 != _tmp2_label3) ? _tmp2_label3 : (_tmp2_label3 = g_quark_from_static_string ("gnome-flashback-compiz"))))) || (_tmp3_ == ((0 != _tmp2_label4) ? _tmp2_label4 : (_tmp2_label4 = g_quark_from_static_string ("gnome-flashback"))))) || (_tmp3_ == ((0 != _tmp2_label5) ? _tmp2_label5 : (_tmp2_label5 = g_quark_from_static_string ("gnome-fallback-compiz"))))) || (_tmp3_ == ((0 != _tmp2_label6) ? _tmp2_label6 : (_tmp2_label6 = g_quark_from_static_string ("gnome-fallback"))))) || (_tmp3_ == ((0 != _tmp2_label7) ? _tmp2_label7 : (_tmp2_label7 = g_quark_from_static_string ("gnome-shell"))))) || (_tmp3_ == ((0 != _tmp2_label8) ? _tmp2_label8 : (_tmp2_label8 = g_quark_from_static_string ("gnome"))))) {
+	} else if ((_tmp3_ == ((0 != _tmp2_label2) ? _tmp2_label2 : (_tmp2_label2 = g_quark_from_static_string ("ubuntu")))) || (_tmp3_ == ((0 != _tmp2_label3) ? _tmp2_label3 : (_tmp2_label3 = g_quark_from_static_string ("ubuntu-2d"))))) {
 		switch (0) {
 			default:
 			{
 				gchar* _tmp5_ = NULL;
-				_tmp5_ = g_strdup ("gnome_badge.png");
+				_tmp5_ = g_strdup ("ubuntu_badge.png");
 				result = _tmp5_;
 				return result;
 			}
 		}
-	} else if ((_tmp3_ == ((0 != _tmp2_label9) ? _tmp2_label9 : (_tmp2_label9 = g_quark_from_static_string ("kde")))) || (_tmp3_ == ((0 != _tmp2_label10) ? _tmp2_label10 : (_tmp2_label10 = g_quark_from_static_string ("kde-plasma"))))) {
+	} else if (((((((_tmp3_ == ((0 != _tmp2_label4) ? _tmp2_label4 : (_tmp2_label4 = g_quark_from_static_string ("gnome-classic")))) || (_tmp3_ == ((0 != _tmp2_label5) ? _tmp2_label5 : (_tmp2_label5 = g_quark_from_static_string ("gnome-flashback-compiz"))))) || (_tmp3_ == ((0 != _tmp2_label6) ? _tmp2_label6 : (_tmp2_label6 = g_quark_from_static_string ("gnome-flashback"))))) || (_tmp3_ == ((0 != _tmp2_label7) ? _tmp2_label7 : (_tmp2_label7 = g_quark_from_static_string ("gnome-fallback-compiz"))))) || (_tmp3_ == ((0 != _tmp2_label8) ? _tmp2_label8 : (_tmp2_label8 = g_quark_from_static_string ("gnome-fallback"))))) || (_tmp3_ == ((0 != _tmp2_label9) ? _tmp2_label9 : (_tmp2_label9 = g_quark_from_static_string ("gnome-shell"))))) || (_tmp3_ == ((0 != _tmp2_label10) ? _tmp2_label10 : (_tmp2_label10 = g_quark_from_static_string ("gnome"))))) {
 		switch (0) {
 			default:
 			{
 				gchar* _tmp6_ = NULL;
-				_tmp6_ = g_strdup ("kde_badge.png");
+				_tmp6_ = g_strdup ("gnome_badge.png");
 				result = _tmp6_;
 				return result;
 			}
 		}
-	} else if (_tmp3_ == ((0 != _tmp2_label11) ? _tmp2_label11 : (_tmp2_label11 = g_quark_from_static_string ("xterm")))) {
+	} else if ((_tmp3_ == ((0 != _tmp2_label11) ? _tmp2_label11 : (_tmp2_label11 = g_quark_from_static_string ("kde")))) || (_tmp3_ == ((0 != _tmp2_label12) ? _tmp2_label12 : (_tmp2_label12 = g_quark_from_static_string ("kde-plasma"))))) {
 		switch (0) {
 			default:
 			{
 				gchar* _tmp7_ = NULL;
-				_tmp7_ = g_strdup ("recovery_console_badge.png");
+				_tmp7_ = g_strdup ("kde_badge.png");
 				result = _tmp7_;
 				return result;
 			}
 		}
-	} else if (_tmp3_ == ((0 != _tmp2_label12) ? _tmp2_label12 : (_tmp2_label12 = g_quark_from_static_string ("remote-login")))) {
+	} else if (_tmp3_ == ((0 != _tmp2_label13) ? _tmp2_label13 : (_tmp2_label13 = g_quark_from_static_string ("xterm")))) {
 		switch (0) {
 			default:
 			{
 				gchar* _tmp8_ = NULL;
-				_tmp8_ = g_strdup ("remote_login_help.png");
+				_tmp8_ = g_strdup ("recovery_console_badge.png");
 				result = _tmp8_;
+				return result;
+			}
+		}
+	} else if (_tmp3_ == ((0 != _tmp2_label14) ? _tmp2_label14 : (_tmp2_label14 = g_quark_from_static_string ("remote-login")))) {
+		switch (0) {
+			default:
+			{
+				gchar* _tmp9_ = NULL;
+				_tmp9_ = g_strdup ("remote_login_help.png");
+				result = _tmp9_;
 				return result;
 			}
 		}
@@ -935,7 +973,7 @@ GdkPixbuf* session_list_get_badge (const gchar* session) {
 			_tmp32_ = name;
 			_tmp33_ = e;
 			_tmp34_ = _tmp33_->message;
-			g_debug ("session-list.vala:152: Error loading badge %s: %s", _tmp32_, _tmp34_);
+			g_debug ("session-list.vala:160: Error loading badge %s: %s", _tmp32_, _tmp34_);
 			_g_error_free0 (e);
 		}
 		__finally16:

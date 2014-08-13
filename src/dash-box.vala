@@ -192,7 +192,7 @@ public class DashBox : Gtk.Box
         }
 
         /* Draw darker background with a rounded border */
-        var box_r = 0.3 * grid_size;
+    //    var box_r = 0.3 * grid_size;
         int box_y = 0;
         int box_w;
         int box_h;
@@ -214,12 +214,12 @@ public class DashBox : Gtk.Box
 
         c.save ();
 
-        CairoUtils.rounded_rectangle (c, 0, box_y, box_w, box_h, box_r);
+        CairoUtils.rounded_rectangle (c, 0, box_y, box_w, box_h, 0);
 
         c.set_source_rgba (0.1, 0.1, 0.1, 0.4);
         c.fill_preserve ();
 
-        c.set_source_rgba (0.4, 0.4, 0.4, 0.4);
+        c.set_source_rgba (0.4, 0.4,0.4 , 0.4);
         c.set_line_width (1);
         c.stroke ();
 
