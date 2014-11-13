@@ -1,3 +1,15 @@
+unity-greeter (14.04.101-0ubuntukylin4) trusty; urgency=medium
+
+  * change icon for neokylin
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Thu, 13 Nov 2014 11:27:07 +0800
+
+unity-greeter (14.04.100-0ubuntukylin4) trusty; urgency=medium
+
+  * release for UK 3.0 beta
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Fri, 22 Aug 2014 09:42:49 +0800
+
 unity-greeter (14.04.10-0ubuntukylin4) trusty; urgency=medium
 
   * 修复桌面环境选中状态主题问题
