@@ -1,3 +1,11 @@
+unity-greeter (140.4.10-0neokylin1) trusty; urgency=medium
+
+  * release for neokylin 
+  * 修改默认背景名称
+  * 更换多屏显示时的logo 
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 05 Jan 2015 17:10:40 +0800
+
 unity-greeter (14.04.101-0ubuntukylin4) trusty; urgency=medium
 
   * change icon for neokylin
