@@ -1,3 +1,9 @@
+unity-greeter (140.4.10-0kord2) utopic; urgency=medium
+
+  * 修改默认背景颜色
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Tue, 28 Apr 2015 15:28:04 +0800
+
 unity-greeter (140.4.10-0neokylin1) trusty; urgency=medium
 
   * release for neokylin 
