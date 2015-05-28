@@ -149,9 +149,9 @@ public class ShutdownDialog : Gtk.Fixed
         vbox.pack_start (button_box, false, false, 0);
 
         if (type == ShutdownDialogType.SHUTDOWN)
-        {
+        {debug ("~~~~~~~~~LightDM.get_can_suspend~~~~~~~~~~");
             if (LightDM.get_can_suspend ())
-            {
+            {debug ("~~~~~~~~~LightDM.get_can_suspend:YES!~~~~~~~~~~");
                 var button = add_button (_("Suspend"), Path.build_filename (Config.PKGDATADIR, "suspend.png"), Path.build_filename (Config.PKGDATADIR, "suspend_highlight.png"));
                 button.clicked.connect (() =>
                 {
@@ -166,9 +166,9 @@ public class ShutdownDialog : Gtk.Fixed
                     }
                 });
             }
-
+            debug ("~~~~~~~~~LightDM.LightDM.get_can_hibernate~~~~~~~~~~");
             if (LightDM.get_can_hibernate ())
-            {
+            {debug ("~~~~~~~~~LightDM.LightDM.get_can_hibernate:YES!~~~~~~~~~~");
                 var button = add_button (_("Hibernate"), Path.build_filename (Config.PKGDATADIR, "hibernate.png"), Path.build_filename (Config.PKGDATADIR, "hibernate_highlight.png"));
                 button.clicked.connect (() =>
                 {
@@ -184,9 +184,9 @@ public class ShutdownDialog : Gtk.Fixed
                 });
             }
         }
-
+        debug ("~~~~~~~~~LightDM.LightDM.get_can_restart~~~~~~~~~~");
         if (LightDM.get_can_restart ())
-        {
+        {debug ("~~~~~~~~~LightDM.LightDM.get_can_restart:YES~~~~~~~~~~");
             var button = add_button (_("Restart"), Path.build_filename (Config.PKGDATADIR, "restart.png"), Path.build_filename (Config.PKGDATADIR, "restart_highlight.png"));
             button.clicked.connect (() =>
             {
@@ -201,9 +201,9 @@ public class ShutdownDialog : Gtk.Fixed
                 }
             });
         }
-
+        debug ("~~~~~~~~~LightDM.LightDM.get_can_shutdown~~~~~~~~~~");
         if (LightDM.get_can_shutdown ())
-        {
+        {debug ("~~~~~~~~~LightDM.LightDM.get_can_shutdown:YES!~~~~~~~~~~");
             var button = add_button (_("Shut Down"), Path.build_filename (Config.PKGDATADIR, "shutdown.png"), Path.build_filename (Config.PKGDATADIR, "shutdown_highlight.png"));
             button.clicked.connect (() =>
             {

@@ -463,7 +463,7 @@ public class MainWindow : Gtk.Window
 
     public void set_keyboard_state ()
     {
-		debug ("~~~~~~~~~set_keyboard_state~~~~~~~~~~`");
+		debug ("~~~~~~~~~set_keyboard_state~~~~~~~~~~");
         a11ybutton.set_active (UGSettings.get_boolean (UGSettings.KEY_ONSCREEN_KEYBOARD));
     }
 
