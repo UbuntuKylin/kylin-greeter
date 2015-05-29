@@ -1483,7 +1483,7 @@ void main_window_set_keyboard_state (MainWindow* self) {
 	GtkToggleButton* _tmp0_ = NULL;
 	gboolean _tmp1_ = FALSE;
 	g_return_if_fail (self != NULL);
-	g_debug ("main-window.vala:466: ~~~~~~~~~set_keyboard_state~~~~~~~~~~`");
+	g_debug ("main-window.vala:466: ~~~~~~~~~set_keyboard_state~~~~~~~~~~");
 	_tmp0_ = self->priv->a11ybutton;
 	_tmp1_ = ug_settings_get_boolean (UG_SETTINGS_KEY_ONSCREEN_KEYBOARD);
 	gtk_toggle_button_set_active (_tmp0_, _tmp1_);

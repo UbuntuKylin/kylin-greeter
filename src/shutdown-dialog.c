@@ -94,12 +94,12 @@ typedef struct _AnimateTimerClass AnimateTimerClass;
 #define _cairo_pattern_destroy0(var) ((var == NULL) ? NULL : (var = (cairo_pattern_destroy (var), NULL)))
 #define _monitor_unref0(var) ((var == NULL) ? NULL : (var = (monitor_unref (var), NULL)))
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
+typedef struct _Block5Data Block5Data;
 #define _g_free0(var) (var = (g_free (var), NULL))
 #define __vala_PangoFontDescription_free0(var) ((var == NULL) ? NULL : (var = (_vala_PangoFontDescription_free (var), NULL)))
 #define _g_variant_type_free0(var) ((var == NULL) ? NULL : (var = (g_variant_type_free (var), NULL)))
 #define _g_variant_unref0(var) ((var == NULL) ? NULL : (var = (g_variant_unref (var), NULL)))
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
-typedef struct _Block5Data Block5Data;
 typedef struct _Block6Data Block6Data;
 typedef struct _MonitorPrivate MonitorPrivate;
 #define _cairo_destroy0(var) ((var == NULL) ? NULL : (var = (cairo_destroy (var), NULL)))
@@ -143,14 +143,14 @@ struct _ShutdownDialogPrivate {
 struct _Block5Data {
 	int _ref_count_;
 	ShutdownDialog * self;
-	DialogButton* button;
+	DialogButton* shutdown_button;
 };
 
 typedef gdouble (*AnimateTimerEasingFunc) (gdouble x, void* user_data);
 struct _Block6Data {
 	int _ref_count_;
 	ShutdownDialog * self;
-	gdouble start_value;
+	gfloat start_value;
 };
 
 struct _Monitor {
@@ -213,6 +213,8 @@ enum  {
 #define SHUTDOWN_DIALOG_BLUR_RADIUS 8
 ShutdownDialog* shutdown_dialog_new (ShutdownDialogType type, Background* bg);
 ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType type, Background* bg);
+static Block5Data* block5_data_ref (Block5Data* _data5_);
+static void block5_data_unref (void * _userdata_);
 static void shutdown_dialog_rebuild_background (ShutdownDialog* self);
 static void _shutdown_dialog_rebuild_background_g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
 static void shutdown_dialog_update_background_color (ShutdownDialog* self);
@@ -228,14 +230,12 @@ static void ____lambda19_ (ShutdownDialog* self);
 static void _____lambda19__gtk_button_clicked (GtkButton* _sender, gpointer self);
 static void ____lambda20_ (ShutdownDialog* self);
 static void _____lambda20__gtk_button_clicked (GtkButton* _sender, gpointer self);
-static void ___lambda21_ (ShutdownDialog* self);
-static void ____lambda21__gtk_button_clicked (GtkButton* _sender, gpointer self);
-static Block5Data* block5_data_ref (Block5Data* _data5_);
-static void block5_data_unref (void * _userdata_);
-static void ___lambda22_ (ShutdownDialog* self);
-static void ____lambda22__gtk_button_clicked (GtkButton* _sender, gpointer self);
-static void ____lambda23_ (Block5Data* _data5_);
-static void _____lambda23__gtk_widget_show (GtkWidget* _sender, gpointer self);
+static void __lambda21_ (ShutdownDialog* self);
+static void ___lambda21__gtk_button_clicked (GtkButton* _sender, gpointer self);
+static void __lambda22_ (ShutdownDialog* self);
+static void ___lambda22__gtk_button_clicked (GtkButton* _sender, gpointer self);
+static void ___lambda23_ (Block5Data* _data5_);
+static void ____lambda23__gtk_widget_show (GtkWidget* _sender, gpointer self);
 DialogButton* dialog_button_new (const gchar* inactive_filename, const gchar* focused_filename, const gchar* active_filename, GtkLabel* label);
 DialogButton* dialog_button_construct (GType object_type, const gchar* inactive_filename, const gchar* focused_filename, const gchar* active_filename, GtkLabel* label);
 static void __lambda24_ (ShutdownDialog* self);
@@ -250,9 +250,9 @@ static void ___lambda26__animate_timer_animate (AnimateTimer* _sender, gdouble p
 static void __lambda27_ (ShutdownDialog* self);
 void animate_timer_reset (AnimateTimer* self, gint temp_speed);
 static void ___lambda27__gtk_widget_show (GtkWidget* _sender, gpointer self);
+gboolean shutdown_dialog_isNumber (ShutdownDialog* self, gdouble d);
 static Block6Data* block6_data_ref (Block6Data* _data6_);
 static void block6_data_unref (void * _userdata_);
-gdouble animate_timer_get_progress (AnimateTimer* self);
 static gdouble __lambda16_ (Block6Data* _data6_, gdouble x);
 static gdouble ___lambda16__animate_timer_easing_func (gdouble x, gpointer self);
 static void __lambda17_ (ShutdownDialog* self, gdouble p);
@@ -269,6 +269,7 @@ static gboolean shutdown_dialog_real_draw (GtkWidget* base, cairo_t* c);
 gboolean animate_timer_get_is_running (AnimateTimer* self);
 void cairo_utils_exponential_blur_surface (cairo_surface_t* surface, gint radius);
 void cairo_utils_rounded_rectangle (cairo_t* c, gdouble x, gdouble y, gdouble width, gdouble height, gdouble radius);
+gdouble animate_timer_get_progress (AnimateTimer* self);
 static void shutdown_dialog_finalize (GObject* obj);
 #define DIALOG_BUTTON_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_DIALOG_BUTTON, DialogButtonPrivate))
 enum  {
@@ -294,6 +295,25 @@ GType shutdown_dialog_type_get_type (void) {
 }
 
 
+static Block5Data* block5_data_ref (Block5Data* _data5_) {
+	g_atomic_int_inc (&_data5_->_ref_count_);
+	return _data5_;
+}
+
+
+static void block5_data_unref (void * _userdata_) {
+	Block5Data* _data5_;
+	_data5_ = (Block5Data*) _userdata_;
+	if (g_atomic_int_dec_and_test (&_data5_->_ref_count_)) {
+		ShutdownDialog * self;
+		self = _data5_->self;
+		_g_object_unref0 (_data5_->shutdown_button);
+		_g_object_unref0 (self);
+		g_slice_free (Block5Data, _data5_);
+	}
+}
+
+
 static void _shutdown_dialog_rebuild_background_g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self) {
 	shutdown_dialog_rebuild_background (self);
 }
@@ -307,6 +327,8 @@ static void _shutdown_dialog_update_background_color_g_object_notify (GObject* _
 static gboolean __lambda15_ (ShutdownDialog* self) {
 	gboolean result = FALSE;
 	shutdown_dialog_close (self);
+	g_debug ("shutdown-dialog.vala:75: ~~~~~~~~~close shutdown dialog on click~~~~~~" \
+"~~~~");
 	result = TRUE;
 	return result;
 }
@@ -357,7 +379,7 @@ static void ____lambda19_ (ShutdownDialog* self) {
 		_inner_error_ = NULL;
 		_tmp0_ = e;
 		_tmp1_ = _tmp0_->message;
-		g_warning ("shutdown-dialog.vala:165: Failed to suspend: %s", _tmp1_);
+		g_warning ("shutdown-dialog.vala:166: Failed to suspend: %s", _tmp1_);
 		_g_error_free0 (e);
 	}
 	__finally22:
@@ -393,7 +415,7 @@ static void ____lambda20_ (ShutdownDialog* self) {
 		_inner_error_ = NULL;
 		_tmp0_ = e;
 		_tmp1_ = _tmp0_->message;
-		g_warning ("shutdown-dialog.vala:182: Failed to hibernate: %s", _tmp1_);
+		g_warning ("shutdown-dialog.vala:183: Failed to hibernate: %s", _tmp1_);
 		_g_error_free0 (e);
 	}
 	__finally23:
@@ -410,7 +432,7 @@ static void _____lambda20__gtk_button_clicked (GtkButton* _sender, gpointer self
 }
 
 
-static void ___lambda21_ (ShutdownDialog* self) {
+static void __lambda21_ (ShutdownDialog* self) {
 	GError * _inner_error_ = NULL;
 	{
 		lightdm_restart (&_inner_error_);
@@ -429,7 +451,7 @@ static void ___lambda21_ (ShutdownDialog* self) {
 		_inner_error_ = NULL;
 		_tmp0_ = e;
 		_tmp1_ = _tmp0_->message;
-		g_warning ("shutdown-dialog.vala:200: Failed to restart: %s", _tmp1_);
+		g_warning ("shutdown-dialog.vala:206: Failed to restart: %s", _tmp1_);
 		_g_error_free0 (e);
 	}
 	__finally24:
@@ -441,31 +463,12 @@ static void ___lambda21_ (ShutdownDialog* self) {
 }
 
 
-static void ____lambda21__gtk_button_clicked (GtkButton* _sender, gpointer self) {
-	___lambda21_ (self);
+static void ___lambda21__gtk_button_clicked (GtkButton* _sender, gpointer self) {
+	__lambda21_ (self);
 }
 
 
-static Block5Data* block5_data_ref (Block5Data* _data5_) {
-	g_atomic_int_inc (&_data5_->_ref_count_);
-	return _data5_;
-}
-
-
-static void block5_data_unref (void * _userdata_) {
-	Block5Data* _data5_;
-	_data5_ = (Block5Data*) _userdata_;
-	if (g_atomic_int_dec_and_test (&_data5_->_ref_count_)) {
-		ShutdownDialog * self;
-		self = _data5_->self;
-		_g_object_unref0 (_data5_->button);
-		_g_object_unref0 (self);
-		g_slice_free (Block5Data, _data5_);
-	}
-}
-
-
-static void ___lambda22_ (ShutdownDialog* self) {
+static void __lambda22_ (ShutdownDialog* self) {
 	GError * _inner_error_ = NULL;
 	{
 		lightdm_shutdown (&_inner_error_);
@@ -484,7 +487,7 @@ static void ___lambda22_ (ShutdownDialog* self) {
 		_inner_error_ = NULL;
 		_tmp0_ = e;
 		_tmp1_ = _tmp0_->message;
-		g_warning ("shutdown-dialog.vala:217: Failed to shutdown: %s", _tmp1_);
+		g_warning ("shutdown-dialog.vala:227: Failed to shutdown: %s", _tmp1_);
 		_g_error_free0 (e);
 	}
 	__finally25:
@@ -496,22 +499,22 @@ static void ___lambda22_ (ShutdownDialog* self) {
 }
 
 
-static void ____lambda22__gtk_button_clicked (GtkButton* _sender, gpointer self) {
-	___lambda22_ (self);
+static void ___lambda22__gtk_button_clicked (GtkButton* _sender, gpointer self) {
+	__lambda22_ (self);
 }
 
 
-static void ____lambda23_ (Block5Data* _data5_) {
+static void ___lambda23_ (Block5Data* _data5_) {
 	ShutdownDialog * self;
 	DialogButton* _tmp0_ = NULL;
 	self = _data5_->self;
-	_tmp0_ = _data5_->button;
+	_tmp0_ = _data5_->shutdown_button;
 	gtk_widget_grab_focus ((GtkWidget*) _tmp0_);
 }
 
 
-static void _____lambda23__gtk_widget_show (GtkWidget* _sender, gpointer self) {
-	____lambda23_ (self);
+static void ____lambda23__gtk_widget_show (GtkWidget* _sender, gpointer self) {
+	___lambda23_ (self);
 }
 
 
@@ -565,6 +568,7 @@ static void ___lambda27__gtk_widget_show (GtkWidget* _sender, gpointer self) {
 
 ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType type, Background* bg) {
 	ShutdownDialog * self = NULL;
+	Block5Data* _data5_;
 	Background* _tmp0_ = NULL;
 	Background* _tmp1_ = NULL;
 	Background* _tmp2_ = NULL;
@@ -631,7 +635,25 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 	GtkBox* _tmp91_ = NULL;
 	ShutdownDialogType _tmp92_ = 0;
 	gboolean _tmp111_ = FALSE;
+	DialogButton* restart_button = NULL;
+	const gchar* _tmp112_ = NULL;
+	gchar* _tmp113_ = NULL;
+	gchar* _tmp114_ = NULL;
+	gchar* _tmp115_ = NULL;
+	gchar* _tmp116_ = NULL;
+	DialogButton* _tmp117_ = NULL;
+	DialogButton* _tmp118_ = NULL;
+	DialogButton* _tmp119_ = NULL;
 	gboolean _tmp120_ = FALSE;
+	const gchar* _tmp121_ = NULL;
+	gchar* _tmp122_ = NULL;
+	gchar* _tmp123_ = NULL;
+	gchar* _tmp124_ = NULL;
+	gchar* _tmp125_ = NULL;
+	DialogButton* _tmp126_ = NULL;
+	DialogButton* _tmp127_ = NULL;
+	DialogButton* _tmp128_ = NULL;
+	ShutdownDialogType _tmp129_ = 0;
 	gchar* _tmp130_ = NULL;
 	gchar* _tmp131_ = NULL;
 	gchar* _tmp132_ = NULL;
@@ -647,7 +669,10 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 	AnimateTimer* _tmp142_ = NULL;
 	GError * _inner_error_ = NULL;
 	g_return_val_if_fail (bg != NULL, NULL);
+	_data5_ = g_slice_new0 (Block5Data);
+	_data5_->_ref_count_ = 1;
 	self = (ShutdownDialog*) g_object_new (object_type, NULL);
+	_data5_->self = g_object_ref (self);
 	_tmp0_ = bg;
 	self->priv->background = _tmp0_;
 	_tmp1_ = self->priv->background;
@@ -827,12 +852,14 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 		_inner_error_ = NULL;
 		_tmp70_ = e;
 		_tmp71_ = _tmp70_->message;
-		g_warning ("shutdown-dialog.vala:134: Failed to check sessions from logind: %s", _tmp71_);
+		g_warning ("shutdown-dialog.vala:135: Failed to check sessions from logind: %s", _tmp71_);
 		_g_error_free0 (e);
 	}
 	__finally21:
 	if (_inner_error_ != NULL) {
 		_g_free0 (text);
+		block5_data_unref (_data5_);
+		_data5_ = NULL;
 		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
 		g_clear_error (&_inner_error_);
 		return NULL;
@@ -886,6 +913,7 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 	if (_tmp92_ == SHUTDOWN_DIALOG_TYPE_SHUTDOWN) {
 		gboolean _tmp93_ = FALSE;
 		gboolean _tmp102_ = FALSE;
+		g_debug ("shutdown-dialog.vala:153: ~~~~~~~~~LightDM.get_can_suspend~~~~~~~~~~");
 		_tmp93_ = lightdm_get_can_suspend ();
 		if (_tmp93_) {
 			DialogButton* button = NULL;
@@ -897,6 +925,8 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 			DialogButton* _tmp99_ = NULL;
 			DialogButton* _tmp100_ = NULL;
 			DialogButton* _tmp101_ = NULL;
+			g_debug ("shutdown-dialog.vala:155: ~~~~~~~~~LightDM.get_can_suspend:YES!~~~~~~~" \
+"~~~");
 			_tmp94_ = _ ("Suspend");
 			_tmp95_ = g_build_filename (PKGDATADIR, "suspend.png", NULL);
 			_tmp96_ = _tmp95_;
@@ -911,6 +941,8 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 			g_signal_connect_object ((GtkButton*) _tmp101_, "clicked", (GCallback) _____lambda19__gtk_button_clicked, self, 0);
 			_g_object_unref0 (button);
 		}
+		g_debug ("shutdown-dialog.vala:170: ~~~~~~~~~LightDM.LightDM.get_can_hibernate~~" \
+"~~~~~~~~");
 		_tmp102_ = lightdm_get_can_hibernate ();
 		if (_tmp102_) {
 			DialogButton* button = NULL;
@@ -922,6 +954,8 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 			DialogButton* _tmp108_ = NULL;
 			DialogButton* _tmp109_ = NULL;
 			DialogButton* _tmp110_ = NULL;
+			g_debug ("shutdown-dialog.vala:172: ~~~~~~~~~LightDM.LightDM.get_can_hibernate:Y" \
+"ES!~~~~~~~~~~");
 			_tmp103_ = _ ("Hibernate");
 			_tmp104_ = g_build_filename (PKGDATADIR, "hibernate.png", NULL);
 			_tmp105_ = _tmp104_;
@@ -937,64 +971,53 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 			_g_object_unref0 (button);
 		}
 	}
+	g_debug ("shutdown-dialog.vala:189: ~~~~~~~~~LightDM.LightDM.get_can_restart~~~~" \
+"~~~~~~");
 	_tmp111_ = lightdm_get_can_restart ();
 	if (_tmp111_) {
-		DialogButton* button = NULL;
-		const gchar* _tmp112_ = NULL;
-		gchar* _tmp113_ = NULL;
-		gchar* _tmp114_ = NULL;
-		gchar* _tmp115_ = NULL;
-		gchar* _tmp116_ = NULL;
-		DialogButton* _tmp117_ = NULL;
-		DialogButton* _tmp118_ = NULL;
-		DialogButton* _tmp119_ = NULL;
-		_tmp112_ = _ ("Restart");
-		_tmp113_ = g_build_filename (PKGDATADIR, "restart.png", NULL);
-		_tmp114_ = _tmp113_;
-		_tmp115_ = g_build_filename (PKGDATADIR, "restart_highlight.png", NULL);
-		_tmp116_ = _tmp115_;
-		_tmp117_ = shutdown_dialog_add_button (self, _tmp112_, _tmp114_, _tmp116_);
-		_tmp118_ = _tmp117_;
-		_g_free0 (_tmp116_);
-		_g_free0 (_tmp114_);
-		button = _tmp118_;
-		_tmp119_ = button;
-		g_signal_connect_object ((GtkButton*) _tmp119_, "clicked", (GCallback) ____lambda21__gtk_button_clicked, self, 0);
-		_g_object_unref0 (button);
+		g_debug ("shutdown-dialog.vala:192: ~~~~~~~~~LightDM.LightDM.get_can_restart:YES" \
+"~~~~~~~~~~");
+	} else {
+		g_debug ("shutdown-dialog.vala:194: ~~~~~~~~~LightDM.LightDM.get_can_restart:NO," \
+" maybe can not restart ~~~~~~~~~~");
 	}
+	_tmp112_ = _ ("Restart");
+	_tmp113_ = g_build_filename (PKGDATADIR, "restart.png", NULL);
+	_tmp114_ = _tmp113_;
+	_tmp115_ = g_build_filename (PKGDATADIR, "restart_highlight.png", NULL);
+	_tmp116_ = _tmp115_;
+	_tmp117_ = shutdown_dialog_add_button (self, _tmp112_, _tmp114_, _tmp116_);
+	_tmp118_ = _tmp117_;
+	_g_free0 (_tmp116_);
+	_g_free0 (_tmp114_);
+	restart_button = _tmp118_;
+	_tmp119_ = restart_button;
+	g_signal_connect_object ((GtkButton*) _tmp119_, "clicked", (GCallback) ___lambda21__gtk_button_clicked, self, 0);
+	g_debug ("shutdown-dialog.vala:210: ~~~~~~~~~LightDM.LightDM.get_can_shutdown~~~" \
+"~~~~~~~");
 	_tmp120_ = lightdm_get_can_shutdown ();
 	if (_tmp120_) {
-		Block5Data* _data5_;
-		const gchar* _tmp121_ = NULL;
-		gchar* _tmp122_ = NULL;
-		gchar* _tmp123_ = NULL;
-		gchar* _tmp124_ = NULL;
-		gchar* _tmp125_ = NULL;
-		DialogButton* _tmp126_ = NULL;
-		DialogButton* _tmp127_ = NULL;
-		DialogButton* _tmp128_ = NULL;
-		ShutdownDialogType _tmp129_ = 0;
-		_data5_ = g_slice_new0 (Block5Data);
-		_data5_->_ref_count_ = 1;
-		_data5_->self = g_object_ref (self);
-		_tmp121_ = _ ("Shut Down");
-		_tmp122_ = g_build_filename (PKGDATADIR, "shutdown.png", NULL);
-		_tmp123_ = _tmp122_;
-		_tmp124_ = g_build_filename (PKGDATADIR, "shutdown_highlight.png", NULL);
-		_tmp125_ = _tmp124_;
-		_tmp126_ = shutdown_dialog_add_button (self, _tmp121_, _tmp123_, _tmp125_);
-		_tmp127_ = _tmp126_;
-		_g_free0 (_tmp125_);
-		_g_free0 (_tmp123_);
-		_data5_->button = _tmp127_;
-		_tmp128_ = _data5_->button;
-		g_signal_connect_object ((GtkButton*) _tmp128_, "clicked", (GCallback) ____lambda22__gtk_button_clicked, self, 0);
-		_tmp129_ = type;
-		if (_tmp129_ != SHUTDOWN_DIALOG_TYPE_SHUTDOWN) {
-			g_signal_connect_data ((GtkWidget*) self, "show", (GCallback) _____lambda23__gtk_widget_show, block5_data_ref (_data5_), (GClosureNotify) block5_data_unref, 0);
-		}
-		block5_data_unref (_data5_);
-		_data5_ = NULL;
+		g_debug ("shutdown-dialog.vala:213: ~~~~~~~~~LightDM.LightDM.get_can_shutdown:YE" \
+"S!~~~~~~~~~~");
+	} else {
+		g_debug ("shutdown-dialog.vala:215: ~~~~~~~~~LightDM.LightDM.get_can_shutdown:NO" \
+"! maybe can not shutdown~~~~~~~~~~");
+	}
+	_tmp121_ = _ ("Shut Down");
+	_tmp122_ = g_build_filename (PKGDATADIR, "shutdown.png", NULL);
+	_tmp123_ = _tmp122_;
+	_tmp124_ = g_build_filename (PKGDATADIR, "shutdown_highlight.png", NULL);
+	_tmp125_ = _tmp124_;
+	_tmp126_ = shutdown_dialog_add_button (self, _tmp121_, _tmp123_, _tmp125_);
+	_tmp127_ = _tmp126_;
+	_g_free0 (_tmp125_);
+	_g_free0 (_tmp123_);
+	_data5_->shutdown_button = _tmp127_;
+	_tmp128_ = _data5_->shutdown_button;
+	g_signal_connect_object ((GtkButton*) _tmp128_, "clicked", (GCallback) ___lambda22__gtk_button_clicked, self, 0);
+	_tmp129_ = type;
+	if (_tmp129_ != SHUTDOWN_DIALOG_TYPE_SHUTDOWN) {
+		g_signal_connect_data ((GtkWidget*) self, "show", (GCallback) ____lambda23__gtk_widget_show, block5_data_ref (_data5_), (GClosureNotify) block5_data_unref, 0);
 	}
 	_tmp130_ = g_build_filename (PKGDATADIR, "dialog_close.png", NULL);
 	_tmp131_ = _tmp130_;
@@ -1023,14 +1046,29 @@ ShutdownDialog* shutdown_dialog_construct (GType object_type, ShutdownDialogType
 	_tmp142_ = self->priv->animation;
 	g_signal_connect_object (_tmp142_, "animate", (GCallback) ___lambda26__animate_timer_animate, self, 0);
 	g_signal_connect_object ((GtkWidget*) self, "show", (GCallback) ___lambda27__gtk_widget_show, self, 0);
+	_g_object_unref0 (restart_button);
 	_g_object_unref0 (label);
 	_g_free0 (text);
+	block5_data_unref (_data5_);
+	_data5_ = NULL;
 	return self;
 }
 
 
 ShutdownDialog* shutdown_dialog_new (ShutdownDialogType type, Background* bg) {
 	return shutdown_dialog_construct (TYPE_SHUTDOWN_DIALOG, type, bg);
+}
+
+
+gboolean shutdown_dialog_isNumber (ShutdownDialog* self, gdouble d) {
+	gboolean result = FALSE;
+	gdouble _tmp0_ = 0.0;
+	gdouble _tmp1_ = 0.0;
+	g_return_val_if_fail (self != NULL, FALSE);
+	_tmp0_ = d;
+	_tmp1_ = d;
+	result = _tmp0_ == _tmp1_;
+	return result;
 }
 
 
@@ -1072,13 +1110,31 @@ static gdouble ___lambda16__animate_timer_easing_func (gdouble x, gpointer self)
 
 static void __lambda17_ (ShutdownDialog* self, gdouble p) {
 	gdouble _tmp0_ = 0.0;
+	gboolean _tmp1_ = FALSE;
+	gdouble _tmp2_ = 0.0;
+	gboolean _tmp5_ = FALSE;
 	gtk_widget_queue_draw ((GtkWidget*) self);
 	_tmp0_ = p;
-	if (_tmp0_ >= ((gdouble) 1.0f)) {
-		AnimateTimer* _tmp1_ = NULL;
-		_tmp1_ = self->priv->animation;
-		animate_timer_stop (_tmp1_);
+	g_debug ("shutdown-dialog.vala:256: ~~~~~~~~~close shutdown dialog animation = %" \
+"f~~~~~~~~~~", _tmp0_);
+	_tmp2_ = p;
+	if (_tmp2_ >= ((gdouble) 0.98f)) {
+		_tmp1_ = TRUE;
+	} else {
+		gdouble _tmp3_ = 0.0;
+		gboolean _tmp4_ = FALSE;
+		_tmp3_ = p;
+		_tmp4_ = shutdown_dialog_isNumber (self, _tmp3_);
+		_tmp1_ = !_tmp4_;
+	}
+	_tmp5_ = _tmp1_;
+	if (_tmp5_) {
+		AnimateTimer* _tmp6_ = NULL;
+		_tmp6_ = self->priv->animation;
+		animate_timer_stop (_tmp6_);
 		g_signal_emit_by_name (self, "closed");
+		g_debug ("shutdown-dialog.vala:261: ~~~~~~~~~close shutdown dialog closed!~~~~~~" \
+"~~~~");
 	}
 }
 
@@ -1091,27 +1147,25 @@ static void ___lambda17__animate_timer_animate (AnimateTimer* _sender, gdouble p
 void shutdown_dialog_close (ShutdownDialog* self) {
 	Block6Data* _data6_;
 	AnimateTimer* _tmp0_ = NULL;
-	gdouble _tmp1_ = 0.0;
-	gdouble _tmp2_ = 0.0;
-	AnimateTimer* _tmp3_ = NULL;
-	AnimateTimer* _tmp4_ = NULL;
-	AnimateTimer* _tmp5_ = NULL;
+	AnimateTimer* _tmp1_ = NULL;
+	AnimateTimer* _tmp2_ = NULL;
 	g_return_if_fail (self != NULL);
 	_data6_ = g_slice_new0 (Block6Data);
 	_data6_->_ref_count_ = 1;
 	_data6_->self = g_object_ref (self);
-	_tmp0_ = self->priv->animation;
-	_tmp1_ = animate_timer_get_progress (_tmp0_);
-	_tmp2_ = _tmp1_;
-	_data6_->start_value = 1.0f - _tmp2_;
-	_tmp3_ = animate_timer_new (___lambda16__animate_timer_easing_func, _data6_, ANIMATE_TIMER_INSTANT);
+	g_debug ("shutdown-dialog.vala:250: ~~~~~~~~~close shutdown dialog begin!~~~~~~~" \
+"~~~");
+	_data6_->start_value = 0.0f;
+	_tmp0_ = animate_timer_new (___lambda16__animate_timer_easing_func, _data6_, ANIMATE_TIMER_INSTANT);
 	_g_object_unref0 (self->priv->animation);
-	self->priv->animation = _tmp3_;
-	_tmp4_ = self->priv->animation;
-	g_signal_connect_object (_tmp4_, "animate", (GCallback) ___lambda17__animate_timer_animate, self, 0);
+	self->priv->animation = _tmp0_;
+	_tmp1_ = self->priv->animation;
+	g_signal_connect_object (_tmp1_, "animate", (GCallback) ___lambda17__animate_timer_animate, self, 0);
 	self->priv->closing = TRUE;
-	_tmp5_ = self->priv->animation;
-	animate_timer_reset (_tmp5_, -1);
+	_tmp2_ = self->priv->animation;
+	animate_timer_reset (_tmp2_, -1);
+	g_debug ("shutdown-dialog.vala:267: ~~~~~~~~~close shutdown dialog end!~~~~~~~~~" \
+"~");
 	block6_data_unref (_data6_);
 	_data6_ = NULL;
 }
@@ -2175,7 +2229,7 @@ DialogButton* dialog_button_construct (GType object_type, const gchar* inactive_
 		_inner_error_ = NULL;
 		_tmp28_ = e;
 		_tmp29_ = _tmp28_->message;
-		g_debug ("shutdown-dialog.vala:578: Internal error loading session chooser style" \
+		g_debug ("shutdown-dialog.vala:593: Internal error loading session chooser style" \
 ": %s", _tmp29_);
 		_g_error_free0 (e);
 	}

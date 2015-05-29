@@ -72,6 +72,7 @@ public class ShutdownDialog : Gtk.Fixed
         monitor_events.events |= Gdk.EventMask.BUTTON_PRESS_MASK;
         monitor_events.button_press_event.connect (() => {
             close ();
+            debug ("~~~~~~~~~close shutdown dialog on click~~~~~~~~~~");
             return true;
         });
         add (monitor_events);
@@ -192,8 +193,8 @@ public class ShutdownDialog : Gtk.Fixed
         }else{
             debug ("~~~~~~~~~LightDM.LightDM.get_can_restart:NO, maybe can not restart ~~~~~~~~~~");
         }
-            var button = add_button (_("Restart"), Path.build_filename (Config.PKGDATADIR, "restart.png"), Path.build_filename (Config.PKGDATADIR, "restart_highlight.png"));
-            button.clicked.connect (() =>
+            var restart_button = add_button (_("Restart"), Path.build_filename (Config.PKGDATADIR, "restart.png"), Path.build_filename (Config.PKGDATADIR, "restart_highlight.png"));
+            restart_button.clicked.connect (() =>
             {
                 try
                 {
@@ -213,8 +214,8 @@ public class ShutdownDialog : Gtk.Fixed
         }else{
             debug ("~~~~~~~~~LightDM.LightDM.get_can_shutdown:NO! maybe can not shutdown~~~~~~~~~~");
         }
-            var button = add_button (_("Shut Down"), Path.build_filename (Config.PKGDATADIR, "shutdown.png"), Path.build_filename (Config.PKGDATADIR, "shutdown_highlight.png"));
-            button.clicked.connect (() =>
+            var shutdown_button = add_button (_("Shut Down"), Path.build_filename (Config.PKGDATADIR, "shutdown.png"), Path.build_filename (Config.PKGDATADIR, "shutdown_highlight.png"));
+            shutdown_button.clicked.connect (() =>
             {
                 try
                 {
@@ -228,7 +229,7 @@ public class ShutdownDialog : Gtk.Fixed
             });
 
             if (type != ShutdownDialogType.SHUTDOWN)
-                show.connect(() => { button.grab_focus (); });
+                show.connect(() => { shutdown_button.grab_focus (); });
         
 
         close_button = new DialogButton (Path.build_filename (Config.PKGDATADIR, "dialog_close.png"), Path.build_filename (Config.PKGDATADIR, "dialog_close_highlight.png"), Path.build_filename (Config.PKGDATADIR, "dialog_close_press.png"));
@@ -241,24 +242,30 @@ public class ShutdownDialog : Gtk.Fixed
         animation.animate.connect (() => { queue_draw (); });
         show.connect (() => { animation.reset(); });
     }
-
-    public void close ()
+//add a function to check foalt is nan
+    public bool isNumber (double d)
     {
-        var start_value = 1.0f - animation.progress;
+        return (d==d);
+    }
+    public void close ()
+    {debug ("~~~~~~~~~close shutdown dialog begin!~~~~~~~~~~");
+        var start_value = 0.0f;
         animation = new AnimateTimer ((x) => { return start_value + x; }, AnimateTimer.INSTANT);
         animation.animate.connect ((p) =>
         {
             queue_draw ();
-
-            if (p >= 1.0f)
+            debug ("~~~~~~~~~close shutdown dialog animation = %f~~~~~~~~~~",p);
+            if (p >= 0.98f||!isNumber(p))//if p=nan,close dialog  immediately!;p can not get to 1.0 at sometime
             {
                 animation.stop ();
                 closed ();
+                debug ("~~~~~~~~~close shutdown dialog closed!~~~~~~~~~~");
             }
         });
 
         closing = true;
         animation.reset();
+        debug ("~~~~~~~~~close shutdown dialog end!~~~~~~~~~~");
     }
 
     private void rebuild_background ()
