@@ -1,3 +1,9 @@
+unity-greeter (140.4.10-0kord3) utopic; urgency=medium
+
+  * 无视lightdm对重启和关闭的判断，一直保持关机和重启按钮的绘制显示。
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Fri, 29 May 2015 10:55:55 +0800
+
 unity-greeter (140.4.10-0kord2) utopic; urgency=medium
 
   * 修改默认背景颜色

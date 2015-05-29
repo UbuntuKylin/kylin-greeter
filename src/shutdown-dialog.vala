@@ -184,9 +184,14 @@ public class ShutdownDialog : Gtk.Fixed
                 });
             }
         }
+//show restart button in anytime,change by pz
         debug ("~~~~~~~~~LightDM.LightDM.get_can_restart~~~~~~~~~~");
         if (LightDM.get_can_restart ())
-        {debug ("~~~~~~~~~LightDM.LightDM.get_can_restart:YES~~~~~~~~~~");
+        {
+            debug ("~~~~~~~~~LightDM.LightDM.get_can_restart:YES~~~~~~~~~~");
+        }else{
+            debug ("~~~~~~~~~LightDM.LightDM.get_can_restart:NO, maybe can not restart ~~~~~~~~~~");
+        }
             var button = add_button (_("Restart"), Path.build_filename (Config.PKGDATADIR, "restart.png"), Path.build_filename (Config.PKGDATADIR, "restart_highlight.png"));
             button.clicked.connect (() =>
             {
@@ -200,10 +205,14 @@ public class ShutdownDialog : Gtk.Fixed
                     warning ("Failed to restart: %s", e.message);
                 }
             });
-        }
+//show shutdown button in anytime,change by pz        
         debug ("~~~~~~~~~LightDM.LightDM.get_can_shutdown~~~~~~~~~~");
         if (LightDM.get_can_shutdown ())
-        {debug ("~~~~~~~~~LightDM.LightDM.get_can_shutdown:YES!~~~~~~~~~~");
+        {
+            debug ("~~~~~~~~~LightDM.LightDM.get_can_shutdown:YES!~~~~~~~~~~");
+        }else{
+            debug ("~~~~~~~~~LightDM.LightDM.get_can_shutdown:NO! maybe can not shutdown~~~~~~~~~~");
+        }
             var button = add_button (_("Shut Down"), Path.build_filename (Config.PKGDATADIR, "shutdown.png"), Path.build_filename (Config.PKGDATADIR, "shutdown_highlight.png"));
             button.clicked.connect (() =>
             {
@@ -220,7 +229,7 @@ public class ShutdownDialog : Gtk.Fixed
 
             if (type != ShutdownDialogType.SHUTDOWN)
                 show.connect(() => { button.grab_focus (); });
-        }
+        
 
         close_button = new DialogButton (Path.build_filename (Config.PKGDATADIR, "dialog_close.png"), Path.build_filename (Config.PKGDATADIR, "dialog_close_highlight.png"), Path.build_filename (Config.PKGDATADIR, "dialog_close_press.png"));
         close_button.can_focus = false;
