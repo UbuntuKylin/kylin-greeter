@@ -203,6 +203,7 @@ public class ShutdownDialog : Gtk.Fixed
                 }
                 catch (Error e)
                 {
+                    label.set_text("抱歉，您无权限进行此操作！");
                     warning ("Failed to restart: %s", e.message);
                 }
             });
@@ -224,6 +225,7 @@ public class ShutdownDialog : Gtk.Fixed
                 }
                 catch (Error e)
                 {
+                    label.set_text("抱歉，您无权限进行此操作！");
                     warning ("Failed to shutdown: %s", e.message);
                 }
             });
