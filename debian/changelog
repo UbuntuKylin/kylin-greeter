@@ -1,3 +1,9 @@
+unity-greeter (140.4.10-0kord6) utopic; urgency=medium
+
+  *  更换logo
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Wed, 03 Jun 2015 11:19:46 +0800
+
 unity-greeter (140.4.10-0kord5) utopic; urgency=medium
 
   *  增加无法关机重启的中文提示

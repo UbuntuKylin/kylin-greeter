@@ -20,3 +20,4 @@ override_dh_auto_install:
 override_dh_auto_clean:
 	dh_auto_clean
 	rm -f logo.png
+	rm -f ./src/*.c

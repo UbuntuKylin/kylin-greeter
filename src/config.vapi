@@ -10,3 +10,4 @@ namespace Config
   public const string INDICATORDIR;
   public const string USD_BINARY;
 }
+

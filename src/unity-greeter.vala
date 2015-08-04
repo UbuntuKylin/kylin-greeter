@@ -73,7 +73,7 @@ public class UnityGreeter
         }
         if (!connected && !test_mode)
             Posix.exit (Posix.EXIT_FAILURE);
-
+        //TODO:can be del?
         if (!test_mode)
         {
             settings_daemon = new SettingsDaemon ();
@@ -82,7 +82,7 @@ public class UnityGreeter
 
         var state_dir = Path.build_filename (Environment.get_user_cache_dir (), "unity-greeter");
         DirUtils.create_with_parents (state_dir, 0775);
-        
+        debug ("state_dir = %s ",state_dir);
         var xdg_seat = GLib.Environment.get_variable("XDG_SEAT");
         var state_file_name = xdg_seat != null && xdg_seat != "seat0" ? xdg_seat + "-state" : "state";
 
@@ -469,12 +469,14 @@ public class UnityGreeter
         Intl.textdomain (Config.GETTEXT_PACKAGE);
 
         /* Set up the accessibility stack, in case the user needs it for screen reading etc. */
-        Environment.set_variable ("GTK_MODULES", "atk-bridge", false);
+        //disable Assistive Technology by PZ
+        //Environment.set_variable ("GTK_MODULES", "atk-bridge", false);
 
         Pid atspi_pid = 0;
         Pid upstart_pid = 0;
-
-        try
+        
+        //disable Assistive Technology by PZ
+        /*try
         {
             string[] argv;
 
@@ -490,9 +492,10 @@ public class UnityGreeter
         {
             warning ("Error starting the at-spi registry: %s", e.message);
         }
-
+        */
         Gtk.init (ref args);
-        Ido.init ();
+        // Indicator Display Objects
+        //Ido.init ();
 
         log_timer = new Timer ();
         Log.set_default_handler (log_cb);
@@ -599,8 +602,8 @@ public class UnityGreeter
                 debug ("Upstart terminated with signal %d", Process.term_sig (status));
             upstart_pid = 0;
         }
-
-        if (atspi_pid != 0)
+        //disable Assistive Technology by PZ
+        /*if (atspi_pid != 0)
         {
             Posix.kill (atspi_pid, Posix.SIGKILL);
             int status;
@@ -610,7 +613,7 @@ public class UnityGreeter
             else
                 debug ("AT-SPI terminated with signal %d", Process.term_sig (status));
             atspi_pid = 0;
-        }
+        }*/
 
         debug ("Exiting");
 
