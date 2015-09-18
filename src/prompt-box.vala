@@ -275,9 +275,22 @@ public class PromptBox : FadableBox
             small_user_face_image.pixbuf=scale(tmp_face_image.pixbuf,128,128);
             return;
         }
+        
         face_path = face;
         //user_face_image.pixbuf = new Gdk.Pixbuf.from_file (Path.build_filename (face));
-        tmp_face_image.set_from_file(Path.build_filename (face));
+          try
+        {
+            tmp_face_image.pixbuf = new Gdk.Pixbuf.from_file (Path.build_filename (Path.build_filename (face)));
+            
+        }
+        catch (Error e)
+        {
+            debug ("Error loading user face image: %s", e.message);
+            face_path = Path.build_filename (Config.PKGDATADIR, "default_face.png", null);
+            tmp_face_image.set_from_file(face_path);
+            
+        }
+        
         
         user_face_image.pixbuf=scale(tmp_face_image.pixbuf,128,128);
         small_user_face_image.pixbuf=scale(tmp_face_image.pixbuf,128,128);

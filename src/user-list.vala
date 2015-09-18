@@ -863,6 +863,7 @@ public UserList (Background bg)
         e.background = background;
         if(face_image==null)
             face_image = default_face_image;
+        
         e.set_face_image(face_image);
         e.is_active = is_active;
         e.session = session;
