@@ -83,17 +83,28 @@ public class SessionList : GreeterList
 
     construct
     {
+        
         prompt = add_session_prompt ("session");
+        status=Status.SESSIONLIST;
+        prompt.show_prompts();
     }
 
+    public void set_prompt_face_image(string? face)
+    {
+        prompt.set_face_image(face);
+    }
+    
     private SessionPrompt add_session_prompt (string id)
     {
         var e = new SessionPrompt (id, session, default_session);
         e.respond.connect ((responses) => { session_clicked (responses[0]); });
         add_entry (e);
+        status_box=Status.SESSIONLIST;
+        
         return e;
     }
 
+    
     protected override void add_manual_entry () {}
     public override void show_authenticated (bool successful = true) {}
 

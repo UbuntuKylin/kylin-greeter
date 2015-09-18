@@ -87,6 +87,7 @@ public abstract class GreeterList : FadableBox
     private double scroll_location;
     private double scroll_direction;
 
+    private int clicked_location = -1;
     private AnimateTimer scroll_timer;
 
     private Gtk.Fixed fixed;
@@ -100,13 +101,25 @@ public abstract class GreeterList : FadableBox
     }
     protected Mode mode = Mode.ENTRY;
 
+    public enum Status
+    {
+        USERLIST,
+        LOGINBOX,
+        SESSIONLIST,
+    }
+    public  Status status = Status.USERLIST;
+    protected Status status_box=Status.USERLIST;
+    
     public static const int BORDER = 4;
-    public static const int BOX_WIDTH = 8; /* in grid_size blocks */
-    public static const int DEFAULT_BOX_HEIGHT = 3; /* in grid_size blocks */
+    public static const int BOX_WIDTH = 2; /* in grid_size blocks */
+    public static const int LOGINBOX_WIDTH = 12;
+    public static const int DEFAULT_BOX_HEIGHT = 2; /* in grid_size blocks */
+    public static const int DEFAULT_LOGINBOX_HEIGHT = 4;
+    private int n_above = 5;//每行中项目个数
+    private int n_below = 3;//行数
 
-    private uint n_above = 4;
-    private uint n_below = 4;
-
+    private int space_col = 20;
+    private int space_row = 10;
     private int box_x
     {
         get { return 0; }
@@ -117,11 +130,12 @@ public abstract class GreeterList : FadableBox
         get
         {
             /* First, get grid row number as if buttonbox weren't there */
-            var row = (MainWindow.BUTTONBOX_HEIGHT + get_allocated_height ()) / grid_size;
-            row = row - DEFAULT_BOX_HEIGHT; /* and no default dash box */
-            row = row / 2; /* and in the middle */
+            //var row = (MainWindow.BUTTONBOX_HEIGHT + get_allocated_height ()) / grid_size;
+            //row = row - DEFAULT_BOX_HEIGHT; /* and no default dash box */
+            //row = row / 2; /* and in the middle */
             /* Now calculate y pixel spot keeping in mind buttonbox's allocation */
-            return row * grid_size - MainWindow.BUTTONBOX_HEIGHT;
+            //return row * grid_size - MainWindow.BUTTONBOX_HEIGHT;
+            return 0;
         }
     }
 
@@ -129,6 +143,8 @@ public abstract class GreeterList : FadableBox
     public signal void entry_displayed_start ();
     public signal void entry_displayed_done ();
 
+    
+    
     protected virtual string? get_selected_id ()
     {
         if (selected_entry == null)
@@ -179,12 +195,15 @@ public abstract class GreeterList : FadableBox
         greeter_box = new DashBox (background);
         greeter_box.notify["base-alpha"].connect (() => { queue_draw (); });
         greeter_box.show ();
-        greeter_box.size_allocate.connect (greeter_box_size_allocate_cb);
+        //greeter_box.size_allocate.connect (greeter_box_size_allocate_cb);
         add_with_class (greeter_box);
 
         scroll_timer = new AnimateTimer (AnimateTimer.ease_out_quint, AnimateTimer.FAST);
         scroll_timer.animate.connect (animate_scrolling);
 
+        status_box=Status.LOGINBOX;
+
+         UnityGreeter.singleton.greeter_already.connect (greeter_already_cb);
         try
         {
             Bus.get.begin (BusType.SESSION, null, on_bus_acquired);
@@ -215,14 +234,27 @@ public abstract class GreeterList : FadableBox
         END,
         UP,
         DOWN,
+        LEFT,
+        RIGHT,
     }
 
-    public override void get_preferred_width (out int min, out int nat)
+    /*public override void get_preferred_width (out int min, out int nat)
     {
-        min = BOX_WIDTH * grid_size;
-        nat = BOX_WIDTH * grid_size;
-    }
+        base.get_preferred_width (out min, out nat);
+        //min = BOX_WIDTH * grid_size;
+        //nat = BOX_WIDTH * grid_size;
+    }*/
 
+
+    private void greeter_already_cb ()
+    {
+        if (entries.length()==1)
+        {
+            debug("only one user,show login box!");
+            entry_clicked_cb(entries.nth_data (0));
+        }
+
+    }
     public override void get_preferred_height (out int min, out int nat)
     {
         base.get_preferred_height (out min, out nat);
@@ -236,10 +268,11 @@ public abstract class GreeterList : FadableBox
     }
 
     public void scroll (ScrollTarget target)
-    {
+    {   debug("~~~~~~~~~scroll ");
         if (!sensitive)
             return;
-
+        if(status==Status.LOGINBOX)
+            return;
         switch (target)
         {
         case ScrollTarget.START:
@@ -248,18 +281,31 @@ public abstract class GreeterList : FadableBox
         case ScrollTarget.END:
             select_entry (entries.nth_data (entries.length () - 1), 1.0);
             break;
-        case ScrollTarget.UP:
+        case ScrollTarget.LEFT:
             var index = entries.index (selected_entry) - 1;
             if (index < 0)
                 index = 0;
             select_entry (entries.nth_data (index), -1.0);
             break;
-        case ScrollTarget.DOWN:
+        case ScrollTarget.RIGHT:
             var index = entries.index (selected_entry) + 1;
             if (index >= (int) entries.length ())
                 index = (int) entries.length () - 1;
             select_entry (entries.nth_data (index), 1.0);
             break;
+        case ScrollTarget.UP:
+            var index = entries.index (selected_entry) - n_above;
+            if (index < 0)
+                break;
+            select_entry (entries.nth_data (index), -1.0);
+            break;
+        case ScrollTarget.DOWN:
+            var index = entries.index (selected_entry) + n_above;
+            if (index >= (int) entries.length ())
+                break;
+            select_entry (entries.nth_data (index), 1.0);
+            break;
+            
         }
     }
 
@@ -396,7 +442,8 @@ public abstract class GreeterList : FadableBox
         insert_entry (entry);
 
         entry.name_clicked.connect (entry_clicked_cb);
-
+        entry.back_userlist.connect(back_userlist_cb);
+        debug("~~~~~~~add_entry ");
         if (selected_entry == null)
             select_entry (entry, 1.0);
         else
@@ -416,6 +463,7 @@ public abstract class GreeterList : FadableBox
             {
                 direction = -1.0;
             }
+            debug("~~~~~~~~~set_active_entry");
             select_entry (e, direction);
         }
     }
@@ -469,6 +517,13 @@ public abstract class GreeterList : FadableBox
             
             if (entries.nth_data (index) != null)
                 select_entry (entries.nth_data (index), -1.0);
+            else if (entries.length() != 0)
+                select_entry (entries.nth_data (0), -1.0);
+            else
+                selected_entry=null;
+            //back userlist if in login
+            if (status != Status.USERLIST)
+                back_userlist_cb();
         }
 
         /* Show a manual login if no users and no remote login entry */
@@ -505,28 +560,42 @@ public abstract class GreeterList : FadableBox
     {
         // Most position heights are just the grid height.  Except for the
         // greeter box itself.
-        int box_height = get_greeter_box_height_grids () * grid_size;
+        //int box_height = get_greeter_box_height_grids () * grid_size;
         double offset;
 
-        if (position < 0)
+        //if (position < 0)
             offset = position * grid_size;
-        else if (position < 1)
+        /*else if (position < 1)
             offset = position * box_height;
         else
-            offset = (position - 1) * grid_size + box_height;
+            offset = (position - 1) * grid_size + box_height;*/
 
         return box_y + (int)Math.round(offset);
     }
 
-    private void move_entry (PromptBox entry, double position)
+    private void move_entry (PromptBox entry, int position ,int sum_num)
     {
+        //debug("~~~~~~~~~move_entry");
         var alpha = 1.0;
-        if (position < 0)
+        int col_num;
+        int row_num;
+        /*if (position < 0)
             alpha = 1.0 + position / (n_above + 1);
         else
-            alpha = 1.0 - position / (n_below + 1);
+            alpha = 1.0 - position / (n_below + 1);*/
         entry.set_alpha (alpha);
-
+        if(sum_num <= n_above)
+            col_num = sum_num;
+        else
+            col_num = n_above;
+        row_num = sum_num / n_above;
+        if(sum_num % n_above != 0)
+            row_num++;
+        if(row_num > n_below)
+            row_num = n_below;
+        var row = position / n_above ;
+        var col = position % n_above ;
+        //debug("~~~~~~~~~~move_entry position=%d,row=%d,col=%d",position,row,col);
         /* Some entry types may care where they are (e.g. wifi prompt) */
         entry.position = position;
 
@@ -534,11 +603,37 @@ public abstract class GreeterList : FadableBox
         get_allocation (out allocation);
 
         var child_allocation = Gtk.Allocation ();
-        child_allocation.width = grid_size * BOX_WIDTH - BORDER * 2;
-        entry.get_preferred_height_for_width (child_allocation.width, null, out child_allocation.height);
-        child_allocation.x = allocation.x + get_greeter_box_x ();
-        child_allocation.y = allocation.y + get_position_y (position);
+        int user_box_width = (allocation.height - MainWindow.BUTTONBOX_HEIGHT) /5;
+        int login_box_width = grid_size * LOGINBOX_WIDTH;
+        if (user_box_width<10)
+            user_box_width=10;
+        entry.set_face_size (user_box_width);
+        if(status==Status.LOGINBOX||status==Status.SESSIONLIST)
+        {
+            //child_allocation.height =128;
+            child_allocation.width = login_box_width;//grid_size * LOGINBOX_WIDTH - BORDER * 2;
+            entry.get_preferred_height(null, out child_allocation.height);
+        }else{
+            child_allocation.width = user_box_width;//grid_size * BOX_WIDTH - BORDER * 2;
+            entry.get_preferred_height_for_width (child_allocation.width, null, out child_allocation.height);
+        }
+        
+        
+           //debug ("move_entry~~~~~~~~~~allocation.height=%d~~allocation.width=%d",allocation.height,allocation.width);
+        int x_offset = (allocation.width - child_allocation.width * col_num - (space_col * (col_num -1))) / 2 ;
+        int y_offset = (allocation.height - child_allocation.height * row_num - (space_row * (row_num -1))) /2 - MainWindow.BUTTONBOX_HEIGHT /2;
+        if(x_offset<0)
+            x_offset=0;
+        if(y_offset<0)
+            y_offset=0;
+        child_allocation.x = allocation.x + x_offset + col * (child_allocation.width + space_col);
+        if(status!=Status.USERLIST||row_num < n_below)
+            child_allocation.y = allocation.y + y_offset + row * (child_allocation.height + space_row);
+        else
+            child_allocation.y = allocation.y + y_offset + space_row + row * (child_allocation.height + space_row);
         fixed.move (entry, child_allocation.x, child_allocation.y);
+        //debug("~~~entry.id=%s~~~~~~~~child_allocation.x=%d~~~child_allocation.y=%d~~~y_offset=%d~~~allocation.y=%d~~~child_allocation.height=%d",entry.id,child_allocation.x,child_allocation.y,y_offset,allocation.y,child_allocation.height);
+        //entry.set_face_size (child_allocation.width);
         entry.size_allocate (child_allocation);
     }
 
@@ -557,21 +652,54 @@ public abstract class GreeterList : FadableBox
 
     public void move_names ()
     {
-        var index = 0;
-        foreach (var entry in entries)
+        //debug("~~~~~~~~~move_names,status=%d,",status);
+        if(status==Status.LOGINBOX)
         {
-            var position = index - scroll_location;
-
-            /* Draw entries above, in and below the box */
-            if (position > -1 * (int)(n_above + 1) && position < n_below + 1)
+            foreach(var entry in entries)
             {
-                move_entry (entry, position);
+                
+                    move_entry (entry,0 ,1);
+                if(entries.index(entry)!=clicked_location)
+                    entry.hide();
+            }
+            queue_draw ();
+            return;
+        }
+        int index = 0;
+        int last_position = n_above * n_below -1;
+        var row = ((int)scroll_location) / n_above ;
+        //var col = ((int)scroll_location) % n_above ;
+        int sum_num = (int)entries.length();
+
+        Gtk.Allocation allocation;
+        get_allocation (out allocation);
+        space_col=allocation.width /40;
+        if(sum_num<n_above)
+        {
+            space_col=space_col * (n_above + 1-sum_num);
+        }
+        if(row > n_below-1)
+            last_position = (row+1) * n_above -1;
+        foreach (var entry in entries)
+        {   //debug("~~~~~~~~~scroll_location = %f ",scroll_location);
+            int position =index-(last_position - n_above * n_below);
+            
+            /* Draw entries above, in and below the box */
+            if (position>0&&position<n_above * n_below + 1)
+            {
+                move_entry (entry, position-1, sum_num);
                 // Sometimes we will be overlayed by another widget like the
                 // session chooser.  In such cases, don't try to show ourselves
-                var is_hidden = (position == 0 && greeter_box.has_base &&
+                /*var is_hidden = (position == 0 && greeter_box.has_base &&
                                  greeter_box.base_alpha == 0.0);
-                if (!is_hidden)
-                    entry.show ();
+                if (!is_hidden)*/
+               
+               //if(scroll_location == index)
+                    //entry.set_name_color_red();
+                //    entry.hide();
+                //else
+                    //entry.set_name_color_default();
+                entry.show ();
             }
             else
                 entry.hide ();
@@ -605,7 +733,7 @@ public abstract class GreeterList : FadableBox
 
         if (progress >= 0.975 && !greeter_box.has_base)
         {
-            setup_prompt_box ();
+            //setup_prompt_box ();
             entry_displayed_start ();
         }
 
@@ -617,13 +745,13 @@ public abstract class GreeterList : FadableBox
     private void finished_scrolling ()
     {
         scrolling_entry = null;
-        selected_entry.show_prompts (); /* set prompts to be visible immediately */
+        //selected_entry.show_prompts (); /* set prompts to be visible immediately */
         focus_prompt ();
         entry_displayed_done ();
         mode = Mode.ENTRY;
     }
 
-    protected void select_entry (PromptBox entry, double direction, bool do_scroll = true)
+    protected void select_entry (PromptBox entry, double direction, bool do_scroll = false)
     {
         if (!get_realized ())
         {
@@ -640,11 +768,11 @@ public abstract class GreeterList : FadableBox
 
             if (scroll_location != new_target && do_scroll)
             {
-                var new_distance = new_direction * (new_target - new_start);
+               // var new_distance = new_direction * (new_target - new_start);
                 /* Base rate is 350 (250 + 100).  If we find ourselves going further, slow down animation */
-                scroll_timer.reset (250 + int.min ((int)(100 * (Math.fabs (new_distance))), 500));
+               // scroll_timer.reset (250 + int.min ((int)(100 * (Math.fabs (new_distance))), 500));
 
-                mode = Mode.SCROLLING;
+               // mode = Mode.SCROLLING;
             }
 
             scrolling_entry = selected_entry;
@@ -655,24 +783,25 @@ public abstract class GreeterList : FadableBox
 
         if (selected_entry != entry)
         {
-            greeter_box.set_base (null);
-            if (selected_entry != null)
-                selected_entry.clear ();
+            //greeter_box.set_base (null);
+            //if (selected_entry != null)
+            //    selected_entry.clear ();
 
             selected_entry = entry;
-            entry_selected (selected_entry.id);
+            greeter_box.set_base (selected_entry);
+            //entry_selected (selected_entry.id);
 
             if (mode == Mode.ENTRY)
-            {
-                /* don't need to move, but make sure we trigger the same side effects */
-                setup_prompt_box ();
+            {   debug("~~~~~~~~~select_entry,entry=%s",entry.id);
+                // don't need to move, but make sure we trigger the same side effects
+                //setup_prompt_box ();
                 scroll_timer.reset (0);
             }
         }
     }
 
-    protected virtual void setup_prompt_box (bool fade = true)
-    {
+    protected virtual void setup_prompt_box (bool fade = false)
+    {   debug("~~~~~~~~setup_prompt_box ,and selected_entry = %s",selected_entry.id);
         greeter_box.set_base (selected_entry);
         selected_entry.add_static_prompts ();
         if (fade)
@@ -695,20 +824,27 @@ public abstract class GreeterList : FadableBox
     private void allocate_greeter_box ()
     {
         Gtk.Allocation allocation;
-        get_allocation (out allocation);
-
+        //get_allocation (out allocation);
+        selected_entry.small_user_face_image.get_allocation (out allocation);
+        //selected_entry.get_allocation (out allocation);
         var child_allocation = Gtk.Allocation ();
-        greeter_box.get_preferred_width (null, out child_allocation.width);
-        greeter_box.get_preferred_height (null, out child_allocation.height);
-        child_allocation.x = allocation.x + get_greeter_box_x ();
-        child_allocation.y = allocation.y + get_greeter_box_y ();
+        //greeter_box.get_preferred_width (null, out child_allocation.width);
+        //greeter_box.get_preferred_height (null, out child_allocation.height);
+       if(status==Status.LOGINBOX||status==Status.SESSIONLIST)
+            child_allocation.width = grid_size * LOGINBOX_WIDTH - BORDER * 2;
+        else
+            child_allocation.width = allocation.width + BORDER * 4;//grid_size * BOX_WIDTH - BORDER * 2;
+        //selected_entry.small_user_face_image.get_preferred_width (child_allocation.width, null, out child_allocation.height);
+        child_allocation.height = allocation.height + BORDER * 4;
+        child_allocation.x = allocation.x - BORDER * 2;// + get_greeter_box_x ();
+        child_allocation.y = allocation.y - BORDER * 2;// + get_greeter_box_y ();
         fixed.move (greeter_box, child_allocation.x, child_allocation.y);
         greeter_box.size_allocate (child_allocation);
-
+        /*
         foreach (var entry in entries)
         {
             entry.set_zone (greeter_box);
-        }
+        }*/
     }
 
     public override void size_allocate (Gtk.Allocation allocation)
@@ -717,26 +853,28 @@ public abstract class GreeterList : FadableBox
 
         if (!get_realized ())
             return;
-
-        allocate_greeter_box ();
         move_names ();
+        allocate_greeter_box ();
+        
     }
 
     public override bool draw (Cairo.Context c)
     {
         c.push_group ();
-
-        c.save ();
-        fixed.propagate_draw (greeter_box, c); /* Always full alpha */
-        c.restore ();
-
+        if(status==Status.USERLIST)
+        {
+            c.save ();
+            fixed.propagate_draw (greeter_box, c); /* Always full alpha */
+            c.restore ();
+        }
+        
         if (greeter_box.base_alpha != 0.0)
         {
             c.save ();
             c.push_group ();
 
-            c.rectangle (get_greeter_box_x (), get_greeter_box_y () - n_above * grid_size, grid_size * BOX_WIDTH - BORDER * 2, grid_size * (n_above + n_below + get_greeter_box_height_grids ()));
-            c.clip ();
+            //c.rectangle (get_greeter_box_x (), get_greeter_box_y () - n_above * grid_size, grid_size * BOX_WIDTH * n_above  - BORDER * 2, grid_size * n_above *2 );
+            //c.clip ();
 
             foreach (var child in fixed.get_children ())
             {
@@ -754,22 +892,63 @@ public abstract class GreeterList : FadableBox
 
         return false;
     }
-
-    private void entry_clicked_cb (PromptBox entry)
+    
+    public void entry_enter_cb ()
     {
+          entry_clicked_cb(selected_entry);
+    }
+    
+    private void entry_clicked_cb (PromptBox entry)
+    {debug("~~~~~~~~~entry_clicked_cb,status=%d,selected_entry=%s,entry=%s",status,selected_entry.id,entry.id);
         if (mode != Mode.ENTRY)
             return;
+        if(status==status_box)
+            return;
+        status = status_box;
+        clicked_location=entries.index (entry);
+        move_names ();
+        //fixed.move (entry, 0, 0);
+        //entry.size_allocate (allocation);
+        //entry.show_prompts();
+        //if (selected_entry != entry)
+        if(status!=Status.SESSIONLIST)
+        {
+            debug("~~~~~~~~~selected_entry != entry");
+            greeter_box.set_base (null);
+            if (selected_entry != null)
+                selected_entry.clear ();
 
-        var index = entries.index (entry);
-        var position = index - scroll_location;
-
+            selected_entry = entry;
+            entry_selected (selected_entry.id);
+            setup_prompt_box ();
+            
+        }
+        
+        //var index = entries.index (entry);
+        //var position = index - scroll_location;
+        //debug("~~~~~~~~~~~clicked %d",index);
+        /*
         if (position < 0.0)
             select_entry (entry, -1.0);
         else if (position >= 1.0)
-            select_entry (entry, 1.0);
+            select_entry (entry, 1.0);*/
     }
 
-
+    public void back_userlist_cb ()
+    {
+        if(status==Status.LOGINBOX)
+        {
+            debug("~~~~~~~~back_userlist_cb");
+            status=Status.USERLIST;
+            
+            move_names ();
+            selected_entry.hide_prompts();
+        }else if(status==Status.SESSIONLIST)
+        {debug("~~~~~~~~back_userlist_cb,back_loginbox");
+            UnityGreeter.singleton.pop_list();
+        }
+    }
+    
     /* Not all subclasses are going to be interested in talking to lightdm, but for those that are, make it easy. */
 
     protected bool will_clear = false;
@@ -778,8 +957,9 @@ public abstract class GreeterList : FadableBox
 
     protected void connect_to_lightdm ()
     {
-        UnityGreeter.singleton.show_message.connect (show_message_cb);
         UnityGreeter.singleton.show_prompt.connect (show_prompt_cb);
+        UnityGreeter.singleton.show_message.connect (show_message_cb);
+        
         UnityGreeter.singleton.authentication_complete.connect (authentication_complete_cb);
     }
 

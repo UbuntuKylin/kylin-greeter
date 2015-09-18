@@ -27,6 +27,8 @@ public class UnityGreeter
     public signal void show_prompt (string text, LightDM.PromptType type);
     public signal void authentication_complete ();
 
+    public signal void greeter_already ();
+
     public bool test_mode = false;
     public bool session_started = false;
     public string last_respond_response;

@@ -8,9 +8,9 @@ public class Test
         TestMainWindow main_window = new TestMainWindow ();
         var list = new TestList (main_window.get_background ());
         main_window.push_list (list);
-        main_window.show_all();
+        //main_window.show();
         // Make sure we are really shown
-        process_events ();
+        //process_events ();
 
         return main_window;
     }
@@ -141,7 +141,7 @@ public class Test
     {
         MainWindow mw = setup ();
         TestList list = mw.stack.top () as TestList;
-
+	mw.show();
         // Wait until remote login appears
         scroll_to_remote_login (list);
 

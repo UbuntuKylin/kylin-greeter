@@ -29,10 +29,10 @@ public class ListStack : Gtk.Fixed
     }
 
     private int width;
-
+    private int height;
     construct
     {
-        width = grid_size * GreeterList.BOX_WIDTH;
+       // width = grid_size * GreeterList.BOX_WIDTH * 5 -GreeterList.BORDER*2;
     }
 
     public GreeterList? top ()
@@ -51,7 +51,7 @@ public class ListStack : Gtk.Fixed
         var children = get_children ();
 
         pushed.start_scrolling = false;
-        pushed.set_size_request (width, -1);
+        pushed.set_size_request (width, height);
         add (pushed);
 
         if (children != null)
@@ -73,9 +73,14 @@ public class ListStack : Gtk.Fixed
         if (prev != null)
             (prev.data as GreeterList).greeter_box.pop ();
     }
-
-    public override void size_allocate (Gtk.Allocation allocation)
+    public void set_size(int stack_width,int stack_height)
     {
+        width=stack_width;
+        height=stack_height;
+        
+    }
+    public override void size_allocate (Gtk.Allocation allocation)
+    {   //debug("~~~~~~~~allocation.x=%d~~allocation.y=%d~~allocation.height=%d~~allocation.width=%d",allocation.x,allocation.y,allocation.height,allocation.width);
         base.size_allocate (allocation);
         var children = get_children ();
         foreach (var child in children)
@@ -86,7 +91,14 @@ public class ListStack : Gtk.Fixed
 
     public override void get_preferred_width (out int min, out int nat)
     {
+        
         min = width;
         nat = width;
+    }
+    public override void get_preferred_height (out int min, out int nat)
+    {
+        
+        min = height;
+        nat = height;
     }
 }

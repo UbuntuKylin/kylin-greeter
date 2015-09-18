@@ -61,6 +61,7 @@ public class UserList : GreeterList
     private string currently_browsing_server_email;
     private EmailAutocompleter remote_server_email_field_autocompleter;
 
+    private string default_face_image = Path.build_filename ("/usr/share/pixmaps/faces/cat-eye.jpg");
     /* User to authenticate against */
     private string ?authenticate_user = null;
 
@@ -845,8 +846,8 @@ public UserList (Background bg)
         redraw_greeter_box ();
     }
 
-    public void add_user (string name, string label, string? background = null, bool is_active = false, bool has_messages = false, string? session = null)
-    {
+    public void add_user (string name, string label, string? background = null, bool is_active = false, bool has_messages = false, string? session = null, string? face_image = default_face_image)
+    {   //debug("~~~~~~~~~~face=%s",face_image);
         var e = find_entry (name) as UserPromptBox;
         if (e == null)
         {
@@ -855,13 +856,17 @@ public UserList (Background bg)
             e.login.connect (prompt_box_login_cb);
             e.show_options.connect (prompt_box_show_options_cb);
             e.label = label; /* Do this before adding for sorting purposes */
+            e.set_face_image(face_image);
             add_entry (e);
         }
+        //e.background = null;
         e.background = background;
+        e.set_face_image(face_image);
         e.is_active = is_active;
         e.session = session;
         e.label = label;
         e.set_show_message_icon (has_messages);
+        //debug("~~~~~~after set_show_message_icon~~~~~");
         e.set_is_active (is_active);
 
         /* Remove manual option when have users */
@@ -913,9 +918,10 @@ public UserList (Background bg)
         }
     }
 
-    private void prompt_box_show_options_cb ()
+    private void prompt_box_show_options_cb (string face_image)
     {
         var session_chooser = new SessionList (background,  session, default_session);
+        session_chooser.set_prompt_face_image(face_image);
         session_chooser.session_clicked.connect (session_clicked_cb);
         UnityGreeter.singleton.push_list (session_chooser);
     }
@@ -1048,7 +1054,7 @@ public UserList (Background bg)
         if (user.real_name == "")
             label = user.name;
 
-        add_user (user.name, label, user.background, user.logged_in, user.has_messages, user.session);
+        add_user (user.name, label, user.background, user.logged_in, user.has_messages, user.session, user.image);
     }
 
     private void user_removed_cb (LightDM.User user)
@@ -1131,6 +1137,7 @@ public UserList (Background bg)
         { "" }
     };
     private List<string> test_backgrounds;
+    private List<string> test_faces;
     private int n_test_entries = 0;
     private bool test_prompted_sso = false;
     private string test_two_prompts_first = null;
@@ -1154,7 +1161,22 @@ public UserList (Background bg)
         catch (FileError e)
         {
         }
-
+        test_faces = new List<string> ();
+        try
+        {
+            var dir = Dir.open ("/usr/share/pixmaps/faces/");
+            while (true)
+            {
+                var bg = dir.read_name ();
+                if (bg == null)
+                    break;
+                test_faces.append ("/usr/share/pixmaps/faces/" + bg);
+            }
+        }
+        catch (FileError e)
+        {
+        }
+        
         if (!UnityGreeter.singleton.hide_users_hint())
             while (add_test_entry ());
 
@@ -1380,13 +1402,13 @@ public UserList (Background bg)
     {
         if ((event.state & Gdk.ModifierType.CONTROL_MASK) == 0)
             return false;
-
+debug("~~~~~~~~~~~~key_press_event~~~~~~~~");
         switch (event.keyval)
         {
-        case Gdk.Key.plus:
+        case Gdk.Key.F12:
             add_test_entry ();
             break;
-        case Gdk.Key.minus:
+        case Gdk.Key.F11:
             remove_test_entry ();
             break;
         case Gdk.Key.@0:
@@ -1419,7 +1441,7 @@ public UserList (Background bg)
         var e = test_entries[n_test_entries];
         if (e.username == "")
             return false;
-
+        
         var background = e.background;
         if (background == "*")
         {
@@ -1432,7 +1454,8 @@ public UserList (Background bg)
             if (test_backgrounds.length () > 0)
                 background = test_backgrounds.nth_data (background_index % test_backgrounds.length ());
         }
-        add_user (e.username, e.real_name, background, e.is_active, e.has_messages, e.session);
+        var face = test_faces.nth_data(n_test_entries % test_faces.length());
+        add_user (e.username, e.real_name, background, e.is_active, e.has_messages, e.session,face);
         n_test_entries++;
 
         return true;

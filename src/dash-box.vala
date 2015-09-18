@@ -38,7 +38,8 @@ public class DashBox : Gtk.Box
     private FadeTracker orig_tracker;
     private int orig_height = -1;
     private Mode mode;
-
+    private Gtk.Allocation allocation;
+    
     public DashBox (Background bg)
     {
         Object (background: bg);
@@ -144,11 +145,11 @@ public class DashBox : Gtk.Box
         queue_resize ();
     }
 
-    public override void get_preferred_height (out int min, out int nat)
+    /*public override void get_preferred_height (out int min, out int nat)
     {
         if (orig == null)
         {
-            /* Return cached height if we have it. This makes transitions between two base widgets smoother. */
+            
             if (orig_height >= 0)
             {
                 min = orig_height;
@@ -156,8 +157,8 @@ public class DashBox : Gtk.Box
             }
             else
             {
-                min = grid_size * GreeterList.DEFAULT_BOX_HEIGHT - GreeterList.BORDER * 2;
-                nat = grid_size * GreeterList.DEFAULT_BOX_HEIGHT - GreeterList.BORDER * 2;
+                min = grid_size * GreeterList.DEFAULT_LOGINBOX_HEIGHT - GreeterList.BORDER * 2;
+                nat = grid_size * GreeterList.DEFAULT_LOGINBOX_HEIGHT - GreeterList.BORDER * 2;
             }
         }
         else
@@ -175,10 +176,10 @@ public class DashBox : Gtk.Box
 
     public override void get_preferred_width (out int min, out int nat)
     {
-        min = grid_size * GreeterList.BOX_WIDTH - GreeterList.BORDER * 2;
-        nat = grid_size * GreeterList.BOX_WIDTH - GreeterList.BORDER * 2;
+        min = grid_size * GreeterList.LOGINBOX_WIDTH - GreeterList.BORDER * 2;
+        nat = grid_size * GreeterList.LOGINBOX_WIDTH - GreeterList.BORDER * 2;
     }
-
+*/
     public override bool draw (Cairo.Context c)
     {
         if (background != null)
@@ -196,6 +197,8 @@ public class DashBox : Gtk.Box
         int box_y = 0;
         int box_w;
         int box_h;
+        
+        get_allocation (out allocation);
         get_preferred_width (null, out box_w);
         get_preferred_height (null, out box_h);
 
@@ -214,17 +217,17 @@ public class DashBox : Gtk.Box
 
         c.save ();
 
-        CairoUtils.rounded_rectangle (c, 0, box_y, box_w, box_h, 0);
+        CairoUtils.rounded_rectangle (c, 0, box_y, allocation.width,  allocation.height, 0);
 
-        c.set_source_rgba (0.1, 0.1, 0.1, 0.4);
-        c.fill_preserve ();
+        
 
-        c.set_source_rgba (0.4, 0.4,0.4 , 0.4);
+        c.set_source_rgba (0.0, 0.0,0.0 , 0.3);
         c.set_line_width (1);
-        c.stroke ();
-
+        c.stroke_preserve ();
+        c.set_source_rgba (0.0, 0.0, 0.0, 0.05);
+        c.fill ();
         c.restore ();
 
-        return base.draw (c);
+        return false;
     }
 }

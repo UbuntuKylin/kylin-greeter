@@ -29,7 +29,7 @@ public class FlatButton : Gtk.Button
             var style = new Gtk.CssProvider ();
             style.load_from_data ("* {-GtkButton-child-displacement-x: 0px;
                                       -GtkButton-child-displacement-y: 0px;
-                                      -GtkWidget-focus-line-width: 1px;
+                                      -GtkWidget-focus-line-width: 0px;
                                       }", -1);
             get_style_context ().add_provider (style, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         }

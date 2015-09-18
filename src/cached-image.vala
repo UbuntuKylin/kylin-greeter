@@ -20,7 +20,8 @@
 public class CachedImage : Gtk.Image
 {
     private static HashTable<Gdk.Pixbuf, Cairo.Surface> surface_table;
-
+    //private Gtk.Allocation allocation;
+    private bool draw_border=false; 
     public static Cairo.Surface? get_cached_surface (Cairo.Context c, Gdk.Pixbuf pixbuf)
     {
         if (surface_table == null)
@@ -43,6 +44,10 @@ public class CachedImage : Gtk.Image
         Object (pixbuf: pixbuf);
     }
 
+    public void draw_white_border()
+    {
+        draw_border=true; 
+    }
     public override bool draw (Cairo.Context c)
     {
         if (pixbuf != null)
@@ -53,6 +58,17 @@ public class CachedImage : Gtk.Image
                 c.set_source_surface (cached_surface, 0, 0);
                 c.paint ();
             }
+        }
+        if(draw_border)
+        {
+        //白色描边
+        c.save ();
+        //get_allocation (out allocation);
+        CairoUtils.rounded_rectangle (c, 0, 0, pixbuf.width,  pixbuf.height, 0);
+        c.set_source_rgba (1.0, 1.0,1.0 , 0.8);
+        c.set_line_width (4);
+        c.stroke ();
+        c.restore ();
         }
         return false;
     }

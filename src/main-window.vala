@@ -33,6 +33,8 @@ public class MainWindow : Gtk.Window
 
     public ListStack stack;
 
+    private UserList greeter_list;
+    
 	public Gtk.Window? keyboard_window { get; private set; default = null; }
 	private Pid keyboard_pid = 0;
 	private Gtk.Button shutdownbutton;
@@ -138,14 +140,13 @@ public class MainWindow : Gtk.Window
         hbox.show ();
         login_box.add (hbox);
 
-        var align = new Gtk.Alignment (0.5f, 0.5f, 0.0f, 0.0f);
-        align.set_size_request (grid_size, -1);
-        align.margin_bottom = BUTTONBOX_HEIGHT; /* offset for BUTTONBOX at top */
-        align.show ();
-        hbox.add (align);
+        //var align = new Gtk.Alignment (0.5f, 0.5f, 0.0f, 0.0f);
+        //align.set_size_request (grid_size, -1);
+        //align.margin_bottom = BUTTONBOX_HEIGHT; /* offset for BUTTONBOX at top */
+        //align.show ();
+        //hbox.add (align);
 
-
-
+        /*
         back_button = new FlatButton ();
         back_button.get_accessible ().set_name (_("Back"));
         back_button.focus_on_click = false;
@@ -155,8 +156,9 @@ public class MainWindow : Gtk.Window
         back_button.add (image);
         back_button.clicked.connect (pop_list);
         align.add (back_button);
-
-        align = new Gtk.Alignment (0.0f, 0.5f, 0.0f, 1.0f);
+        */
+        var align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);//用户列表的位置
+        //align.margin_bottom = BUTTONBOX_HEIGHT; /* offset for BUTTONBOX at top */
         align.show ();
         hbox.add (align);
 
@@ -204,13 +206,13 @@ public class MainWindow : Gtk.Window
     {
         base.size_allocate (allocation);
 
-        if (hbox != null)
-        {
-            hbox.margin_left = get_grid_offset (get_allocated_width ()) + grid_size;
+        /*if (hbox != null)
+        {//用户列表框进行偏移
+            hbox.margin_left = get_grid_offset (get_allocated_width ());// + grid_size;
             hbox.margin_right = get_grid_offset (get_allocated_width ());
             hbox.margin_top = get_grid_offset (get_allocated_height ());
             hbox.margin_bottom = get_grid_offset (get_allocated_height ());
-        }
+        }*/
     }
 
 	private void shutdownbutton_clicked_cb (Gtk.Button button)
@@ -302,6 +304,7 @@ public class MainWindow : Gtk.Window
         resize (screen.get_width (), screen.get_height ());
         move (0, 0);
         move_to_monitor (primary_monitor);
+        
     }
 
     /* Check if a monitor has a unique position */
@@ -344,6 +347,7 @@ public class MainWindow : Gtk.Window
             if (x >= m.x && x <= m.x + m.width && y >= m.y && y <= m.y + m.height)
             {
                 move_to_monitor (m);
+                stack.queue_resize ();
                 break;
             }
         }
@@ -355,6 +359,8 @@ public class MainWindow : Gtk.Window
     {
         active_monitor = monitor;
         login_box.set_size_request (monitor.width, monitor.height);
+        stack.set_size(monitor.width,monitor.height-BUTTONBOX_HEIGHT);
+       
         background.set_active_monitor (monitor);
         background.move (login_box, monitor.x, monitor.y);
 
@@ -367,10 +373,11 @@ public class MainWindow : Gtk.Window
 
     private void add_user_list ()
     {
-        GreeterList greeter_list;
+        
         greeter_list = new UserList (background);
         greeter_list.show ();
         UnityGreeter.add_style_class (greeter_list);
+        //greeter_list.back_loginbox.connect(pop_list);
         push_list (greeter_list);
     }
 
@@ -400,45 +407,77 @@ public class MainWindow : Gtk.Window
         switch (event.keyval)
         {
         case Gdk.Key.Escape:
-            if (login_box.sensitive)
+            if (login_box.sensitive && top.status!=GreeterList.Status.USERLIST)
+            {
                 top.cancel_authentication ();
+                top.back_userlist_cb();
+            }
             if (shutdown_dialog != null)
                 shutdown_dialog.cancel ();
             return true;
         case Gdk.Key.Page_Up:
         case Gdk.Key.KP_Page_Up:
-            if (login_box.sensitive)
+            if (login_box.sensitive && top.status==GreeterList.Status.USERLIST)
+            {
                 top.scroll (GreeterList.ScrollTarget.START);
-            return true;
+                return true;
+            }
+            break;
         case Gdk.Key.Page_Down:
         case Gdk.Key.KP_Page_Down:
-            if (login_box.sensitive)
+            if (login_box.sensitive && top.status==GreeterList.Status.USERLIST)
+            {
                 top.scroll (GreeterList.ScrollTarget.END);
-            return true;
+                return true;
+            }
+            break;
         case Gdk.Key.Up:
         case Gdk.Key.KP_Up:
-            if (login_box.sensitive)
+            if (login_box.sensitive && top.status==GreeterList.Status.USERLIST)
+            {
                 top.scroll (GreeterList.ScrollTarget.UP);
-            return true;
+                return true;
+            }
+            break;
         case Gdk.Key.Down:
         case Gdk.Key.KP_Down:
-            if (login_box.sensitive)
+            if (login_box.sensitive && top.status==GreeterList.Status.USERLIST)
+            {
                 top.scroll (GreeterList.ScrollTarget.DOWN);
-            return true;
+                return true;
+            }
+            break;
         case Gdk.Key.Left:
         case Gdk.Key.KP_Left:
             if (shutdown_dialog != null)
                 shutdown_dialog.focus_prev ();
-            return true;
+            if (login_box.sensitive && top.status==GreeterList.Status.USERLIST)
+            {
+                top.scroll (GreeterList.ScrollTarget.LEFT);
+                return true;
+            }
+            break;
         case Gdk.Key.Right:
         case Gdk.Key.KP_Right:
             if (shutdown_dialog != null)
                 shutdown_dialog.focus_next ();
-            return true;
+            if (login_box.sensitive && top.status==GreeterList.Status.USERLIST)
+            {
+                top.scroll (GreeterList.ScrollTarget.RIGHT);
+                return true;
+            }
+            break;
         case Gdk.Key.F10:
            if (login_box.sensitive)
                 show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
             return true;
+        case Gdk.Key.Return:
+           if (top.status==GreeterList.Status.USERLIST)
+            {
+                greeter_list.entry_enter_cb();
+                return true;
+            }
+            break;
         case Gdk.Key.PowerOff:
             show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
             return true;
@@ -449,13 +488,7 @@ public class MainWindow : Gtk.Window
                 return true;
             }
             break;
-        case Gdk.Key.Z:
-            if (UnityGreeter.singleton.test_mode && (event.state & Gdk.ModifierType.MOD1_MASK) != 0)
-            {
-                show_shutdown_dialog (ShutdownDialogType.RESTART);
-                return true;
-            }
-            break;
+       
         }
 
         return base.key_press_event (event);

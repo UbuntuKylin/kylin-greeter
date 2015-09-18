@@ -28,6 +28,8 @@ public class UnityGreeter
     public signal void authentication_complete ();
     public signal void starting_session ();
 
+    public signal void greeter_already ();
+    
     public bool test_mode = false;
 
     private string state_file;
@@ -58,8 +60,9 @@ public class UnityGreeter
         background_surface = create_root_surface (Gdk.Screen.get_default ());
 
         greeter = new LightDM.Greeter ();
-        greeter.show_message.connect ((text, type) => { show_message (text, type); });
         greeter.show_prompt.connect ((text, type) => { show_prompt (text, type); });
+        greeter.show_message.connect ((text, type) => { show_message (text, type); });
+        
         greeter.autologin_timer_expired.connect (() => { greeter.authenticate_autologin (); });
         greeter.authentication_complete.connect (() => { authentication_complete (); });
         var connected = false;
@@ -472,7 +475,7 @@ public class UnityGreeter
         //disable Assistive Technology by PZ
         //Environment.set_variable ("GTK_MODULES", "atk-bridge", false);
 
-        Pid atspi_pid = 0;
+        //Pid atspi_pid = 0;
         Pid upstart_pid = 0;
         
         //disable Assistive Technology by PZ
@@ -586,6 +589,9 @@ public class UnityGreeter
             return true;
         });
 
+        debug ("greeter_already");
+        greeter.greeter_already();
+        
         debug ("Starting main loop");
         Gtk.main ();
 

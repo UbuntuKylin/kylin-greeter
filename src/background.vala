@@ -68,8 +68,8 @@ class BackgroundLoader : Object
         debug (text);
 
         var color = Gdk.RGBA ();
-        if (color.parse (filename))
-        {
+        if (color.parse (filename))//判断是否为纯色色值
+        {//纯色背景时不绘制version_logo
             var pattern = new Cairo.Pattern.rgba (color.red, color.green, color.blue, color.alpha);
             for (var i = 0; i < widths.length; i++)
                 patterns[i] = pattern;
@@ -132,6 +132,8 @@ class BackgroundLoader : Object
                 if (i == 0)
                     pixbuf_average_value (images[i], out average_color);
                 images[i] = null;
+                //debug by pz
+                debug ("~~~~~~~~~~average_color = %s ", average_color.to_string());
             }
             else
             {
