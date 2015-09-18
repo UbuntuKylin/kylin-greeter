@@ -10,15 +10,15 @@
       <summary>Background color (e.g. #772953), set before wallpaper is seen</summary>
     </key>
     <key name="draw-user-backgrounds" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Whether to draw user backgrounds</summary>
     </key>
     <key name="draw-grid" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Whether to draw an overlay grid</summary>
     </key>
     <key name="show-hostname" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Whether to show the hostname in the menubar</summary>
     </key>
     <key name="logo" type="s">

@@ -61,7 +61,7 @@ public class UserList : GreeterList
     private string currently_browsing_server_email;
     private EmailAutocompleter remote_server_email_field_autocompleter;
 
-    private string default_face_image = Path.build_filename ("/usr/share/pixmaps/faces/cat-eye.jpg");
+    private string default_face_image = Path.build_filename (Config.PKGDATADIR, "default_face.png", null);
     /* User to authenticate against */
     private string ?authenticate_user = null;
 
@@ -861,6 +861,8 @@ public UserList (Background bg)
         }
         //e.background = null;
         e.background = background;
+        if(face_image==null)
+            face_image = default_face_image;
         e.set_face_image(face_image);
         e.is_active = is_active;
         e.session = session;

@@ -604,6 +604,8 @@ public abstract class GreeterList : FadableBox
 
         var child_allocation = Gtk.Allocation ();
         int user_box_width = (allocation.height - MainWindow.BUTTONBOX_HEIGHT) /5;
+        if(user_box_width > 128)
+            user_box_width = 128;
         int login_box_width = grid_size * LOGINBOX_WIDTH;
         if (user_box_width<10)
             user_box_width=10;
