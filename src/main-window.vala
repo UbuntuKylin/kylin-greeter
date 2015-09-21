@@ -108,7 +108,8 @@ public class MainWindow : Gtk.Window
         a11yalign.show();
         buttonbox.add(a11yalign);
         a11ybutton = new Gtk.ToggleButton ();
-        
+        a11ybutton.focus_on_click = false;
+        a11ybutton.can_focus = false;
 		a11ybutton.show();
 		var a11ybuttonimage = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR, "keyboardbutton.png"));
         a11ybuttonimage.show ();
@@ -125,6 +126,8 @@ public class MainWindow : Gtk.Window
         UnityGreeter.add_style_class (shutdownbutton_align);
 		shutdownbutton = new Gtk.Button ();
 		shutdownbutton.show();
+        shutdownbutton.focus_on_click = false;
+        shutdownbutton.can_focus = false;
 		var shutdownbutton_image = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"shutdownbutton.png"));
         shutdownbutton_image.show ();
         shutdownbutton.add (shutdownbutton_image);
@@ -472,6 +475,7 @@ public class MainWindow : Gtk.Window
                 show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
             return true;
         case Gdk.Key.Return:
+        case Gdk.Key. KP_Enter:
            if (top.status==GreeterList.Status.USERLIST)
             {
                 greeter_list.entry_enter_cb();

@@ -146,7 +146,7 @@ public class DashEntry : Gtk.Entry, Fadable
         c.save ();
 
         var style_ctx = get_style_context ();
-        var arrow_size = get_arrow_size ();
+        var arrow_size = get_arrow_size () - 8;
         Gtk.cairo_transform_to_window (c, this, arrow_win);
         style_ctx.render_activity (c, 0, 0, arrow_size, arrow_size);
 

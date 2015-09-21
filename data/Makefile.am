@@ -8,6 +8,9 @@ dist_pkgdata_DATA = \
 	active.png \
 	arrow_left.png \
 	arrow_right.png \
+	arrow_left_active.png \
+	arrow_left_prelight.png \
+	background.png \
 	cof.png \
 	dialog_close.png \
 	dialog_close_highlight.png \

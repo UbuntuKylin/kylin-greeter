@@ -112,7 +112,7 @@ public abstract class GreeterList : FadableBox
     
     public static const int BORDER = 4;
     public static const int BOX_WIDTH = 2; /* in grid_size blocks */
-    public static const int LOGINBOX_WIDTH = 12;
+    public static const int LOGINBOX_WIDTH = 14;
     public static const int DEFAULT_BOX_HEIGHT = 2; /* in grid_size blocks */
     public static const int DEFAULT_LOGINBOX_HEIGHT = 4;
     private int n_above = 5;//每行中项目个数
@@ -264,7 +264,7 @@ public abstract class GreeterList : FadableBox
     public void cancel_authentication ()
     {
         UnityGreeter.singleton.cancel_authentication ();
-        entry_selected (selected_entry.id);
+        //entry_selected (selected_entry.id);
     }
 
     public void scroll (ScrollTarget target)

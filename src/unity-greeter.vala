@@ -553,6 +553,7 @@ public class UnityGreeter
         var value = UGSettings.get_string (UGSettings.KEY_THEME_NAME);
         if (value != "")
             settings.set ("gtk-theme-name", value, null);
+        debug("##########theme name = %s",value);
         value = UGSettings.get_string (UGSettings.KEY_ICON_THEME_NAME);
         if (value != "")
             settings.set ("gtk-icon-theme-name", value, null);

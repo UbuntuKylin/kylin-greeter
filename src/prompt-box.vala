@@ -147,6 +147,7 @@ public class PromptBox : FadableBox
         back_button.set_status_images(back_button_normal,back_button_prelight,back_button_active);
         //back_button.get_accessible ().set_name (_("Back"));
         back_button.focus_on_click = false;
+        back_button.can_focus = false;
         back_button.yalign=0.5f;
         //back_button.label = _("Switch User");
         var image = new Gtk.Image.from_file (back_button_normal);
@@ -154,7 +155,7 @@ public class PromptBox : FadableBox
         //back_button.set_size_request (64, 64);
         back_button.set_image (image);
         back_button.set_always_show_image(true);
-        back_button.set_use_stock(true);
+        //back_button.set_use_stock(true);
         back_button.clicked.connect (back_cb);
         //back_button.override_font (Pango.FontDescription.from_string ("Ubuntu 12"));
         back_button.show();
@@ -610,7 +611,7 @@ public class PromptBox : FadableBox
 
         public void hide_prompts ()
     {
-        debug("~~~~~~~~~~show_prompts = %s",this.id);
+        debug("~~~~~~~~~~hide_prompts = %s",this.id);
         //if(GreeterList.status!=GreeterList.Status.LOGINBOX)
          //   return;
         prompt_visibility = PromptVisibility.HIDDEN;
