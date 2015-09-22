@@ -443,12 +443,12 @@ public abstract class GreeterList : FadableBox
 
         entry.name_clicked.connect (entry_clicked_cb);
         entry.back_userlist.connect(back_userlist_cb);
-        debug("~~~~~~~add_entry ");
+        
         if (selected_entry == null)
             select_entry (entry, 1.0);
         else
             select_entry (selected_entry, 1.0);
-
+        
         move_names ();
     }
 
@@ -609,7 +609,9 @@ public abstract class GreeterList : FadableBox
         int login_box_width = grid_size * LOGINBOX_WIDTH;
         if (user_box_width<10)
             user_box_width=10;
+        
         entry.set_face_size (user_box_width);
+        
         if(status==Status.LOGINBOX||status==Status.SESSIONLIST)
         {
             //child_allocation.height =128;
@@ -701,13 +703,16 @@ public abstract class GreeterList : FadableBox
                 //    entry.hide();
                 //else
                     //entry.set_name_color_default();
+                
                 entry.show ();
+                
             }
             else
                 entry.hide ();
 
             index++;
         }
+        
         queue_draw ();
     }
 

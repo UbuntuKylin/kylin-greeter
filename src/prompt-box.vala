@@ -271,12 +271,12 @@ public class PromptBox : FadableBox
     
     public void set_face_image(string? face)
     {
-        if(face==null)
+        /*if(face==null)
         {
             small_user_face_image.pixbuf=scale(tmp_face_image.pixbuf,128,128);
             return;
         }
-        
+        */
         face_path = face;
         //user_face_image.pixbuf = new Gdk.Pixbuf.from_file (Path.build_filename (face));
           try

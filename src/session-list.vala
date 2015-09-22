@@ -86,7 +86,9 @@ public class SessionList : GreeterList
         
         prompt = add_session_prompt ("session");
         status=Status.SESSIONLIST;
+        
         prompt.show_prompts();
+        
     }
 
     public void set_prompt_face_image(string? face)
@@ -96,9 +98,14 @@ public class SessionList : GreeterList
     
     private SessionPrompt add_session_prompt (string id)
     {
+        
         var e = new SessionPrompt (id, session, default_session);
+        
         e.respond.connect ((responses) => { session_clicked (responses[0]); });
+        e.set_face_image(null);
         add_entry (e);
+
+        
         status_box=Status.SESSIONLIST;
         
         return e;

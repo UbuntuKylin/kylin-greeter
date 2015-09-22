@@ -28,7 +28,7 @@ public class MainWindow : Gtk.Window
     private Background background;
     private Gtk.Box login_box;
     private Gtk.Box hbox;
-    private Gtk.Button back_button;
+    //private Gtk.Button back_button;
     private ShutdownDialog? shutdown_dialog = null;
 
     public ListStack stack;
@@ -193,14 +193,14 @@ public class MainWindow : Gtk.Window
     {
         stack.push (widget);
 
-        if (stack.num_children > 1)
-            back_button.show ();
+       // if (stack.num_children > 1)
+       //     back_button.show ();
     }
 
     public void pop_list ()
     {
-        if (stack.num_children <= 2)
-            back_button.hide ();
+       // if (stack.num_children <= 2)
+       //     back_button.hide ();
 
         stack.pop ();
     }
