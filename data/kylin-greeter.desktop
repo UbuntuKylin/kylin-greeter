@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Kylin Greeter
+Comment=Kylin Greeter
+Exec=kylin-greeter
+Type=Application
+X-Ubuntu-Gettext-Domain=kylin-greeter
+Name[zh_CN]=kylin-greeter.desktop

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="unity-greeter">
-  <schema id="com.canonical.unity-greeter" path="/com/canonical/unity-greeter/">
+<schemalist gettext-domain="kylin-greeter">
+  <schema id="com.kylin.kylin-greeter" path="/com/kylin/kylin-greeter/">
     <key name="background" type="s">
-      <default>'/usr/share/unity-greeter/background.png'</default>
+      <default>'/usr/share/kylin-greeter/background.png'</default>
       <summary>Background file to use, either an image path or a color (e.g. #772953)</summary>
     </key>
     <key name="background-color" type="s">
@@ -22,11 +22,11 @@
       <summary>Whether to show the hostname in the menubar</summary>
     </key>
     <key name="logo" type="s">
-      <default>'/usr/share/unity-greeter/logo.png'</default>
+      <default>'/usr/share/kylin-greeter/logo.png'</default>
       <summary>Logo file to use</summary>
     </key>
     <key name="background-logo" type="s">
-      <default>'/usr/share/unity-greeter/cof.png'</default>
+      <default>'/usr/share/kylin-greeter/cof.png'</default>
       <summary>Background logo file to use</summary>
     </key>
     <key name="theme-name" type="s">
@@ -85,10 +85,6 @@
     <key name="play-ready-sound" type="b">
       <default>true</default>
       <summary>Whether to play sound when greeter is ready</summary>
-    </key>
-    <key name="indicators" type="as">
-      <default>['ug-accessibility', 'com.canonical.indicator.keyboard', 'com.canonical.indicator.session', 'com.canonical.indicator.datetime', 'com.canonical.indicator.power', 'com.canonical.indicator.sound', 'application']</default>
-      <summary>Which indicators to load</summary>
     </key>
     <key name="hidden-users" type="as">
       <default>[]</default>

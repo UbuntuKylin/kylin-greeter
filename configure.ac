@@ -2,7 +2,7 @@
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(unity-greeter, 14.04.10)
+AC_INIT(kylin-greeter, 14.04.10)
 AC_CONFIG_MACRO_DIR(m4)
 AM_INIT_AUTOMAKE
 AM_PROG_CC_C_O
@@ -17,7 +17,7 @@ dnl ###########################################################################
 dnl Dependencies
 dnl ###########################################################################
 
-PKG_CHECK_MODULES(UNITY_GREETER, [
+PKG_CHECK_MODULES(KYLIN_GREETER, [
     gtk+-3.0
     gdk-x11-3.0
     indicator3-0.4
@@ -31,10 +31,10 @@ PKG_CHECK_MODULES(UNITY_GREETER, [
     x11
 ])
 
-AC_DEFINE_UNQUOTED([INDICATOR_FILE_DIR], ["${prefix}/share/unity/indicators"], [Indicator files are searched for in this directory])
+#AC_DEFINE_UNQUOTED([INDICATOR_FILE_DIR], ["${prefix}/share/unity/indicators"], [Indicator files are searched for in this directory])
 
-INDICATORDIR=`$PKG_CONFIG --variable=indicatordir indicator3-0.4`
-AC_SUBST(INDICATORDIR)
+#INDICATORDIR=`$PKG_CONFIG --variable=indicatordir indicator3-0.4`
+#AC_SUBST(INDICATORDIR)
 
 USD_BINARY=`$PKG_CONFIG --variable=binary unity-settings-daemon`
 if test -z "$USD_BINARY"; then
@@ -47,7 +47,7 @@ dnl Internationalization
 dnl ###########################################################################
 
 IT_PROG_INTLTOOL(0.35.0)
-GETTEXT_PACKAGE=unity-greeter
+GETTEXT_PACKAGE=kylin-greeter
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", Gettext package)
 AC_SUBST(GETTEXT_PACKAGE)
 

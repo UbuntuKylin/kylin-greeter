@@ -1,8 +1,9 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Source: https://launchpad.net/unity-greeter
+Source: https://launchpad.net/kylin-greeter
 
 Files: *
 Copyright: 2011-2013 Canonical Ltd
+           2015, National University of Defense Technology(NUDT) & Kylin Ltd
 License: GPL-3
 
 License: GPL-3

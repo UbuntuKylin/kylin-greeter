@@ -4,16 +4,16 @@
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
 
-  <name xml:lang="en">unity-greeter</name>
-  <shortdesc xml:lang="en">Unity Greeter</shortdesc>
-  <homepage rdf:resource="https://launchpad.net/unity-greeter" />
-  <bug-database rdf:resource="https://bugs.launchpad.net/unity-greeter" />
+  <name xml:lang="en">kylin-greeter</name>
+  <shortdesc xml:lang="en">Kylin Greeter</shortdesc>
+  <homepage rdf:resource="https://launchpad.net/kylin-greeter" />
+  <bug-database rdf:resource="https://bugs.launchpad.net/kylin-greeter" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
 
   <maintainer>
     <foaf:Person>
       <foaf:name>Robert Ancell</foaf:name>
-      <foaf:mbox rdf:resource="mailto:robert.ancell@canonical.com" />
+      <foaf:mbox rdf:resource="mailto:zhangchao@ubuntukylin.com" />
     </foaf:Person>
   </maintainer>
 </Project>

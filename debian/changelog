@@ -1,3 +1,9 @@
+kylin-greeter (14.04.10kord1k8) ginkgo; urgency=medium
+
+  *  fork from unity-greeter,rename to kylin-greeter
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 21 Sep 2015 20:02:32 +0800
+
 unity-greeter (14.04.10-0kord1k7) ginkgo; urgency=medium
 
   *  del a11 

@@ -1,7 +1,7 @@
 # -*- Mode: Automake; indent-tabs-mode: t; tab-width: 4 -*-
 
 xgreeterdir = $(datarootdir)/xgreeters
-dist_xgreeter_DATA = unity-greeter.desktop
+dist_xgreeter_DATA = kylin-greeter.desktop
 
 dist_pkgdata_DATA = \
 	a11y.svg \
@@ -15,6 +15,7 @@ dist_pkgdata_DATA = \
 	dialog_close.png \
 	dialog_close_highlight.png \
 	dialog_close_press.png \
+	default_face.png \
 	gnome_badge.png \
 	hibernate_highlight.png \
 	hibernate.png \
@@ -40,9 +41,9 @@ dist_pkgdata_DATA = \
 	unknown_badge.png
 
 @GSETTINGS_RULES@
-gsettings_SCHEMAS = com.canonical.unity-greeter.gschema.xml
+gsettings_SCHEMAS = com.kylin.kylin-greeter.gschema.xml
 
-dist_man1_MANS = unity-greeter.1
+dist_man1_MANS = kylin-greeter.1
 
 EXTRA_DIST = \
 	$(gsettings_SCHEMAS)
