@@ -38,9 +38,9 @@ public class ShutdownDialog : Gtk.Fixed
     private Cairo.Pattern? top_pattern = null;
 
     private const int BORDER_SIZE = 30;
-    private const int BORDER_INTERNAL_SIZE = 10;
+    private const int BORDER_INTERNAL_SIZE = 0;
     private const int BORDER_EXTERNAL_SIZE = BORDER_SIZE - BORDER_INTERNAL_SIZE;
-    private const int CLOSE_OFFSET = 3;
+    private const int CLOSE_OFFSET = 7;
     private const int BUTTON_TEXT_SPACE = 9;
     private const int BLUR_RADIUS = 8;
 
@@ -439,7 +439,7 @@ public class ShutdownDialog : Gtk.Fixed
         c.save ();
         c.translate (x, y);
 
-        CairoUtils.rounded_rectangle (c, 0, 0, width, height, 4);
+        CairoUtils.rounded_rectangle (c, 0, 0, width, height, 0);
         c.set_source_surface (bg_surface, 0, 0);
         c.fill_preserve ();
         c.set_source_rgba (avg_color.red, avg_color.green, avg_color.blue, avg_color.alpha);
