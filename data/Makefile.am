@@ -20,7 +20,6 @@ dist_pkgdata_DATA = \
 	hibernate_highlight.png \
 	hibernate.png \
 	kde_badge.png \
-	logo.png \
 	message.png \
 	recovery_console_badge.png \
 	remote_login_help.png \
