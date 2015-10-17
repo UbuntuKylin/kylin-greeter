@@ -68,7 +68,7 @@ public class UnityGreeter
         var connected = false;
         try
         {
-            connected = greeter.connect_sync ();
+            connected = greeter.connect_to_daemon_sync ();
         }
         catch (Error e)
         {

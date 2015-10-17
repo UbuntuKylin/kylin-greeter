@@ -22,7 +22,7 @@ PKG_CHECK_MODULES(KYLIN_GREETER, [
     gdk-x11-3.0
     indicator3-0.4
     libido3-0.1 >= 13.10.0
-    liblightdm-gobject-1 >= 1.4.0
+    liblightdm-gobject-1 >= 1.12.0
     gnome-desktop-3.0
     freetype2
     cairo-ft
