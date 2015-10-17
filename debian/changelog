@@ -1,3 +1,9 @@
+kylin-greeter (15.10.0) wily; urgency=medium
+
+  *  merge some code from unity-greeter 15.10
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Sat, 17 Oct 2015 16:38:30 +0800
+
 kylin-greeter (14.04.10kord1k9) ginkgo; urgency=medium
 
   *  change shutdown dialog style and some backbutton icon

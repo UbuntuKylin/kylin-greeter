@@ -1,3 +1,103 @@
+kylin-greeter (15.10.0) wily; urgency=medium
+
+  *  merge some code from unity-greeter 15.10
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Sat, 17 Oct 2015 16:38:30 +0800
+
+kylin-greeter (14.04.10kord1k9) ginkgo; urgency=medium
+
+  *  change shutdown dialog style and some backbutton icon
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Thu, 15 Oct 2015 17:15:49 +0800
+
+kylin-greeter (14.04.10kord1k8) ginkgo; urgency=medium
+
+  *  fork from unity-greeter,rename to kylin-greeter
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 21 Sep 2015 20:02:32 +0800
+
+unity-greeter (14.04.10-0kord1k7) ginkgo; urgency=medium
+
+  *  del a11 
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Tue, 04 Aug 2015 09:54:59 +0800
+
+unity-greeter (140.4.10-0kord6) utopic; urgency=medium
+
+  *  更换logo
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Wed, 03 Jun 2015 11:19:46 +0800
+
+unity-greeter (140.4.10-0kord5) utopic; urgency=medium
+
+  *  增加无法关机重启的中文提示
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 01 Jun 2015 16:06:56 +0800
+
+unity-greeter (140.4.10-0kord4) utopic; urgency=medium
+
+  *  增加动画中浮点数正确性判断(nan)，错误则立刻结束动画
+  *  增大动画正确结束的范围，以减少无法正常结束动画的概率
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Fri, 29 May 2015 16:51:32 +0800
+
+unity-greeter (140.4.10-0kord3) utopic; urgency=medium
+
+  * 无视lightdm对重启和关闭的判断，一直保持关机和重启按钮的绘制显示。
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Fri, 29 May 2015 10:55:55 +0800
+
+unity-greeter (140.4.10-0kord2) utopic; urgency=medium
+
+  * 修改默认背景颜色
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Tue, 28 Apr 2015 15:28:04 +0800
+
+unity-greeter (140.4.10-0neokylin1) trusty; urgency=medium
+
+  * release for neokylin 
+  * 修改默认背景名称
+  * 更换多屏显示时的logo 
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 05 Jan 2015 17:10:40 +0800
+
+unity-greeter (14.04.101-0ubuntukylin4) trusty; urgency=medium
+
+  * change icon for neokylin
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Thu, 13 Nov 2014 11:27:07 +0800
+
+unity-greeter (14.04.100-0ubuntukylin4) trusty; urgency=medium
+
+  * release for UK 3.0 beta
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Fri, 22 Aug 2014 09:42:49 +0800
+
+unity-greeter (14.04.10-0ubuntukylin4) trusty; urgency=medium
+
+  * 修复桌面环境选中状态主题问题
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 18 Aug 2014 16:08:25 +0800
+
+unity-greeter (14.04.10-0ubuntukylin3) trusty; urgency=medium
+
+  * 增加greeter所使用的gtk主题并修改配置文件
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Wed, 13 Aug 2014 10:00:21 +0800
+
+unity-greeter (14.04.10-0ubuntukylin2) trusty; urgency=medium
+
+  * 完成布局和功能
+  * 去除indictor
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Wed, 13 Aug 2014 08:54:51 +0800
+
+unity-greeter (14.04.10-0ubuntukylin1) trusty; urgency=medium
+
+  * ready for ubuntukylin
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 11 Aug 2014 15:45:47 +0800
+
 Overview of changes in unity-greeter 14.04.10
 
     - Require user to acknowledge messages received after authentication is
