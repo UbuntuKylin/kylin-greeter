@@ -1,3 +1,9 @@
+kylin-greeter (15.10.1) wily; urgency=medium
+
+  *  fix logo.png error
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Sat, 17 Oct 2015 17:18:37 +0800
+
 kylin-greeter (15.10.0) wily; urgency=medium
 
   *  merge some code from unity-greeter 15.10
