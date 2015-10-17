@@ -340,7 +340,7 @@ public class UnityGreeter
                 /* Check to see if this window is our onboard window, since we don't want to focus it. */
                 X.Window keyboard_xid = 0;
                 if (main_window.keyboard_window != null)
-                    keyboard_xid = (main_window.menubar.keyboard_window.get_window () as Gdk.X11.Window).get_xid ();
+                    keyboard_xid = (main_window.keyboard_window.get_window () as Gdk.X11.Window).get_xid ();
 
                 if (xwin != keyboard_xid && win.get_type_hint() != Gdk.WindowTypeHint.NOTIFICATION)
                 {
