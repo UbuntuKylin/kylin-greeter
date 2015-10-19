@@ -1,3 +1,9 @@
+kylin-greeter (15.10.2) wily; urgency=medium
+
+  *  change some icons
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 19 Oct 2015 12:09:08 +0800
+
 kylin-greeter (15.10.1) wily; urgency=medium
 
   *  fix logo.png error
