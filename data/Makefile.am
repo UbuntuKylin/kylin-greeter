@@ -12,6 +12,7 @@ dist_pkgdata_DATA = \
 	arrow_left_prelight.png \
 	background.png \
 	cof.png \
+	logo.png \
 	dialog_close.png \
 	dialog_close_highlight.png \
 	dialog_close_press.png \
