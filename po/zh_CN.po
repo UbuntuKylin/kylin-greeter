@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: unity-greeter\n"
+"Project-Id-Version: kylin-greeter\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-04-06 06:45+0000\n"
 "PO-Revision-Date: 2012-01-24 16:14+0000\n"
@@ -20,23 +20,23 @@ msgstr ""
 #: ../src/greeter-list.vala:300
 #, c-format
 msgid "Enter password for %s"
-msgstr ""
+msgstr "输入 %s 的密码"
 
 #: ../src/greeter-list.vala:803 ../src/user-list.vala:701
 msgid "Password:"
-msgstr ""
+msgstr "密码："
 
 #: ../src/greeter-list.vala:805 ../src/user-list.vala:695
 msgid "Username:"
-msgstr ""
+msgstr "用户名："
 
 #: ../src/greeter-list.vala:857
 msgid "Invalid password, please try again"
-msgstr ""
+msgstr "密码错误，请重试"
 
 #: ../src/greeter-list.vala:868
 msgid "Failed to authenticate"
-msgstr ""
+msgstr "认证失败"
 
 #: ../src/greeter-list.vala:923
 msgid "Logging in…"
@@ -44,7 +44,7 @@ msgstr "正在登录..."
 
 #: ../src/main-window.vala:49
 msgid "Login Screen"
-msgstr ""
+msgstr "登录屏幕"
 
 #: ../src/main-window.vala:116
 msgid "Back"
@@ -52,19 +52,19 @@ msgstr "后退"
 
 #: ../src/menubar.vala:220
 msgid "Onscreen keyboard"
-msgstr ""
+msgstr "屏幕键盘"
 
 #: ../src/menubar.vala:225
 msgid "High Contrast"
-msgstr ""
+msgstr "高对比度"
 
 #: ../src/menubar.vala:231
 msgid "Screen Reader"
-msgstr ""
+msgstr "屏幕阅读器"
 
 #: ../src/prompt-box.vala:211
 msgid "Session Options"
-msgstr ""
+msgstr "会话选项"
 
 #: ../src/session-list.vala:34
 msgid "Select desktop environment"
@@ -109,27 +109,27 @@ msgstr "%s (默认)"
 #. Help string for command line --version flag
 #: ../src/unity-greeter.vala:484
 msgid "Show release version"
-msgstr ""
+msgstr "显示发行版本信息"
 
 #. Help string for command line --test-mode flag
 #: ../src/unity-greeter.vala:487
 msgid "Run in test mode"
-msgstr ""
+msgstr "以测试模式运行"
 
 #. Arguments and description for --help text
 #: ../src/unity-greeter.vala:493
 msgid "- Unity Greeter"
-msgstr ""
+msgstr "- Unity Greeter"
 
 #. Text printed out when an unknown command-line argument provided
 #: ../src/unity-greeter.vala:504
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options."
-msgstr ""
+msgstr "运行“%s --help”来查看可用命令行选项的完整列表。"
 
 #: ../src/user-list.vala:45
 msgid "Guest Session"
-msgstr ""
+msgstr "客人会话"
 
 #: ../src/user-list.vala:438
 msgid "Please enter a complete e-mail address"
@@ -196,7 +196,7 @@ msgstr "登录"
 #: ../src/user-list.vala:826
 #, c-format
 msgid "Login as %s"
-msgstr ""
+msgstr "作为 %s 登录"
 
 #: ../src/user-list.vala:830
 msgid "Retry"
@@ -209,7 +209,7 @@ msgstr "以 %s 重试"
 
 #: ../src/user-list.vala:869
 msgid "Login"
-msgstr ""
+msgstr "登录"
 
 #~ msgid "_Back"
 #~ msgstr "后退(_B)"
