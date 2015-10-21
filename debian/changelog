@@ -1,3 +1,10 @@
+kylin-greeter (15.10.4) wily; urgency=medium
+
+  *  fix zh_CN.po
+  *  change dash_entry
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Wed, 21 Oct 2015 21:23:47 +0800
+
 kylin-greeter (15.10.3) wily; urgency=medium
 
   *  add logo.png

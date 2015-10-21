@@ -47,7 +47,7 @@ public class DashEntry : Gtk.Entry, Fadable
         }
     }
 
-    private static const string NO_BORDER_CLASS = "unity-greeter-no-border";
+    //private static const string NO_BORDER_CLASS = "kylin-greeter-no-border";
 
     protected FadeTracker fade_tracker { get; protected set; }
     private Gdk.Window arrow_win;
@@ -96,7 +96,7 @@ public class DashEntry : Gtk.Entry, Fadable
         // opt-out like that rather than just turning the styles on when we
         // need to draw the spinner because the animation doesn't work right
         // otherwise.  See the draw() function for how we turn it off.
-        var no_border_provider = new Gtk.CssProvider ();
+        /*var no_border_provider = new Gtk.CssProvider ();
         try
         {
             var css = ".%s {border: 0px;}".printf (NO_BORDER_CLASS);
@@ -109,7 +109,7 @@ public class DashEntry : Gtk.Entry, Fadable
         style_ctx.add_provider (no_border_provider,
                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
         style_ctx.add_class (NO_BORDER_CLASS);
-        style_ctx.add_class (Gtk.STYLE_CLASS_SPINNER);
+        style_ctx.add_class (Gtk.STYLE_CLASS_SPINNER);*/
     }
 
     public override bool draw (Cairo.Context c)
@@ -118,8 +118,8 @@ public class DashEntry : Gtk.Entry, Fadable
 
         // See construct method for explanation of why we remove classes
         style_ctx.save ();
-        style_ctx.remove_class (Gtk.STYLE_CLASS_SPINNER);
-        style_ctx.remove_class (NO_BORDER_CLASS);
+        //style_ctx.remove_class (Gtk.STYLE_CLASS_SPINNER);
+        //style_ctx.remove_class (NO_BORDER_CLASS);
         c.save ();
         c.push_group ();
         base.draw (c);
@@ -162,7 +162,7 @@ public class DashEntry : Gtk.Entry, Fadable
 
         var arrow_size = get_arrow_size ();
         Gtk.cairo_transform_to_window (c, this, arrow_win);
-        c.translate (arrow_size - arrow_pixbuf.get_width () - 1, 0); // right align
+        c.translate ( arrow_size - arrow_pixbuf.get_width () , 0); // right align 
         Gdk.cairo_set_source_pixbuf (c, arrow_pixbuf, 0, 0);
 
         c.paint ();
@@ -236,7 +236,8 @@ public class DashEntry : Gtk.Entry, Fadable
 
         // height is larger than width for the arrow, so we measure using that
         var margin = (allocation.height - arrow_size) / 2;
-
+        if (margin < 0)
+            margin = 0;//change by pz
         x = allocation.x + allocation.width - margin - arrow_size;
         y = allocation.y + margin;
     }
