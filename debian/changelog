@@ -1,3 +1,9 @@
+kylin-greeter (15.10.5) wily; urgency=medium
+
+  *  release for 15.10
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Wed, 21 Oct 2015 21:48:27 +0800
+
 kylin-greeter (15.10.4) wily; urgency=medium
 
   *  fix zh_CN.po
