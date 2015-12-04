@@ -1,6 +1,7 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; tab-width: 4 -*-
  *
  * Copyright (C) 2013 Canonical Ltd
+ *               2015, National University of Defense Technology(NUDT) & Kylin Ltd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -16,6 +17,7 @@
  *
  * Authors: Robert Ancell <robert.ancell@canonical.com>
  *          Marco Trevisan <marco.trevisan@canonical.com>
+ * Modified by : zhangchao <zhangchao@ubuntukylin.com>
  */
 
 public enum ShutdownDialogType

@@ -1,6 +1,7 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; tab-width: 4 -*-
  *
  * Copyright (C) 2011 Canonical Ltd
+ *               2015, National University of Defense Technology(NUDT) & Kylin Ltd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -15,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by: Robert Ancell <robert.ancell@canonical.com>
+ * Modified by : zhangchao <zhangchao@ubuntukylin.com>
  */
 
 public const int grid_size = 40;

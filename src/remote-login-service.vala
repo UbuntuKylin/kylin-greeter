@@ -1,6 +1,7 @@
 /* -*- Mode: Vala; indent-tabs-mode: nil; tab-width: 4 -*-
  *
  * Copyright (C) 2012 Canonical Ltd
+ *               2015, National University of Defense Technology(NUDT) & Kylin Ltd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -14,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * Modified by : zhangchao <zhangchao@ubuntukylin.com>
  */
 
 protected struct RemoteServerField
