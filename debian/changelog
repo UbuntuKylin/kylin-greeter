@@ -1,3 +1,10 @@
+kylin-greeter (16.04.0) xenial; urgency=medium
+
+  *  change logo icon for ubuntu kylin 16.04
+  *  change arrow icon:del chinese word
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Fri, 04 Dec 2015 15:28:16 +0800
+
 kylin-greeter (15.10.5) wily; urgency=medium
 
   *  release for 15.10
