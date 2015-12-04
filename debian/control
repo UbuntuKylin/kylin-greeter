@@ -32,5 +32,5 @@ Suggests: lightdm-remote-session-freerdp,
           remote-login-service,
 Provides: lightdm-greeter
 Breaks: edubuntu-artwork (<< 12.01.1~)
-Description: Kylin Greeter
+Description: Ubuntu Kylin Greeter
  The greeter for the Kylin desktop fork from unity-greeter.
