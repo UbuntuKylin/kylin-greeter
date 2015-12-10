@@ -103,8 +103,10 @@ public class MainWindow : Gtk.Window
         
          //TOFIX：menubar已经不需要
        // menubar = new MenuBar (background, accel_group);
-		
-        
+
+		//LP:#1524662,send SIGTERM to onboard,fix onboard "enter" hangs
+        UnityGreeter.singleton.starting_session.connect (cleanup);
+
         //a11y按钮
         var a11yalign = new Gtk.Alignment (1.0f,1.0f, 0.0f, 0.0f);
         a11yalign.show();
@@ -189,6 +191,23 @@ public class MainWindow : Gtk.Window
             screen.monitors_changed.connect (monitors_changed_cb);
             monitors_changed_cb (screen);
         }
+    }
+
+    private void close_pid (ref Pid pid)
+    {
+        if (pid > 0)
+        {
+            Posix.kill (pid, Posix.SIGTERM);
+            int status;
+            Posix.waitpid (pid, out status, 0);
+            pid = 0;
+            debug ("~~~~~~~~~~keyboard cleanup~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+        }
+    }
+
+    public void cleanup ()
+    {
+        close_pid (ref keyboard_pid);
     }
 
     public void push_list (GreeterList widget)
