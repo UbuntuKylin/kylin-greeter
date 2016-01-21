@@ -1,3 +1,9 @@
+kylin-greeter (16.04.1) xenial; urgency=medium
+
+  *  fix bug LP: #1524662,send SIGTERM to onboard to end onboard
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Thu, 21 Jan 2016 16:52:15 +0800
+
 kylin-greeter (16.04.0) xenial; urgency=medium
 
   *  change logo icon for ubuntu kylin 16.04
