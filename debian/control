@@ -3,13 +3,11 @@ Section: x11
 Priority: optional
 Maintainer: Ubuntu Kylin Team <ubuntukylin-members@lists.launchpad.net>
 Standards-Version: 3.9.6
-Build-Depends: appmenu-gtk3,
-               at-spi2-core,
+Build-Depends: at-spi2-core,
                dbus-x11,
                debhelper (>= 9),
                dh-autoreconf,
                gnome-common,
-               ttf-ubuntu-font-family,
                unity-settings-daemon-dev,
                libcanberra-dev,
                libgnome-desktop-3-dev,
@@ -27,10 +25,6 @@ Package: kylin-greeter
 Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-Suggests: lightdm-remote-session-freerdp,
-          lightdm-remote-session-uccsconfigure,
-          remote-login-service,
 Provides: lightdm-greeter
-Breaks: edubuntu-artwork (<< 12.01.1~)
 Description: Ubuntu Kylin Greeter
  The greeter for the Kylin desktop fork from unity-greeter.
