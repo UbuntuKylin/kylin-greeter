@@ -54,6 +54,7 @@ public class ListStack : Gtk.Fixed
 
         pushed.start_scrolling = false;
         pushed.set_size_request (width, height);
+        
         add (pushed);
 
         if (children != null)

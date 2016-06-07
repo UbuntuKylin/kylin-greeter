@@ -117,9 +117,10 @@ public abstract class GreeterList : FadableBox
     public static const int LOGINBOX_WIDTH = 14;
     public static const int DEFAULT_BOX_HEIGHT = 2; /* in grid_size blocks */
     public static const int DEFAULT_LOGINBOX_HEIGHT = 4;
-    private int n_above = 5;//每行中项目个数
-    private int n_below = 3;//行数
-
+    protected int n_above = 5;//每行中项目个数
+    protected int n_below = 3;//行数
+    
+    private int height_row = 200; //行高
     private int space_col = 20;
     private int space_row = 10;
     private int box_x
@@ -145,7 +146,7 @@ public abstract class GreeterList : FadableBox
     public signal void entry_displayed_start ();
     public signal void entry_displayed_done ();
 
-    
+
     
     protected virtual string? get_selected_id ()
     {
@@ -304,7 +305,7 @@ public abstract class GreeterList : FadableBox
         case ScrollTarget.DOWN:
             var index = entries.index (selected_entry) + n_above;
             if (index >= (int) entries.length ())
-                break;
+                index = (int) entries.length () -1;
             select_entry (entries.nth_data (index), 1.0);
             break;
             
@@ -431,6 +432,7 @@ public abstract class GreeterList : FadableBox
     protected virtual void insert_entry (PromptBox entry)
     {
         entries.insert_sorted (entry, compare_entry);
+       
     }
 
     protected abstract void add_manual_entry ();
@@ -508,7 +510,12 @@ public abstract class GreeterList : FadableBox
         var index = entries.index (entry);
         entry.destroy ();
         entries.remove (entry);
-
+         debug("~~~~~~~~~~entries.remove ,entries.length=%d",(int)entries.length());
+        if(entries.length() <= n_below * n_above)
+        {
+            UnityGreeter.singleton.no_need_scroll_button();
+            debug("~~~~~~~~no_need_scroll_button~~~~~~~~");
+        }
        /* Select another entry if the selected one was removed */
         if (entry == selected_entry)
         {
@@ -605,7 +612,7 @@ public abstract class GreeterList : FadableBox
         get_allocation (out allocation);
 
         var child_allocation = Gtk.Allocation ();
-        int user_box_width = (allocation.height - MainWindow.BUTTONBOX_HEIGHT) /5;
+        int user_box_width = (allocation.height - MainWindow.BUTTONBOX_HEIGHT) / 5;
         if(user_box_width > 128)
             user_box_width = 128;
         int login_box_width = grid_size * LOGINBOX_WIDTH;
@@ -623,7 +630,12 @@ public abstract class GreeterList : FadableBox
             child_allocation.width = user_box_width;//grid_size * BOX_WIDTH - BORDER * 2;
             entry.get_preferred_height_for_width (child_allocation.width, null, out child_allocation.height);
         }
-        
+        if(col==0)
+        {
+            height_row = child_allocation.height;
+        }else{
+            child_allocation.height = height_row;
+        }
         
            //debug ("move_entry~~~~~~~~~~allocation.height=%d~~allocation.width=%d",allocation.height,allocation.width);
         int x_offset = (allocation.width - child_allocation.width * col_num - (space_col * (col_num -1))) / 2 ;
@@ -638,7 +650,7 @@ public abstract class GreeterList : FadableBox
         else
             child_allocation.y = allocation.y + y_offset + space_row + row * (child_allocation.height + space_row);
         fixed.move (entry, child_allocation.x, child_allocation.y);
-        //debug("~~~entry.id=%s~~~~~~~~child_allocation.x=%d~~~child_allocation.y=%d~~~y_offset=%d~~~allocation.y=%d~~~child_allocation.height=%d",entry.id,child_allocation.x,child_allocation.y,y_offset,allocation.y,child_allocation.height);
+        //debug("~~~entry.id=%s~~~~~~~~child_allocation.x=%d~~~child_allocation.y=%d~~~y_offset=%d~~~allocation.y=%d~~~child_allocation.height=%d~~~~child_allocation.width=%d",entry.id,child_allocation.x,child_allocation.y,y_offset,allocation.y,child_allocation.height,child_allocation.width);
         //entry.set_face_size (child_allocation.width);
         entry.size_allocate (child_allocation);
     }
@@ -676,7 +688,7 @@ public abstract class GreeterList : FadableBox
         var row = ((int)scroll_location) / n_above ;
         //var col = ((int)scroll_location) % n_above ;
         int sum_num = (int)entries.length();
-
+        int sum_row = (int)Math.ceilf((float)sum_num / n_above);   
         Gtk.Allocation allocation;
         get_allocation (out allocation);
         space_col=allocation.width /40;
@@ -685,7 +697,29 @@ public abstract class GreeterList : FadableBox
             space_col=space_col * (n_above + 1-sum_num);
         }
         if(row > n_below-1)
+        {
             last_position = (row+1) * n_above -1;
+            //TODO:scroll_up_button_can_use
+            UnityGreeter.singleton.set_scroll_up_button_image(true);
+            //debug("@@@@@@@@@@@@@ up is good @@@@@@@@@@@@@@@");
+        }else{
+            //TODO:scroll_up_button_cannot_use
+            UnityGreeter.singleton.set_scroll_up_button_image(false);
+           // debug("@@@@@@@@@@@@@ up is bad @@@@@@@@@@@@@@@");
+        }
+        //debug("last_position=%d,sum_row=%d,n_above=%d",last_position,sum_row,n_above);
+        if(last_position > (sum_row-1)* n_above -1)
+        {
+            //TODO:scroll_down_button_cannot_use
+           // debug("@@@@@@@@@@@@@ down is bad @@@@@@@@@@@@@@@");
+            UnityGreeter.singleton.set_scroll_down_button_image(false);
+            
+        }else{
+            //TODO:scroll_down_button_can_use
+          //  debug("@@@@@@@@@@@@@ down is good @@@@@@@@@@@@@@@");
+            UnityGreeter.singleton.set_scroll_down_button_image(true);
+
+        }
         foreach (var entry in entries)
         {   //debug("~~~~~~~~~scroll_location = %f ",scroll_location);
             int position =index-(last_position - n_above * n_below);
@@ -916,6 +950,7 @@ public abstract class GreeterList : FadableBox
         status = status_box;
         clicked_location=entries.index (entry);
         move_names ();
+        UnityGreeter.singleton.hide_scroll_button();
         //fixed.move (entry, 0, 0);
         //entry.size_allocate (allocation);
         //entry.show_prompts();
@@ -951,6 +986,7 @@ public abstract class GreeterList : FadableBox
             status=Status.USERLIST;
             
             move_names ();
+            UnityGreeter.singleton.set_scroll_button_status();
             selected_entry.hide_prompts();
         }else if(status==Status.SESSIONLIST)
         {debug("~~~~~~~~back_userlist_cb,back_loginbox");

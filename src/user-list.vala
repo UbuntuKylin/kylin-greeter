@@ -628,6 +628,12 @@ public UserList (Background bg)
     protected override void insert_entry (PromptBox entry)
     {
         entries.insert_sorted (entry, user_list_compare_entry);
+         debug("~~~~~~~~~~insert_entry ,entries.length=%d",(int)entries.length());
+        if(entries.length() > n_below * n_above)
+        {
+            UnityGreeter.singleton.need_scroll_button();
+            debug("~~~~~~~~need_scroll_button~~~~~~~~");
+        }
     }
 
     protected override void setup_prompt_box (bool fade = true)

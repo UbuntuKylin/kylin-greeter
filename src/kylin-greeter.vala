@@ -30,10 +30,16 @@ public class UnityGreeter
     public signal void authentication_complete ();
     public signal void starting_session ();
 
+    
+
+     
     public signal void greeter_already ();
     
     public bool test_mode = false;
 
+    private bool is_already = false;
+    private bool show_scroll_button = false;
+     
     private string state_file;
     private KeyFile state;
 
@@ -179,6 +185,55 @@ public class UnityGreeter
         main_window.pop_list ();
     }
 
+    public void need_scroll_button ()
+    {
+        if(is_already)
+        {
+            main_window.display_scroll_button ();
+            debug("~~~~~~~~~~~set scroll button display~~~~~~~~~~");
+        }
+        show_scroll_button = true;
+    }
+
+    public void no_need_scroll_button ()
+    {
+        if(is_already)
+        {
+            main_window.hide_scroll_button ();
+            debug("~~~~~~~~~~~set scroll button hide~~~~~~~~~~");
+        }
+        show_scroll_button = false;
+    }
+
+    public void hide_scroll_button ()
+    {
+        if(is_already)
+        {
+            main_window.hide_scroll_button ();
+        }
+    }
+    public void set_scroll_button_status()
+     {
+        if(show_scroll_button)
+            main_window.display_scroll_button();
+        else
+            main_window.hide_scroll_button();
+    }
+
+    public void set_scroll_up_button_image(bool can_click)
+    {
+        if(is_already)
+        {
+            main_window.set_scroll_up_button_image(can_click);
+        }
+    }
+    public void set_scroll_down_button_image(bool can_click)
+    {
+        if(is_already)
+        {
+            main_window.set_scroll_down_button_image(can_click);
+        }
+    }
     public static void add_style_class (Gtk.Widget widget)
     {
         /* Add style context class lightdm-user-list */
@@ -591,7 +646,8 @@ public class UnityGreeter
             Gtk.main_quit();
             return true;
         });
-
+        greeter.is_already = true;
+        greeter.set_scroll_button_status();
         debug ("greeter_already");
         greeter.greeter_already();
         

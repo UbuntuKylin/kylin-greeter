@@ -41,16 +41,28 @@ public class MainWindow : Gtk.Window
 	private Pid keyboard_pid = 0;
 	private Gtk.Button shutdownbutton;
 	private Gtk.ToggleButton a11ybutton;
+    private Gtk.Button scroll_up_button;
+    private Gtk.Button scroll_down_button;
+    private Gtk.Image scroll_up_button_can_click_image;
+    private Gtk.Image scroll_up_button_cannot_click_image;
+    private Gtk.Image scroll_down_button_can_click_image;
+    private Gtk.Image scroll_down_button_cannot_click_image;
+    private Gtk.Alignment scroll_down_button_align;
+    private Gtk.Alignment scroll_up_button_align;
     // Menubar is smaller, but with shadow, we reserve more space
     public static const int BUTTONBOX_HEIGHT = 80;
-
+    public static const int SCROLL_BUTTON_HEIGHT = 30;
+    public static const int BOTTOM_HEIGHT = 40;
     construct
     {
         events |= Gdk.EventMask.POINTER_MOTION_MASK;
-
         var accel_group = new Gtk.AccelGroup ();
         add_accel_group (accel_group);
-
+        scroll_up_button_cannot_click_image = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"arrow-up_cannot_click.png"));
+        scroll_up_button_can_click_image =new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"arrow-up_can_click.png"));
+        scroll_down_button_cannot_click_image = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"arrow-down_cannot_click.png"));
+        scroll_down_button_can_click_image =new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"arrow-down_can_click.png"));
+        
         var bg_color = Gdk.RGBA ();
         bg_color.parse (UGSettings.get_string (UGSettings.KEY_BACKGROUND_COLOR));
         override_background_color (Gtk.StateFlags.NORMAL, bg_color);
@@ -69,6 +81,7 @@ public class MainWindow : Gtk.Window
 
         login_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         login_box.show ();
+        login_box.set_spacing(-1);
         background.add (login_box);
 
         /* 删除原有菜单栏及其中的indicator，新增两个按钮 作为代替*/
@@ -101,14 +114,14 @@ public class MainWindow : Gtk.Window
        buttonbox_align.add(buttonbox);
         UnityGreeter.add_style_class (buttonbox);
         
-         //TOFIX：menubar已经不需要
-       // menubar = new MenuBar (background, accel_group);
+      
 
 		//LP:#1524662,send SIGTERM to onboard,fix onboard "enter" hangs
         UnityGreeter.singleton.starting_session.connect (cleanup);
 
-        //a11y按钮
-        var a11yalign = new Gtk.Alignment (1.0f,1.0f, 0.0f, 0.0f);
+
+        //add onboard button
+        var a11yalign = new Gtk.Alignment (1.0f,0.0f, 0.0f, 0.0f);
         a11yalign.show();
         buttonbox.add(a11yalign);
         a11ybutton = new Gtk.ToggleButton ();
@@ -123,8 +136,8 @@ public class MainWindow : Gtk.Window
         UnityGreeter.add_style_class (a11ybutton);
         
         
-        //关机按钮
-		var shutdownbutton_align = new Gtk.Alignment (0.5f, 1.0f, 0.0f,0.0f);
+        //add shutdown_button
+		var shutdownbutton_align = new Gtk.Alignment (0.5f, 0.0f, 0.0f,0.0f);
         shutdownbutton_align.show ();
         buttonbox.add (shutdownbutton_align);
         UnityGreeter.add_style_class (shutdownbutton_align);
@@ -136,45 +149,72 @@ public class MainWindow : Gtk.Window
         shutdownbutton_image.show ();
         shutdownbutton.add (shutdownbutton_image);
         shutdownbutton.clicked.connect (shutdownbutton_clicked_cb);
-        shutdownbutton_align.add (shutdownbutton);
-        
-       
+        shutdownbutton_align.add (shutdownbutton);  
         UnityGreeter.add_style_class (shutdownbutton);
 
-       
-        hbox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+                   //add scroll_up_button
+        scroll_up_button_align = new Gtk.Alignment (0.5f, 1.0f, 0.0f,0.0f);
+        scroll_up_button_align.show ();
+        scroll_up_button_align.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
+        UnityGreeter.add_style_class (scroll_up_button_align);
+		scroll_up_button = new Gtk.Button ();
+
+        scroll_up_button.focus_on_click = false;
+        scroll_up_button.can_focus = false;
+        scroll_up_button_cannot_click_image.show();
+        scroll_up_button_can_click_image.show();
+        scroll_up_button.set_image (scroll_up_button_cannot_click_image);
+        scroll_up_button.clicked.connect (scroll_up_button_clicked_cb);
+        scroll_up_button_align.add (scroll_up_button);
+        UnityGreeter.add_style_class (scroll_up_button);
+
+        
+        hbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         hbox.expand = true;
         hbox.show ();
         login_box.add (hbox);
 
-        //var align = new Gtk.Alignment (0.5f, 0.5f, 0.0f, 0.0f);
-        //align.set_size_request (grid_size, -1);
-        //align.margin_bottom = BUTTONBOX_HEIGHT; /* offset for BUTTONBOX at top */
-        //align.show ();
-        //hbox.add (align);
-
-        /*
-        back_button = new FlatButton ();
-        back_button.get_accessible ().set_name (_("Back"));
-        back_button.focus_on_click = false;
-        var image = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR, "arrow_left.png", null));
-        image.show ();
-        back_button.set_size_request (grid_size - GreeterList.BORDER * 2, grid_size - GreeterList.BORDER * 2);
-        back_button.add (image);
-        back_button.clicked.connect (pop_list);
-        align.add (back_button);
-        */
+        login_box.add (scroll_up_button_align);
+        
         var align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);//用户列表的位置
         //align.margin_bottom = BUTTONBOX_HEIGHT; /* offset for BUTTONBOX at top */
         align.show ();
+        
         hbox.add (align);
-
+        
         stack = new ListStack ();
         stack.show ();
         align.add (stack);
-
         add_user_list ();
 
+
+
+        //add scroll_down_button
+        scroll_down_button_align = new Gtk.Alignment (1.0f, 0.0f, 1.0f,0.0f);
+        scroll_down_button_align.show ();
+        scroll_down_button_align.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
+        UnityGreeter.add_style_class (scroll_down_button_align);
+		scroll_down_button = new Gtk.Button ();
+        login_box.add (scroll_down_button_align);
+		//scroll_down_button.show();
+        scroll_down_button.focus_on_click = false;
+        scroll_down_button.can_focus = false;
+		var scroll_down_button_image = scroll_down_button_can_click_image;
+        scroll_down_button_image.show ();
+        scroll_down_button.add (scroll_down_button_image);
+        scroll_down_button.clicked.connect (scroll_down_button_clicked_cb);
+        scroll_down_button_align.add (scroll_down_button);
+        UnityGreeter.add_style_class (scroll_down_button);
+
+       
+        
+        //add bottom_box
+        var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+        bottom_box.expand = true;
+        bottom_box.show ();
+        login_box.add (bottom_box);
+        scroll_down_button_align.set_size_request (-1,BOTTOM_HEIGHT);
+        
         if (UnityGreeter.singleton.test_mode)
         {
             /* Simulate an 800x600 monitor to the left of a 640x480 monitor */
@@ -229,7 +269,7 @@ public class MainWindow : Gtk.Window
     public override void size_allocate (Gtk.Allocation allocation)
     {
         base.size_allocate (allocation);
-
+        
         /*if (hbox != null)
         {//用户列表框进行偏移
             hbox.margin_left = get_grid_offset (get_allocated_width ());// + grid_size;
@@ -300,7 +340,21 @@ public class MainWindow : Gtk.Window
 
         keyboard_window.visible = button.active;
     }
-    
+
+    private void scroll_up_button_clicked_cb (Gtk.Button button)
+    {
+      debug ("scroll_up_button_clicked_cb~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+        stack.top().scroll (GreeterList.ScrollTarget.UP);
+
+    }
+
+    private void scroll_down_button_clicked_cb (Gtk.Button button)
+    {
+      debug ("scroll_down_button_clicked_cb~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+       stack.top().scroll (GreeterList.ScrollTarget.DOWN);
+
+    }
+     
     private void monitors_changed_cb (Gdk.Screen screen)
     {
         int primary = screen.get_primary_monitor ();
@@ -383,7 +437,7 @@ public class MainWindow : Gtk.Window
     {
         active_monitor = monitor;
         login_box.set_size_request (monitor.width, monitor.height);
-        stack.set_size(monitor.width,monitor.height-BUTTONBOX_HEIGHT);
+        stack.set_size(monitor.width,monitor.height-BUTTONBOX_HEIGHT-SCROLL_BUTTON_HEIGHT*2-BOTTOM_HEIGHT);
        
         background.set_active_monitor (monitor);
         background.move (login_box, monitor.x, monitor.y);
@@ -549,5 +603,35 @@ public class MainWindow : Gtk.Window
         shutdown_dialog = null;
 
         login_box.sensitive = true;
+    }
+
+    public void display_scroll_button()
+    {
+        scroll_down_button.show();
+        scroll_up_button.show();
+    }
+
+    public void hide_scroll_button()
+    {
+        scroll_down_button.hide();
+        scroll_up_button.hide();
+    }
+     
+    public void set_scroll_up_button_image(bool can_click)
+    {
+        if(can_click)
+        {   
+            scroll_up_button.set_image(scroll_up_button_can_click_image);
+           
+        }else{
+            scroll_up_button.set_image(scroll_up_button_cannot_click_image);
+        }
+    }
+    public void set_scroll_down_button_image(bool can_click)
+    {
+        if(can_click)
+            scroll_down_button.set_image(scroll_down_button_can_click_image);
+        else
+            scroll_down_button.set_image(scroll_down_button_cannot_click_image);
     }
 }
