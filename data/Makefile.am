@@ -10,6 +10,10 @@ dist_pkgdata_DATA = \
 	arrow_right.png \
 	arrow_left_active.png \
 	arrow_left_prelight.png \
+	arrow-down_can_click.png \
+	arrow-down_cannot_click.png \
+	arrow-up_can_click.png \
+	arrow-up_cannot_click.png \
 	background.png \
 	cof.png \
 	logo.png \
