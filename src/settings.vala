@@ -37,6 +37,7 @@ public class UGSettings
     public static const string KEY_XFT_HINTSTYLE = "xft-hintstyle";
     public static const string KEY_XFT_RGBA = "xft-rgba";
     public static const string KEY_ONSCREEN_KEYBOARD = "onscreen-keyboard";
+    public static const string KEY_DISPLAY_ONSCREEN_KEYBOARD = "display-onscreen-keyboard"; 
     public static const string KEY_HIGH_CONTRAST = "high-contrast";
     public static const string KEY_SCREEN_READER = "screen-reader";
     public static const string KEY_PLAY_READY_SOUND = "play-ready-sound";

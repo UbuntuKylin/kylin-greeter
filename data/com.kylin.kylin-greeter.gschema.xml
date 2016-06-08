@@ -74,6 +74,10 @@
       <default>false</default>
       <summary>Whether to enable the onscreen keyboard</summary>
     </key>
+    <key name="display-onscreen-keyboard" type="b">
+      <default>true</default>
+      <summary>Whether to display the onscreen keyboard button</summary>
+    </key>
     <key name="high-contrast" type="b">
       <default>false</default>
       <summary>Whether to use a high contrast theme</summary>

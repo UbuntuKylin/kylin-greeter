@@ -316,7 +316,12 @@ public class UnityGreeter
         debug ("Showing main window");
         main_window.show ();
         main_window.get_window ().focus (Gdk.CURRENT_TIME);
-        main_window.set_keyboard_state ();
+        if(UGSettings.get_boolean(UGSettings.KEY_DISPLAY_ONSCREEN_KEYBOARD))
+        {
+            main_window.set_keyboard_state ();
+        }else{
+            main_window.hide_keyboard_button();
+        }
     }
 
     public bool is_authenticated ()

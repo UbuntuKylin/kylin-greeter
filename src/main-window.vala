@@ -643,4 +643,9 @@ public class MainWindow : Gtk.Window
         else
             scroll_down_button.set_image(scroll_down_button_cannot_click_image);
     }
+    public void hide_keyboard_button()
+    {
+        a11ybutton.hide();
+    }
+     
 }
