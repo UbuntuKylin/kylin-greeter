@@ -25,6 +25,7 @@ Package: kylin-greeter
 Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends},
+         unity-settings-daemon,
 Provides: lightdm-greeter
 Description: Ubuntu Kylin Greeter
  The greeter for the Kylin desktop fork from unity-greeter.
