@@ -39,6 +39,7 @@ dist_pkgdata_DATA = \
 	switcher_left.png \
 	switcher_top.png \
 	keyboardbutton.png \
+	keyboardbutton_active.png \
 	shutdownbutton.png \
 	ubuntu_badge.png \
 	unknown_badge.png

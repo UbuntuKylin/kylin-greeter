@@ -47,6 +47,8 @@ public class MainWindow : Gtk.Window
     private Gtk.Image scroll_up_button_cannot_click_image;
     private Gtk.Image scroll_down_button_can_click_image;
     private Gtk.Image scroll_down_button_cannot_click_image;
+    private Gtk.Image a11ybuttonimage;
+    private Gtk.Image a11ybutton_active_image;
     private Gtk.Alignment scroll_down_button_align;
     private Gtk.Alignment scroll_up_button_align;
     // Menubar is smaller, but with shadow, we reserve more space
@@ -62,7 +64,8 @@ public class MainWindow : Gtk.Window
         scroll_up_button_can_click_image =new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"arrow-up_can_click.png"));
         scroll_down_button_cannot_click_image = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"arrow-down_cannot_click.png"));
         scroll_down_button_can_click_image =new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"arrow-down_can_click.png"));
-        
+        a11ybuttonimage = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR, "keyboardbutton.png"));
+        a11ybutton_active_image = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR, "keyboardbutton_active.png"));
         var bg_color = Gdk.RGBA ();
         bg_color.parse (UGSettings.get_string (UGSettings.KEY_BACKGROUND_COLOR));
         override_background_color (Gtk.StateFlags.NORMAL, bg_color);
@@ -128,7 +131,7 @@ public class MainWindow : Gtk.Window
         a11ybutton.focus_on_click = false;
         a11ybutton.can_focus = false;
 		a11ybutton.show();
-		var a11ybuttonimage = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR, "keyboardbutton.png"));
+		a11ybuttonimage = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR, "keyboardbutton.png"));
         a11ybuttonimage.show ();
         a11ybutton.add (a11ybuttonimage);
         a11ybutton.toggled.connect (keyboardbutton_clicked_cb);
@@ -339,6 +342,12 @@ public class MainWindow : Gtk.Window
         }
 
         keyboard_window.visible = button.active;
+        if(button.active)
+        {
+            button.set_image(a11ybutton_active_image);
+        }else{
+            button.set_image(a11ybuttonimage);
+        }
     }
 
     private void scroll_up_button_clicked_cb (Gtk.Button button)
