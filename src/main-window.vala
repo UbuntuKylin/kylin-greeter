@@ -126,6 +126,7 @@ public class MainWindow : Gtk.Window
         //add onboard button
         var a11yalign = new Gtk.Alignment (1.0f,0.0f, 0.0f, 0.0f);
         a11yalign.show();
+        a11yalign.set_size_request(50,-1);
         buttonbox.add(a11yalign);
         a11ybutton = new Gtk.ToggleButton ();
         a11ybutton.focus_on_click = false;
