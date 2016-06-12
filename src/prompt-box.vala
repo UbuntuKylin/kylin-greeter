@@ -59,9 +59,9 @@ public class PromptBox : FadableBox
 
     /* Condensed widgets */
     protected Gtk.Widget small_box_widget;
-    //private ActiveIndicator small_active_indicator;
+
     protected FadingLabel small_name_label;
-    //private CachedImage small_message_image;
+
 
     private GreeterButton back_button;
     //user face by pz
@@ -70,6 +70,7 @@ public class PromptBox : FadableBox
     public CachedImage small_user_face_image;
     public string face;
     private string face_path;
+    private string logined_string=_("Logined");
     protected static const int COL_BACKBUTTON    = 0;
     protected static const int COL_ACTIVE        = 1;
     protected static const int COL_CONTENT       = 2;
@@ -120,46 +121,22 @@ public class PromptBox : FadableBox
         box_grid.margin_bottom = 6;
         box_grid.expand = true;
         
-        /** Grid layout:
-          0 1     2      3 4
-          > Name  M      S <
-            Message.......
-            Entry.........
-         */
-
-        //active_indicator = new ActiveIndicator ();
-        //active_indicator.valign = Gtk.Align.START;
-        //active_indicator.margin_top = (grid_size - ActiveIndicator.HEIGHT) / 2;
-        //active_indicator.show ();
-        //box_grid.attach (active_indicator, COL_ACTIVE, last_row, 1, 1);
-
-        /* Add a second one on right just for equal-spacing purposes */
-        //var dummy_indicator = new ActiveIndicator ();
-        //dummy_indicator.show ();
-        //box_grid.attach (dummy_indicator, COL_SPACER, last_row, 1, 1);
-
-        //debug by pz:不显示用户登陆框
+        
         box_grid.show ();
 
-        //增加返回按钮
+        //add back_button
 
         back_button = new GreeterButton ();
         UnityGreeter.add_style_class(back_button);
-        //back_button.state_flags_changed.connect(back_button_status_change_cb);
+
         back_button.set_status_images(back_button_normal,back_button_prelight,back_button_active);
-        //back_button.get_accessible ().set_name (_("Back"));
         back_button.focus_on_click = false;
         back_button.can_focus = false;
         back_button.yalign=0.5f;
-        //back_button.label = _("Switch User");
         var image = new Gtk.Image.from_file (back_button_normal);
-        //image.show ();
-        //back_button.set_size_request (64, 64);
         back_button.set_image (image);
         back_button.set_always_show_image(true);
-        //back_button.set_use_stock(true);
         back_button.clicked.connect (back_cb);
-        //back_button.override_font (Pango.FontDescription.from_string ("Ubuntu 12"));
         back_button.show();
 
         var back_button_align = new Gtk.Alignment (0.5f, 0.0f, 0.0f, 0.0f);
@@ -183,7 +160,6 @@ public class PromptBox : FadableBox
         
         user_face_image.show();
         var user_face_align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);
-        //user_face_align.set_size_request (-1, grid_size);
         user_face_align.add (user_face_image);
         user_face_align.show ();
         box_grid.attach (user_face_align, COL_ACTIVE, 0, 1, 5);
@@ -200,20 +176,12 @@ public class PromptBox : FadableBox
         small_box_grid.row_spacing = 16;
         small_box_grid.hexpand = true;
         small_box_grid.show ();
-
-        //small_active_indicator = new ActiveIndicator ();
-        //small_active_indicator.valign = Gtk.Align.START;
-        //small_active_indicator.margin_top = (grid_size - ActiveIndicator.HEIGHT) / 2;
-        //small_active_indicator.show ();
-        //small_box_grid.attach (small_active_indicator, 0, 0, 1, 1);
-
         //by pz
         small_user_face_image = new CachedImage(null);
         small_user_face_image.draw_white_border();
         small_user_face_image.pixbuf=scale(user_face_image.pixbuf,96,96);
         small_user_face_image.show();
         var small_user_face_align = new Gtk.Alignment (0.5f, 0.5f, 0.0f, 0.0f);
-        //user_face_align.set_size_request (-1, grid_size);
         small_user_face_align.add (small_user_face_image);
         small_user_face_align.show ();
         small_box_grid.attach(small_user_face_align,0,0,1,1);
@@ -221,11 +189,6 @@ public class PromptBox : FadableBox
         
         var small_name_grid = create_small_name_grid ();
         small_box_grid.attach (small_name_grid, 0, 1, 1, 1);
-
-        /* Add a second indicator on right just for equal-spacing purposes */
-        //var small_dummy_indicator = new ActiveIndicator ();
-        //small_dummy_indicator.show ();
-        //small_box_grid.attach (small_dummy_indicator, 3, 0, 1, 1);
 
         var small_box_eventbox = new Gtk.EventBox ();
         small_box_eventbox.visible_window = false;
@@ -242,24 +205,7 @@ public class PromptBox : FadableBox
         fixed.add (box_grid);
         
     }
-/*
-    private void back_button_status_change_cb(Gtk.StateFlags previous_state_flags)
-    {
-        
-        var new_flags = back_button.get_state_flags ();
 
-        //debug("#############new_flags=%d",new_flags);
-        if(new_flags == Gtk.StateFlags.PRELIGHT)
-        {
-            //debug("#############lala");
-            back_button.set_image(prelight_back_image);
-        }else if ((new_flags & Gtk.StateFlags.ACTIVE) != 0)
-        {//debug("#############new_flags=%d",new_flags);
-            back_button.set_image(active_back_image);
-        }else {
-            back_button.set_image(default_back_image);
-        }
-    }*/
     public void back_cb ()
     {
         
@@ -273,14 +219,8 @@ public class PromptBox : FadableBox
     
     public void set_face_image(string? face)
     {
-        /*if(face==null)
-        {
-            small_user_face_image.pixbuf=scale(tmp_face_image.pixbuf,128,128);
-            return;
-        }
-        */
+
         face_path = face;
-        //user_face_image.pixbuf = new Gdk.Pixbuf.from_file (Path.build_filename (face));
           try
         {
             tmp_face_image.pixbuf = new Gdk.Pixbuf.from_file (Path.build_filename (Path.build_filename (face)));
@@ -382,8 +322,7 @@ public class PromptBox : FadableBox
         option_button.add (option_image);
         name_grid.attach (option_button, COL_NAME_OPTIONS, ROW_NAME, 1, 1);
 
-        //增加登陆文字
-        active_label = new ActiveLabel("已登录");
+        active_label = new ActiveLabel(logined_string);
         active_label.yalign = 0.0f;
         active_label.xalign = 0.0f;
         active_label.vexpand = true;
@@ -407,21 +346,12 @@ public class PromptBox : FadableBox
         small_name_label.yalign = 0.5f;
         small_name_label.xalign = 0.5f;
         small_name_label.hexpand=true;
-        //small_name_label.margin_left = 2;
+
         small_name_label.set_size_request (grid_size, -1);
         small_name_label.show ();
         small_name_grid.attach (small_name_label, 0, 2, 1, 1);
-        //删除message图标
-        //small_message_image = new CachedImage (null);
-        //small_message_image.pixbuf = message_image.pixbuf;
-        //var align = new Gtk.Alignment (0.5f, 0.5f, 0.0f, 0.0f);
-        //align.set_size_request (-1, grid_size);
-        //align.add (small_message_image);
-        //align.show ();
-        //small_name_grid.attach (align, 2, 1, 1, 1);
 
-        //增加登陆文字
-        small_active_label = new ActiveLabel("已登录");
+        small_active_label = new ActiveLabel(logined_string);
         small_active_label.show();
         small_name_grid.attach (small_active_label, 0, 3, 1, 1);
         
@@ -440,19 +370,8 @@ public class PromptBox : FadableBox
         last_row = start_row;
     }
 
-    /*private int round_to_grid (int size)
-    {
-        var num_grids = size / grid_size;
-        var remainder = size % grid_size;
-        if (remainder > 0)
-            num_grids += 1;
-        num_grids = int.max (num_grids, 3);
-        return num_grids * grid_size;
-    }*/
-
     public override void get_preferred_height (out int min, out int nat)
     {
-        //base.get_preferred_height (out min, out nat);
         if(prompt_visibility==PromptVisibility.SHOWN)
         {
             box_grid.get_preferred_height (out min, out nat);
@@ -500,7 +419,6 @@ public class PromptBox : FadableBox
     public void set_show_message_icon (bool show)
     {
         message_image.visible = show;
-        //small_message_image.visible = show;
     }
 
     public void set_is_active (bool active)
@@ -603,9 +521,7 @@ public class PromptBox : FadableBox
 
     public void show_prompts ()
     {
-        debug("~~~~~~~~~~show_prompts = %s",this.id);
-        //if(GreeterList.status!=GreeterList.Status.LOGINBOX)
-         //   return;
+        //debug("~~~~~~~~~~show_prompts = %s",this.id);
         prompt_visibility = PromptVisibility.SHOWN;
         show ();
         foreach_prompt_widget ((w) => { update_prompt_visibility (w); });
@@ -613,12 +529,10 @@ public class PromptBox : FadableBox
 
         public void hide_prompts ()
     {
-        debug("~~~~~~~~~~hide_prompts = %s",this.id);
-        //if(GreeterList.status!=GreeterList.Status.LOGINBOX)
-         //   return;
+        //debug("~~~~~~~~~~hide_prompts = %s",this.id);
+
         prompt_visibility = PromptVisibility.HIDDEN;
         show ();
-        //foreach_prompt_widget ((w) => { update_prompt_visibility (w); });
     }
     
     protected void attach_item (Gtk.Widget w, bool add_style_class = true , bool is_message = false)
@@ -652,8 +566,6 @@ public class PromptBox : FadableBox
 
         label.xalign = 0.0f;
         label.set_data<bool> ("prompt-box-is-error", is_error);
-
-        //attach_item (label);
 
         if (is_error)
         {
@@ -805,19 +717,8 @@ public class PromptBox : FadableBox
 
     public override void draw_full_alpha (Cairo.Context c)
     {
-        /* Draw either small or normal version of ourselves, depending on where
-           our allocation put us relative to our zone */
-        //int x, y;
-        //zone.translate_coordinates (this, 0, 0, out x, out y);
-
-        //Gtk.Allocation alloc, zone_alloc;
-        //this.get_allocation (out alloc);
-        //zone.get_allocation (out zone_alloc);
-
         /* Draw main grid only in that area */
         c.save ();
-        //c.rectangle (x, y, zone_alloc.width, zone_alloc.height);
-        //c.clip ();
         if(prompt_visibility==PromptVisibility.SHOWN)
         {
             fixed.propagate_draw (box_grid, c);
@@ -829,16 +730,6 @@ public class PromptBox : FadableBox
             back_button.hide();
         }
         c.restore ();
-
-        /* Do actual drawing */
-        //c.save ();
-        /*if (y > 0)
-            c.rectangle (x, 0, zone_alloc.width, y);
-        else
-            c.rectangle (0, 0 , 800, 600);
-        c.clip ();*/
-        //fixed.propagate_draw (small_box_widget, c);
-        //c.restore ();
     }
 }
 
@@ -922,13 +813,12 @@ public class GreeterButton : Gtk.Button
     {
         var new_flags = get_state_flags ();
 
-        //debug("#############new_flags=%d",new_flags);
+
         if(new_flags == Gtk.StateFlags.PRELIGHT)
         {
-            //debug("#############lala");
             set_image(prelight_back_image);
         }else if ((new_flags & Gtk.StateFlags.ACTIVE) != 0)
-        {//debug("#############new_flags=%d",new_flags);
+        {
             set_image(active_back_image);
         }else {
             set_image(default_back_image);

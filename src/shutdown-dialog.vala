@@ -59,7 +59,7 @@ public class ShutdownDialog : Gtk.Fixed
     private AnimateTimer animation;
     private bool closing = false;
 
-
+    private string error_string=_("Sorry, you do not have permission to do this!");
     public ShutdownDialog (ShutdownDialogType type, Background bg)
     {
         background = bg;
@@ -74,7 +74,7 @@ public class ShutdownDialog : Gtk.Fixed
         monitor_events.events |= Gdk.EventMask.BUTTON_PRESS_MASK;
         monitor_events.button_press_event.connect (() => {
             close ();
-            debug ("~~~~~~~~~close shutdown dialog on click~~~~~~~~~~");
+            //debug ("~~~~~~~~~close shutdown dialog on click~~~~~~~~~~");
             return true;
         });
         add (monitor_events);
@@ -205,7 +205,7 @@ public class ShutdownDialog : Gtk.Fixed
                 }
                 catch (Error e)
                 {
-                    label.set_text("抱歉，您无权限进行此操作！");
+                    label.set_text(error_string);
                     warning ("Failed to restart: %s", e.message);
                 }
             });
@@ -227,7 +227,7 @@ public class ShutdownDialog : Gtk.Fixed
                 }
                 catch (Error e)
                 {
-                    label.set_text("抱歉，您无权限进行此操作！");
+                    label.set_text(error_string);
                     warning ("Failed to shutdown: %s", e.message);
                 }
             });
@@ -252,24 +252,24 @@ public class ShutdownDialog : Gtk.Fixed
         return (d==d);
     }
     public void close ()
-    {debug ("~~~~~~~~~close shutdown dialog begin!~~~~~~~~~~");
+    {//debug ("~~~~~~~~~close shutdown dialog begin!~~~~~~~~~~");
         var start_value = 0.0f;
         animation = new AnimateTimer ((x) => { return start_value + x; }, AnimateTimer.INSTANT);
         animation.animate.connect ((p) =>
         {
             queue_draw ();
-            debug ("~~~~~~~~~close shutdown dialog animation = %f~~~~~~~~~~",p);
+            //debug ("~~~~~~~~~close shutdown dialog animation = %f~~~~~~~~~~",p);
             if (p >= 0.98f||!isNumber(p))//if p=nan,close dialog  immediately!;p can not get to 1.0 at sometime
             {
                 animation.stop ();
                 closed ();
-                debug ("~~~~~~~~~close shutdown dialog closed!~~~~~~~~~~");
+            //    debug ("~~~~~~~~~close shutdown dialog closed!~~~~~~~~~~");
             }
         });
 
         closing = true;
         animation.reset();
-        debug ("~~~~~~~~~close shutdown dialog end!~~~~~~~~~~");
+        //debug ("~~~~~~~~~close shutdown dialog end!~~~~~~~~~~");
     }
 
     private void rebuild_background ()

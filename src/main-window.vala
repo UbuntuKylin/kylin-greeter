@@ -87,8 +87,7 @@ public class MainWindow : Gtk.Window
         login_box.set_spacing(-1);
         background.add (login_box);
 
-        /* 删除原有菜单栏及其中的indicator，新增两个按钮 作为代替*/
-      //  var buttonbox = new Gtk.EventBox ();
+
         var buttonbox =new Gtk.HButtonBox ();
        
         buttonbox.set_layout (Gtk.ButtonBoxStyle.END);
@@ -180,8 +179,8 @@ public class MainWindow : Gtk.Window
 
         login_box.add (scroll_up_button_align);
         
-        var align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);//用户列表的位置
-        //align.margin_bottom = BUTTONBOX_HEIGHT; /* offset for BUTTONBOX at top */
+        var align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);//users table position
+
         align.show ();
         
         hbox.add (align);
@@ -258,14 +257,10 @@ public class MainWindow : Gtk.Window
     {
         stack.push (widget);
 
-       // if (stack.num_children > 1)
-       //     back_button.show ();
     }
 
     public void pop_list ()
     {
-       // if (stack.num_children <= 2)
-       //     back_button.hide ();
 
         stack.pop ();
     }
@@ -274,18 +269,12 @@ public class MainWindow : Gtk.Window
     {
         base.size_allocate (allocation);
         
-        /*if (hbox != null)
-        {//用户列表框进行偏移
-            hbox.margin_left = get_grid_offset (get_allocated_width ());// + grid_size;
-            hbox.margin_right = get_grid_offset (get_allocated_width ());
-            hbox.margin_top = get_grid_offset (get_allocated_height ());
-            hbox.margin_bottom = get_grid_offset (get_allocated_height ());
-        }*/
+
     }
 
 	private void shutdownbutton_clicked_cb (Gtk.Button button)
     {
-      debug ("shutdownbutton_clicked~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+      //debug ("shutdownbutton_clicked~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
 			
 			show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
     }
@@ -353,14 +342,14 @@ public class MainWindow : Gtk.Window
 
     private void scroll_up_button_clicked_cb (Gtk.Button button)
     {
-      debug ("scroll_up_button_clicked_cb~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+
         stack.top().scroll (GreeterList.ScrollTarget.UP);
 
     }
 
     private void scroll_down_button_clicked_cb (Gtk.Button button)
     {
-      debug ("scroll_down_button_clicked_cb~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+
        stack.top().scroll (GreeterList.ScrollTarget.DOWN);
 
     }

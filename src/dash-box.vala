@@ -147,41 +147,6 @@ public class DashBox : Gtk.Box
         queue_resize ();
     }
 
-    /*public override void get_preferred_height (out int min, out int nat)
-    {
-        if (orig == null)
-        {
-            
-            if (orig_height >= 0)
-            {
-                min = orig_height;
-                nat = orig_height;
-            }
-            else
-            {
-                min = grid_size * GreeterList.DEFAULT_LOGINBOX_HEIGHT - GreeterList.BORDER * 2;
-                nat = grid_size * GreeterList.DEFAULT_LOGINBOX_HEIGHT - GreeterList.BORDER * 2;
-            }
-        }
-        else
-        {
-            if (pushed == null)
-                orig.get_preferred_height (out min, out nat);
-            else
-            {
-                pushed.selected_entry.get_preferred_height (out min, out nat);
-                min = int.max (orig_height, min);
-                nat = int.max (orig_height, nat);
-            }
-        }
-    }
-
-    public override void get_preferred_width (out int min, out int nat)
-    {
-        min = grid_size * GreeterList.LOGINBOX_WIDTH - GreeterList.BORDER * 2;
-        nat = grid_size * GreeterList.LOGINBOX_WIDTH - GreeterList.BORDER * 2;
-    }
-*/
     public override bool draw (Cairo.Context c)
     {
         if (background != null)
@@ -195,7 +160,7 @@ public class DashBox : Gtk.Box
         }
 
         /* Draw darker background with a rounded border */
-    //    var box_r = 0.3 * grid_size;
+
         int box_y = 0;
         int box_w;
         int box_h;

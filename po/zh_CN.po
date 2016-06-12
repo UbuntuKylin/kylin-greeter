@@ -211,6 +211,14 @@ msgstr "以 %s 重试"
 msgid "Login"
 msgstr "登录"
 
+#: ../src/prompt-box.vala:73
+msgid "Logined"
+msgstr "已登录"
+
+#: ../src/shutdown-dialog.vala:62
+msgid "Sorry, you do not have permission to do this!"
+msgstr "抱歉，您无权执行此操作！"
+
 #~ msgid "_Back"
 #~ msgstr "后退(_B)"
 
