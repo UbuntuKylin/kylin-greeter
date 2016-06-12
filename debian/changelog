@@ -1,3 +1,10 @@
+kylin-greeter (16.04.4) xenial; urgency=medium
+
+  *  Limit prompt fields to 200 characters in case a key is being held down (e.g. by a cat).
+  *  fix display error about passwd entry menu
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Sun, 12 Jun 2016 15:15:17 +0800
+
 kylin-greeter (16.04.3) xenial; urgency=medium
 
   *  Clean up the redundant code, improve the support of i18n
