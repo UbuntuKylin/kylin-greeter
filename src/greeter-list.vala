@@ -20,6 +20,7 @@
  *          Scott Sweeny <scott.sweeny@canonical.com>
  * Modified by : zhangchao <zhangchao@ubuntukylin.com>
  */
+private const int MAX_FIELD_SIZE = 200;
 
 private int get_grid_offset (int size)
 {
@@ -978,7 +979,9 @@ public abstract class GreeterList : FadableBox
             text = _("Password:");
         if (text == "login:")
             text = _("Username:");
-        add_prompt (text, type == LightDM.PromptType.SECRET);
+        var entry = add_prompt (text, type == LightDM.PromptType.SECRET);
+        /* Limit the number of characters in case a cat is sitting on the keyboard... */
+        entry.max_length = MAX_FIELD_SIZE;
     }
 
     protected virtual void authentication_complete_cb ()
