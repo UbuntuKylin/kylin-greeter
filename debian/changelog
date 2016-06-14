@@ -1,3 +1,10 @@
+kylin-greeter (16.04.5) xenial; urgency=medium
+
+  *  cleanup keyboard in advance and sleep 0.003s,Make sure that onboard is properly ended(LP: #1524662)
+  *  add keyboard move in Multiple screens
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Tue, 14 Jun 2016 14:21:59 +0800
+
 kylin-greeter (16.04.4) xenial; urgency=medium
 
   *  Limit prompt fields to 200 characters in case a key is being held down (e.g. by a cat).
