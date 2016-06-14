@@ -243,7 +243,13 @@ public class MainWindow : Gtk.Window
             Posix.kill (pid, Posix.SIGTERM);
             int status;
             Posix.waitpid (pid, out status, 0);
+            if (Process.if_exited (status))
+                debug ("keyboard exited with return value %d", Process.exit_status (status));
+            else
+                debug ("keyboard terminated with signal %d", Process.term_sig (status));
             pid = 0;
+            keyboard_window = null ;
+            GLib.Thread.usleep(3000);
             debug ("~~~~~~~~~~keyboard cleanup~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
         }
     }
@@ -440,6 +446,12 @@ public class MainWindow : Gtk.Window
        
         background.set_active_monitor (monitor);
         background.move (login_box, monitor.x, monitor.y);
+
+        if (keyboard_window != null)
+        {
+            keyboard_window.move (monitor.x, monitor.y + monitor.height - 200);
+            keyboard_window.resize (monitor.width, 200);
+        }
 
         if (shutdown_dialog != null)
         {

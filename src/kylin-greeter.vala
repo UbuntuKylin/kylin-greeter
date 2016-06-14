@@ -249,7 +249,7 @@ public class UnityGreeter
         bg.draw_full (c, Background.DrawFlags.NONE);
         c = null;
         refresh_background (Gdk.Screen.get_default (), background_surface);
-
+        starting_session ();
         if (test_mode)
         {
             debug ("Successfully logged in! Quitting...");
@@ -273,8 +273,8 @@ public class UnityGreeter
             warning ("Failed to start session: %s", e.message);
         }
 
-        if (result)
-            starting_session ();
+        if (!result)
+            main_window.set_keyboard_state();
 
         return result;
     }
@@ -637,7 +637,6 @@ public class UnityGreeter
         Gtk.main ();
 
         debug ("Cleaning up");
-
         if (upstart_pid != 0)
         {
             Posix.kill (upstart_pid, Posix.SIGTERM);
