@@ -109,11 +109,13 @@ public class MainWindow : Gtk.Window
         }
         buttonbox.set_size_request (-1,BUTTONBOX_HEIGHT);
         buttonbox.show ();
-       var buttonbox_align = new Gtk.Alignment (1.0f,1.0f, 0.0f, 0.0f);
-       buttonbox_align.show();
+        var buttonbox_align = new Gtk.Alignment (1.0f,1.0f, 0.0f, 0.0f);
+        // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
+        buttonbox_align.resize_mode = Gtk.ResizeMode.QUEUE;
+        buttonbox_align.show();
        
         login_box.add (buttonbox_align);
-       buttonbox_align.add(buttonbox);
+        buttonbox_align.add(buttonbox);
         UnityGreeter.add_style_class (buttonbox);
         
       
@@ -124,11 +126,13 @@ public class MainWindow : Gtk.Window
 
         //add onboard button
         var a11yalign = new Gtk.Alignment (1.0f,0.0f, 0.0f, 0.0f);
+        // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
+        a11yalign.resize_mode = Gtk.ResizeMode.QUEUE;
         a11yalign.show();
         a11yalign.set_size_request(50,-1);
         buttonbox.add(a11yalign);
         a11ybutton = new Gtk.ToggleButton ();
-        a11ybutton.focus_on_click = false;
+        Gtk.button_set_focus_on_click (a11ybutton, false);
         a11ybutton.can_focus = false;
 		a11ybutton.show();
 		a11ybuttonimage = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR, "keyboardbutton.png"));
@@ -141,12 +145,14 @@ public class MainWindow : Gtk.Window
         
         //add shutdown_button
 		var shutdownbutton_align = new Gtk.Alignment (0.5f, 0.0f, 0.0f,0.0f);
+        // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
+        shutdownbutton_align.resize_mode = Gtk.ResizeMode.QUEUE;
         shutdownbutton_align.show ();
         buttonbox.add (shutdownbutton_align);
         UnityGreeter.add_style_class (shutdownbutton_align);
 		shutdownbutton = new Gtk.Button ();
 		shutdownbutton.show();
-        shutdownbutton.focus_on_click = false;
+        Gtk.button_set_focus_on_click (shutdownbutton, false);
         shutdownbutton.can_focus = false;
 		var shutdownbutton_image = new Gtk.Image.from_file (Path.build_filename (Config.PKGDATADIR,"shutdownbutton.png"));
         shutdownbutton_image.show ();
@@ -157,12 +163,14 @@ public class MainWindow : Gtk.Window
 
                    //add scroll_up_button
         scroll_up_button_align = new Gtk.Alignment (0.5f, 1.0f, 0.0f,0.0f);
+        // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
+        scroll_up_button_align.resize_mode = Gtk.ResizeMode.QUEUE;
         scroll_up_button_align.show ();
         scroll_up_button_align.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
         UnityGreeter.add_style_class (scroll_up_button_align);
 		scroll_up_button = new Gtk.Button ();
 
-        scroll_up_button.focus_on_click = false;
+        Gtk.button_set_focus_on_click (scroll_up_button, false);
         scroll_up_button.can_focus = false;
         scroll_up_button_cannot_click_image.show();
         scroll_up_button_can_click_image.show();
@@ -180,6 +188,8 @@ public class MainWindow : Gtk.Window
         login_box.add (scroll_up_button_align);
         
         var align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);//users table position
+        // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
+        align.resize_mode = Gtk.ResizeMode.QUEUE;
 
         align.show ();
         
@@ -194,13 +204,15 @@ public class MainWindow : Gtk.Window
 
         //add scroll_down_button
         scroll_down_button_align = new Gtk.Alignment (1.0f, 0.0f, 1.0f,0.0f);
+        // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
+        scroll_down_button_align.resize_mode = Gtk.ResizeMode.QUEUE;
         scroll_down_button_align.show ();
         scroll_down_button_align.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
         UnityGreeter.add_style_class (scroll_down_button_align);
 		scroll_down_button = new Gtk.Button ();
         login_box.add (scroll_down_button_align);
 		//scroll_down_button.show();
-        scroll_down_button.focus_on_click = false;
+        Gtk.button_set_focus_on_click (scroll_down_button, false);
         scroll_down_button.can_focus = false;
 		var scroll_down_button_image = scroll_down_button_can_click_image;
         scroll_down_button_image.show ();

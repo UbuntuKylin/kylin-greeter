@@ -106,6 +106,9 @@ public class PromptBox : FadableBox
 
     construct
     {
+        // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
+        resize_mode = Gtk.ResizeMode.QUEUE;
+
         set_start_row ();
         reset_last_row ();
         expand = true;
@@ -130,7 +133,7 @@ public class PromptBox : FadableBox
         UnityGreeter.add_style_class(back_button);
 
         back_button.set_status_images(back_button_normal,back_button_prelight,back_button_active);
-        back_button.focus_on_click = false;
+        Gtk.button_set_focus_on_click (back_button, false);
         back_button.can_focus = false;
         back_button.yalign=0.5f;
         var image = new Gtk.Image.from_file (back_button_normal);
@@ -303,7 +306,7 @@ public class PromptBox : FadableBox
         option_button.valign = Gtk.Align.START;
         // Keep as much space on top as on the right
         //option_button.margin_top = ActiveIndicator.WIDTH + box_grid.column_spacing;
-        option_button.focus_on_click = false;
+        Gtk.button_set_focus_on_click (option_button, false);
         option_button.relief = Gtk.ReliefStyle.NONE;
         option_button.get_accessible ().set_name (_("Session Options"));
         option_button.clicked.connect (option_button_clicked_cb);
