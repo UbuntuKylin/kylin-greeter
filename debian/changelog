@@ -1,3 +1,11 @@
+kylin-greeter (16.10.0) xenial; urgency=medium
+
+  *  change logo to 16.10
+  *  add gtk3.20 theme css
+  *  Work around Vala trying to use a new GTK 3.20 function
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Thu, 18 Aug 2016 17:06:36 +0800
+
 kylin-greeter (16.04.5) xenial; urgency=medium
 
   *  cleanup keyboard in advance and sleep 0.003s,Make sure that onboard is properly ended(LP: #1524662)

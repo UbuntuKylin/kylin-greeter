@@ -2,7 +2,7 @@ Source: kylin-greeter
 Section: x11
 Priority: optional
 Maintainer: Ubuntu Kylin Team <ubuntukylin-members@lists.launchpad.net>
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 Build-Depends: at-spi2-core,
                dbus-x11,
                debhelper (>= 9),
