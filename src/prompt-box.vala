@@ -711,7 +711,7 @@ public class PromptBox : FadableBox
     {
         base.size_allocate (allocation);
         box_grid.size_allocate (allocation);
-        //debug("~~~~~~~~allocation.x=%d~~allocation.y=%d~~allocation.height=%d~~allocation.width=%d",allocation.x,allocation.y,allocation.height,allocation.width);
+        //debug("allocation=%d:%d:%d:%d",allocation.x,allocation.y,allocation.height,allocation.width);
         int small_height;
         small_box_widget.get_preferred_height (null, out small_height);
         allocation.height = small_height;
