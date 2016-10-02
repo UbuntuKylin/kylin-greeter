@@ -757,6 +757,8 @@ public abstract class GreeterList : FadableBox
         /* Stop when we get there */
         if (progress >= 1.0)
             finished_scrolling ();
+
+        queue_resize ();
     }
 
     private void finished_scrolling ()
@@ -931,16 +933,17 @@ public abstract class GreeterList : FadableBox
     {
         if(status==Status.LOGINBOX)
         {
-            debug("~~~~~~~~back_userlist_cb");
             status=Status.USERLIST;
             
             move_names ();
             UnityGreeter.singleton.set_scroll_button_status();
             selected_entry.hide_prompts();
         }else if(status==Status.SESSIONLIST)
-        {debug("~~~~~~~~back_userlist_cb,back_loginbox");
+        {
             UnityGreeter.singleton.pop_list();
         }
+
+        queue_resize ();
     }
     
     /* Not all subclasses are going to be interested in talking to lightdm, but for those that are, make it easy. */

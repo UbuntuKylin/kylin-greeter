@@ -225,10 +225,9 @@ public class MainWindow : Gtk.Window
         
         //add bottom_box
         var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-        bottom_box.expand = true;
         bottom_box.show ();
+        bottom_box.set_size_request (-1, BOTTOM_HEIGHT);
         login_box.add (bottom_box);
-        scroll_down_button_align.set_size_request (-1,BOTTOM_HEIGHT);
         
         if (UnityGreeter.singleton.test_mode)
         {
@@ -453,6 +452,9 @@ public class MainWindow : Gtk.Window
     private void move_to_monitor (Monitor monitor)
     {
         active_monitor = monitor;
+        var alloc = Gtk.Allocation();
+        alloc.width = monitor.width;
+        login_box.size_allocate_with_baseline(alloc, -1);
         login_box.set_size_request (monitor.width, monitor.height);
         stack.set_size(monitor.width,monitor.height-BUTTONBOX_HEIGHT-SCROLL_BUTTON_HEIGHT*2-BOTTOM_HEIGHT);
        

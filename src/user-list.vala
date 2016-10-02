@@ -642,6 +642,7 @@ public UserList (Background bg)
         var userbox = selected_entry as UserPromptBox;
         if (userbox != null)
             selected_entry.set_is_active (userbox.is_active);
+        queue_resize ();
     }
 
     private void entry_selected_cb (string? username)
