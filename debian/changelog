@@ -1,3 +1,9 @@
+kylin-greeter (16.10.1) yakkety; urgency=medium
+
+  *  fixed the allocation bug when upgrade to gtk3.20
+
+ -- zhangchao <zhangchao@ubuntukylin.com>  Mon, 03 Oct 2016 14:16:22 +0800
+
 kylin-greeter (16.10.0) xenial; urgency=medium
 
   *  change logo to 16.10
