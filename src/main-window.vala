@@ -36,13 +36,15 @@ public class MainWindow : Gtk.Window
     public ListStack stack;
 
     private UserList greeter_list;
-    
+    private int tmp;
 	public Gtk.Window? keyboard_window { get; private set; default = null; }
 	private Pid keyboard_pid = 0;
 	private Gtk.Button shutdownbutton;
 	private Gtk.ToggleButton a11ybutton;
     private Gtk.Button scroll_up_button;
     private Gtk.Button scroll_down_button;
+    private Gtk.Box scroll_up_box;
+    private Gtk.Box scroll_down_box;
     private Gtk.Image scroll_up_button_can_click_image;
     private Gtk.Image scroll_up_button_cannot_click_image;
     private Gtk.Image scroll_down_button_can_click_image;
@@ -162,11 +164,14 @@ public class MainWindow : Gtk.Window
         UnityGreeter.add_style_class (shutdownbutton);
 
                    //add scroll_up_button
+        scroll_up_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        scroll_up_box.show();
         scroll_up_button_align = new Gtk.Alignment (0.5f, 1.0f, 0.0f,0.0f);
         // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
         scroll_up_button_align.resize_mode = Gtk.ResizeMode.QUEUE;
         scroll_up_button_align.show ();
-        scroll_up_button_align.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
+        scroll_up_box.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
+        scroll_up_box.add(scroll_up_button_align);
         UnityGreeter.add_style_class (scroll_up_button_align);
 		scroll_up_button = new Gtk.Button ();
 
@@ -185,7 +190,7 @@ public class MainWindow : Gtk.Window
         hbox.show ();
         login_box.add (hbox);
 
-        login_box.add (scroll_up_button_align);
+        login_box.add (scroll_up_box);
         
         var align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);//users table position
         // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
@@ -203,14 +208,17 @@ public class MainWindow : Gtk.Window
 
 
         //add scroll_down_button
+        scroll_down_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        scroll_down_box.show();
         scroll_down_button_align = new Gtk.Alignment (1.0f, 0.0f, 1.0f,0.0f);
         // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
         scroll_down_button_align.resize_mode = Gtk.ResizeMode.QUEUE;
         scroll_down_button_align.show ();
-        scroll_down_button_align.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
+        scroll_down_box.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
+        scroll_down_box.add(scroll_down_button_align);
         UnityGreeter.add_style_class (scroll_down_button_align);
 		scroll_down_button = new Gtk.Button ();
-        login_box.add (scroll_down_button_align);
+        login_box.add (scroll_down_box);
 		//scroll_down_button.show();
         Gtk.button_set_focus_on_click (scroll_down_button, false);
         scroll_down_button.can_focus = false;
@@ -454,6 +462,8 @@ public class MainWindow : Gtk.Window
         active_monitor = monitor;
         var alloc = Gtk.Allocation();
         alloc.width = monitor.width;
+        //fixed GTK3.20 WARNING about Allocate
+        login_box.get_preferred_height(null,out tmp);
         login_box.size_allocate_with_baseline(alloc, -1);
         login_box.set_size_request (monitor.width, monitor.height);
         stack.set_size(monitor.width,monitor.height-BUTTONBOX_HEIGHT-SCROLL_BUTTON_HEIGHT*2-BOTTOM_HEIGHT);

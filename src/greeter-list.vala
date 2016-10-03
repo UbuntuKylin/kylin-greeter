@@ -96,7 +96,7 @@ public abstract class GreeterList : FadableBox
     private Gtk.Fixed fixed;
     public DashBox greeter_box;
     private int cached_box_height = -1;
-
+    private int tmp;
     protected enum Mode
     {
         ENTRY,
@@ -850,6 +850,8 @@ public abstract class GreeterList : FadableBox
         child_allocation.x = allocation.x - BORDER * 2;
         child_allocation.y = allocation.y - BORDER * 2;
         fixed.move (greeter_box, child_allocation.x, child_allocation.y);
+        //fixed GTK3.20 WARNING about Allocate
+        greeter_box.get_preferred_height(null,out tmp);
         greeter_box.size_allocate (child_allocation);
 
     }
