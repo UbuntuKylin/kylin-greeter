@@ -135,6 +135,8 @@ public class SessionList : GreeterList
         case "kde-plasma":
         case "plasma":
             return "kde_badge.png";
+        case "ukui":
+            return "ukui_badge.png";
         case "xterm":
             return "recovery_console_badge.png";
         case "remote-login":
