@@ -86,14 +86,14 @@ public class MainWindow : Gtk.Window
 
         login_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         login_box.show ();
-        login_box.set_spacing(-1);
+        login_box.set_spacing (-1);
         background.add (login_box);
 
 
         var buttonbox =new Gtk.HButtonBox ();
-       
+
         buttonbox.set_layout (Gtk.ButtonBoxStyle.END);
-        buttonbox.set_spacing(-1);
+        buttonbox.set_spacing (-1);
         var shadow_style = "";
         try
         {
@@ -109,30 +109,27 @@ public class MainWindow : Gtk.Window
         {
             debug ("Internal error loading buttonbox style: %s", e.message);
         }
-        buttonbox.set_size_request (-1,BUTTONBOX_HEIGHT);
+        buttonbox.set_size_request (-1, BUTTONBOX_HEIGHT);
         buttonbox.show ();
         var buttonbox_align = new Gtk.Alignment (1.0f,1.0f, 0.0f, 0.0f);
         // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
         buttonbox_align.resize_mode = Gtk.ResizeMode.QUEUE;
-        buttonbox_align.show();
-       
+        buttonbox_align.show ();
+
         login_box.add (buttonbox_align);
-        buttonbox_align.add(buttonbox);
+        buttonbox_align.add (buttonbox);
         UnityGreeter.add_style_class (buttonbox);
-        
-      
 
 		//LP:#1524662,send SIGTERM to onboard,fix onboard "enter" hangs
         UnityGreeter.singleton.starting_session.connect (cleanup);
-
 
         //add onboard button
         var a11yalign = new Gtk.Alignment (1.0f,0.0f, 0.0f, 0.0f);
         // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
         a11yalign.resize_mode = Gtk.ResizeMode.QUEUE;
-        a11yalign.show();
-        a11yalign.set_size_request(50,-1);
-        buttonbox.add(a11yalign);
+        a11yalign.show ();
+        a11yalign.set_size_request (50,-1);
+        buttonbox.add (a11yalign);
         a11ybutton = new Gtk.ToggleButton ();
         Gtk.button_set_focus_on_click (a11ybutton, false);
         a11ybutton.can_focus = false;
@@ -143,8 +140,7 @@ public class MainWindow : Gtk.Window
         a11ybutton.toggled.connect (keyboardbutton_clicked_cb);
         a11yalign.add (a11ybutton);
         UnityGreeter.add_style_class (a11ybutton);
-        
-        
+
         //add shutdown_button
 		var shutdownbutton_align = new Gtk.Alignment (0.5f, 0.0f, 0.0f,0.0f);
         // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
@@ -160,54 +156,48 @@ public class MainWindow : Gtk.Window
         shutdownbutton_image.show ();
         shutdownbutton.add (shutdownbutton_image);
         shutdownbutton.clicked.connect (shutdownbutton_clicked_cb);
-        shutdownbutton_align.add (shutdownbutton);  
+        shutdownbutton_align.add (shutdownbutton);
         UnityGreeter.add_style_class (shutdownbutton);
 
-                   //add scroll_up_button
+        //add scroll_up_button
         scroll_up_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-        scroll_up_box.show();
+        scroll_up_box.show ();
         scroll_up_button_align = new Gtk.Alignment (0.5f, 1.0f, 0.0f,0.0f);
         // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
         scroll_up_button_align.resize_mode = Gtk.ResizeMode.QUEUE;
         scroll_up_button_align.show ();
         scroll_up_box.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
-        scroll_up_box.add(scroll_up_button_align);
+        scroll_up_box.add (scroll_up_button_align);
         UnityGreeter.add_style_class (scroll_up_button_align);
 		scroll_up_button = new Gtk.Button ();
 
         Gtk.button_set_focus_on_click (scroll_up_button, false);
         scroll_up_button.can_focus = false;
-        scroll_up_button_cannot_click_image.show();
-        scroll_up_button_can_click_image.show();
+        scroll_up_button_cannot_click_image.show ();
+        scroll_up_button_can_click_image.show ();
         scroll_up_button.set_image (scroll_up_button_cannot_click_image);
         scroll_up_button.clicked.connect (scroll_up_button_clicked_cb);
         scroll_up_button_align.add (scroll_up_button);
         UnityGreeter.add_style_class (scroll_up_button);
 
-        
         hbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         hbox.expand = true;
         hbox.show ();
         login_box.add (hbox);
-
         login_box.add (scroll_up_box);
-        
+
         var align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);//users table position
         // Hack to avoid gtk 3.20's new allocate logic, which messes us up.
         align.resize_mode = Gtk.ResizeMode.QUEUE;
-
         align.show ();
-        
         hbox.add (align);
-        
+
         stack = new ListStack ();
         stack.show ();
         align.add (stack);
         add_user_list ();
 
-
-
-        //add scroll_down_button
+        // Add scroll_down_button
         scroll_down_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         scroll_down_box.show();
         scroll_down_button_align = new Gtk.Alignment (1.0f, 0.0f, 1.0f,0.0f);
@@ -215,7 +205,7 @@ public class MainWindow : Gtk.Window
         scroll_down_button_align.resize_mode = Gtk.ResizeMode.QUEUE;
         scroll_down_button_align.show ();
         scroll_down_box.set_size_request (-1,SCROLL_BUTTON_HEIGHT);
-        scroll_down_box.add(scroll_down_button_align);
+        scroll_down_box.add (scroll_down_button_align);
         UnityGreeter.add_style_class (scroll_down_button_align);
 		scroll_down_button = new Gtk.Button ();
         login_box.add (scroll_down_box);
@@ -229,14 +219,12 @@ public class MainWindow : Gtk.Window
         scroll_down_button_align.add (scroll_down_button);
         UnityGreeter.add_style_class (scroll_down_button);
 
-       
-        
         //add bottom_box
         var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
         bottom_box.show ();
         bottom_box.set_size_request (-1, BOTTOM_HEIGHT);
         login_box.add (bottom_box);
-        
+
         if (UnityGreeter.singleton.test_mode)
         {
             /* Simulate an 800x600 monitor to the left of a 640x480 monitor */
@@ -281,29 +269,24 @@ public class MainWindow : Gtk.Window
     public void push_list (GreeterList widget)
     {
         stack.push (widget);
-
     }
 
     public void pop_list ()
     {
-
         stack.pop ();
     }
 
     public override void size_allocate (Gtk.Allocation allocation)
     {
         base.size_allocate (allocation);
-        
-
     }
 
 	private void shutdownbutton_clicked_cb (Gtk.Button button)
     {
-      //debug ("shutdownbutton_clicked~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
-			
-			show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
+        //debug ("shutdownbutton_clicked~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
+        show_shutdown_dialog (ShutdownDialogType.SHUTDOWN);
     }
-    
+
     private void keyboardbutton_clicked_cb (Gtk.ToggleButton button)
     {
        UGSettings.set_boolean (UGSettings.KEY_ONSCREEN_KEYBOARD, button.active);
@@ -378,7 +361,7 @@ public class MainWindow : Gtk.Window
        stack.top().scroll (GreeterList.ScrollTarget.DOWN);
 
     }
-     
+
     private void monitors_changed_cb (Gdk.Screen screen)
     {
         int primary = screen.get_primary_monitor ();
@@ -406,7 +389,7 @@ public class MainWindow : Gtk.Window
         resize (screen.get_width (), screen.get_height ());
         move (0, 0);
         move_to_monitor (primary_monitor);
-        
+
     }
 
     /* Check if a monitor has a unique position */
@@ -486,7 +469,7 @@ public class MainWindow : Gtk.Window
 
     private void add_user_list ()
     {
-        
+
         greeter_list = new UserList (background);
         greeter_list.show ();
         UnityGreeter.add_style_class (greeter_list);
@@ -602,7 +585,6 @@ public class MainWindow : Gtk.Window
                 return true;
             }
             break;
-       
         }
 
         return base.key_press_event (event);
@@ -651,7 +633,7 @@ public class MainWindow : Gtk.Window
         scroll_down_button.hide();
         scroll_up_button.hide();
     }
-     
+
     public void set_scroll_up_button_image(bool can_click)
     {
         if(can_click)
@@ -673,5 +655,4 @@ public class MainWindow : Gtk.Window
     {
         a11ybutton.hide();
     }
-     
 }

@@ -1,3 +1,10 @@
+kylin-greeter (17.04.0) zesty; urgency=medium
+
+  * Added support for UKUI.
+  * Updated the background.png. 
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 16 Mar 2017 09:54:32 +0800
+
 kylin-greeter (16.10.1) yakkety; urgency=medium
 
   *  fixed the allocation bug when upgrade to gtk3.20
