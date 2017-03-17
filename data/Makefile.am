@@ -42,6 +42,7 @@ dist_pkgdata_DATA = \
 	keyboardbutton_active.png \
 	shutdownbutton.png \
 	ubuntu_badge.png \
+	ukui_badge.png \
 	unknown_badge.png
 
 @GSETTINGS_RULES@
