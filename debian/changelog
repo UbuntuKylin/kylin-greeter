@@ -1,10 +1,3 @@
-kylin-greeter (17.04.0ubuntu1) zesty; urgency=medium
-
-  * fixed the password-input-entry's bug (LP: #1683789)
-    - there is no cursor in password-input-entry 
-
- -- guoyalong <1058712592@qq.com>  Tue, 25 Apr 2017 11:08:24 +0800
-
 kylin-greeter (17.04.0) zesty; urgency=medium
 
   * Added support for UKUI.
