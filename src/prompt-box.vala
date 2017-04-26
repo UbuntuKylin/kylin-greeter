@@ -27,7 +27,7 @@ public class PromptBox : FadableBox
     public signal void show_options (string face_image);
     public signal void name_clicked ();
     public signal void back_userlist();
-    
+
     public bool has_errors { get; set; default = false; }
     public string id { get; construct; }
 
@@ -123,8 +123,7 @@ public class PromptBox : FadableBox
         box_grid.margin_top = GreeterList.BORDER;
         box_grid.margin_bottom = 6;
         box_grid.expand = true;
-        
-        
+
         box_grid.show ();
 
         //add back_button
@@ -146,32 +145,30 @@ public class PromptBox : FadableBox
         back_button_align.add (back_button);
         back_button_align.show();
         box_grid.attach (back_button_align, COL_BACKBUTTON, 0, 1, 1);
-        
+
         //add user face by pz
         user_face_image = new CachedImage(null);
         user_face_image.draw_white_border();
         tmp_face_image = new CachedImage(null);
          try
         {
-            
-                user_face_image.pixbuf = new Gdk.Pixbuf.from_file (Path.build_filename (Config.PKGDATADIR, "default_face.png", null));
+            user_face_image.pixbuf = new Gdk.Pixbuf.from_file (Path.build_filename (Config.PKGDATADIR, "default_face.png", null));
         }
         catch (Error e)
         {
             debug ("Error loading user default face image: %s", e.message);
         }
-        
+
         user_face_image.show();
         var user_face_align = new Gtk.Alignment (0.0f, 0.0f, 0.0f, 0.0f);
         user_face_align.add (user_face_image);
         user_face_align.show ();
         box_grid.attach (user_face_align, COL_ACTIVE, 0, 1, 5);
-        
+
         /* Create fully expanded version of ourselves */
         name_grid = create_name_grid ();
         box_grid.attach (name_grid, COL_CONTENT, 0, 1, 1);
 
-        
         /* Now prep small versions of the above normal widgets.  These are
          * used when scrolling outside of the main dash box. */
         var small_box_grid = new Gtk.Grid ();
@@ -189,7 +186,6 @@ public class PromptBox : FadableBox
         small_user_face_align.show ();
         small_box_grid.attach(small_user_face_align,0,0,1,1);
 
-        
         var small_name_grid = create_small_name_grid ();
         small_box_grid.attach (small_name_grid, 0, 1, 1, 1);
 
@@ -206,12 +202,10 @@ public class PromptBox : FadableBox
 
         fixed.add (small_box_widget);
         fixed.add (box_grid);
-        
     }
 
     public void back_cb ()
     {
-        
         back_userlist();
     }
 
@@ -219,7 +213,7 @@ public class PromptBox : FadableBox
     {
         small_user_face_image.pixbuf=scale(tmp_face_image.pixbuf,size,size);
     }
-    
+
     public void set_face_image(string? face)
     {
 
@@ -332,7 +326,7 @@ public class PromptBox : FadableBox
         active_label.margin_left = 2;
         active_label.show();
         name_grid.attach (active_label, 0, 1, 1, 1);
-        
+
         name_grid.show ();
 
         return name_grid;
@@ -346,8 +340,9 @@ public class PromptBox : FadableBox
         small_name_label = new FadingLabel ("");
         small_name_label.override_font (Pango.FontDescription.from_string ("Ubuntu 10"));
         small_name_label.override_color (Gtk.StateFlags.NORMAL, { 1.0f, 1.0f, 1.0f, 1.0f });
+        small_name_label.halign = Gtk.Align.CENTER;
         small_name_label.yalign = 0.5f;
-        small_name_label.xalign = 0.5f;
+        small_name_label.xalign = 0.0f;
         small_name_label.hexpand=true;
 
         small_name_label.set_size_request (grid_size, -1);
@@ -357,8 +352,7 @@ public class PromptBox : FadableBox
         small_active_label = new ActiveLabel(logined_string);
         small_active_label.show();
         small_name_grid.attach (small_active_label, 0, 3, 1, 1);
-        
-        
+
         small_name_grid.show ();
         return small_name_grid;
     }
@@ -537,9 +531,9 @@ public class PromptBox : FadableBox
         prompt_visibility = PromptVisibility.HIDDEN;
         show ();
     }
-    
+
     protected void attach_item (Gtk.Widget w, bool add_style_class = true , bool is_message = false)
-    {   
+    {
         w.set_data ("prompt-box-widget", this);
         if (add_style_class)
             UnityGreeter.add_style_class (w);
@@ -741,16 +735,14 @@ private class ActiveLabel : Gtk.Label
     public bool active { get; set; }
     construct
     {
-        
         notify["active"].connect (() => { queue_draw (); });
-        
     }
 
     public ActiveLabel (string text)
     {
         Object (label: text);
     }
-    
+
     public override bool draw (Cairo.Context c)
     {
         if (!active)
@@ -804,13 +796,12 @@ public class GreeterButton : Gtk.Button
     private Gtk.Image  default_back_image ;
     private Gtk.Image  prelight_back_image;
     private Gtk.Image  active_back_image ;
-    
+
     public void set_status_images(string? normal,string? prelight=null, string? active=null)
     {
         default_back_image = new Gtk.Image.from_file (normal);
         prelight_back_image = new Gtk.Image.from_file (prelight);
         active_back_image = new Gtk.Image.from_file (active);
-     
     }
     public override void state_flags_changed (Gtk.StateFlags previous_state)
     {
