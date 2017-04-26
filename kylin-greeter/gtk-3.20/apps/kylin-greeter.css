@@ -50,6 +50,8 @@
 border-color: @lightdm_border_color;
     border-width: 1px;
     border-style: solid;
+    color: black;
+    caret-color: black;
 }
 
 
