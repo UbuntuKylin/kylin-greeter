@@ -113,11 +113,11 @@ public abstract class GreeterList : FadableBox
     public  Status status = Status.USERLIST;
     protected Status status_box=Status.USERLIST;
     
-    public static const int BORDER = 4;
-    public static const int BOX_WIDTH = 2; /* in grid_size blocks */
-    public static const int LOGINBOX_WIDTH = 14;
-    public static const int DEFAULT_BOX_HEIGHT = 2; /* in grid_size blocks */
-    public static const int DEFAULT_LOGINBOX_HEIGHT = 4;
+    public const int BORDER = 4;
+    public const int BOX_WIDTH = 2; /* in grid_size blocks */
+    public const int LOGINBOX_WIDTH = 14;
+    public const int DEFAULT_BOX_HEIGHT = 2; /* in grid_size blocks */
+    public const int DEFAULT_LOGINBOX_HEIGHT = 4;
     protected int n_above = 5;//每行中项目个数
     protected int n_below = 3;//行数
     

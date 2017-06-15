@@ -29,17 +29,12 @@ public class UnityGreeter
     public signal void show_prompt (string text, LightDM.PromptType type);
     public signal void authentication_complete ();
     public signal void starting_session ();
-
-    
-
-     
     public signal void greeter_already ();
-    
-    public bool test_mode = false;
 
+    public bool test_mode = false;
     private bool is_already = false;
     private bool show_scroll_button = false;
-     
+
     private string state_file;
     private KeyFile state;
 
@@ -70,7 +65,6 @@ public class UnityGreeter
         greeter = new LightDM.Greeter ();
         greeter.show_prompt.connect ((text, type) => { show_prompt (text, type); });
         greeter.show_message.connect ((text, type) => { show_message (text, type); });
-        
         greeter.autologin_timer_expired.connect (() => { greeter.authenticate_autologin (); });
         greeter.authentication_complete.connect (() => { authentication_complete (); });
         var connected = false;
@@ -91,7 +85,7 @@ public class UnityGreeter
             settings_daemon.start ();
         }
 
-        var state_dir = Path.build_filename (Environment.get_user_cache_dir (), "unity-greeter");
+        var state_dir = Path.build_filename (Environment.get_user_cache_dir (), "kylin-greeter");
         DirUtils.create_with_parents (state_dir, 0775);
         debug ("state_dir = %s ",state_dir);
         var xdg_seat = GLib.Environment.get_variable("XDG_SEAT");
@@ -190,7 +184,7 @@ public class UnityGreeter
         if(is_already)
         {
             main_window.display_scroll_button ();
-            debug("~~~~~~~~~~~set scroll button display~~~~~~~~~~");
+            debug("Showing scroll button");
         }
         show_scroll_button = true;
     }
@@ -200,7 +194,7 @@ public class UnityGreeter
         if(is_already)
         {
             main_window.hide_scroll_button ();
-            debug("~~~~~~~~~~~set scroll button hide~~~~~~~~~~");
+            debug("Hiding scroll button");
         }
         show_scroll_button = false;
     }
@@ -237,7 +231,7 @@ public class UnityGreeter
     public static void add_style_class (Gtk.Widget widget)
     {
         /* Add style context class lightdm-user-list */
-        
+
         var ctx = widget.get_style_context ();
         ctx.add_class ("lightdm");
     }
@@ -536,13 +530,13 @@ public class UnityGreeter
 
         //Pid atspi_pid = 0;
         Pid upstart_pid = 0;
-        
+
         Gtk.init (ref args);
 
         log_timer = new Timer ();
         Log.set_default_handler (log_cb);
 
-        debug ("Starting unity-greeter %s UID=%d LANG=%s", Config.VERSION, (int) Posix.getuid (), Environment.get_variable ("LANG"));
+        debug ("Starting kylin-greeter %s UID=%d LANG=%s", Config.VERSION, (int) Posix.getuid (), Environment.get_variable ("LANG"));
 
         /* Set the cursor to not be the crap default */
         debug ("Setting cursor");
@@ -561,7 +555,7 @@ public class UnityGreeter
 
         debug ("Loading command line options");
         var c = new OptionContext (/* Arguments and description for --help text */
-                                   _("- Unity Greeter"));
+                                   _("- Kylin Greeter"));
         c.add_main_entries (options, Config.GETTEXT_PACKAGE);
         c.add_group (Gtk.get_option_group (true));
         try
@@ -579,7 +573,7 @@ public class UnityGreeter
         if (do_show_version)
         {
             /* Note, not translated so can be easily parsed */
-            stderr.printf ("unity-greeter %s\n", Config.VERSION);
+            stderr.printf ("kylin-greeter %s\n", Config.VERSION);
             return Posix.EXIT_SUCCESS;
         }
 
@@ -592,7 +586,7 @@ public class UnityGreeter
         var value = UGSettings.get_string (UGSettings.KEY_THEME_NAME);
         if (value != "")
             settings.set ("gtk-theme-name", value, null);
-        debug("##########theme name = %s",value);
+        debug("theme name = %s",value);
         value = UGSettings.get_string (UGSettings.KEY_ICON_THEME_NAME);
         if (value != "")
             settings.set ("gtk-icon-theme-name", value, null);
@@ -611,7 +605,7 @@ public class UnityGreeter
         if (value != "")
             settings.set ("gtk-xft-rgba", value, null);
 
-        debug ("Creating Unity Greeter");
+        debug ("Creating Kylin Greeter");
         var greeter = new UnityGreeter (do_test_mode);
 
         debug ("Showing greeter");
@@ -632,7 +626,7 @@ public class UnityGreeter
         greeter.set_scroll_button_status();
         debug ("greeter_already");
         greeter.greeter_already();
-        
+
         debug ("Starting main loop");
         Gtk.main ();
 

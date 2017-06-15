@@ -49,11 +49,47 @@ public class DashEntry : Gtk.Entry, Fadable
         }
     }
 
-    //private static const string NO_BORDER_CLASS = "kylin-greeter-no-border";
+    private bool _arrow_active;
+    public bool arrow_active
+    {
+        get
+        {
+            return _arrow_active;
+        }
+        set
+        {
+            if (_arrow_active != value)
+            {
+                _arrow_active = value;
+                queue_draw ();
+            }
+        }
+    }
+
+    private bool _arrow_hover;
+    public bool arrow_hover
+    {
+        get
+        {
+            return _arrow_hover;
+        }
+        set
+        {
+            if (_arrow_hover != value)
+            {
+                _arrow_hover = value;
+                queue_draw ();
+            }
+        }
+    }
+
+    //private const string NO_BORDER_CLASS = "kylin-greeter-no-border";
 
     protected FadeTracker fade_tracker { get; protected set; }
     private Gdk.Window arrow_win;
     private static Gdk.Pixbuf arrow_pixbuf;
+    private static Gdk.Pixbuf arrow_active_pixbuf;
+    private static Gdk.Pixbuf arrow_prelight_pixbuf;
 
     construct
     {
@@ -61,6 +97,9 @@ public class DashEntry : Gtk.Entry, Fadable
 
         notify["can-respond"].connect (queue_draw);
         button_press_event.connect (button_press_event_cb);
+        button_release_event.connect (button_release_event_cb);
+        enter_notify_event.connect (enter_notify_event_cb);
+        leave_notify_event.connect (leave_notify_event_cb);
 
         if (arrow_pixbuf == null)
         {
@@ -75,9 +114,35 @@ public class DashEntry : Gtk.Entry, Fadable
             }
         }
 
+        if (arrow_active_pixbuf == null)
+        {
+            var filename = Path.build_filename (Config.PKGDATADIR, "arrow_right_active.png");
+            try
+            {
+                arrow_active_pixbuf = new Gdk.Pixbuf.from_file (filename);
+            }
+            catch (Error e)
+            {
+                debug ("Internal error loading arrow icon: %s", e.message);
+            }
+        }
+
+        if (arrow_prelight_pixbuf == null)
+        {
+            var filename = Path.build_filename (Config.PKGDATADIR, "arrow_right_prelight.png");
+            try
+            {
+                arrow_prelight_pixbuf = new Gdk.Pixbuf.from_file (filename);
+            }
+            catch (Error e)
+            {
+                debug ("Internal error loading arrow icon: %s", e.message);
+            }
+        }
+
         override_font (Pango.FontDescription.from_string (font));
 
-        var style_ctx = get_style_context ();
+/*        var style_ctx = get_style_context ();
 
         try
         {
@@ -91,7 +156,7 @@ public class DashEntry : Gtk.Entry, Fadable
         {
             debug ("Internal error loading padding style: %s", e.message);
         }
-
+*/
         // We add the styles and classes we need for normal operation of the
         // spinner animation.  These are always "on" and we just turn them off
         // right before drawing our parent class's draw function.  This is done
@@ -137,8 +202,15 @@ public class DashEntry : Gtk.Entry, Fadable
         /* Draw activity spinner if we need to */
         if (did_respond)
             draw_spinner (c);
-        else if (can_respond && get_text_length () > 0)
-            draw_arrow (c);
+        else if (can_respond)
+        {
+            if (arrow_active)
+                draw_arrow_active (c);
+            else if (arrow_hover)
+                draw_arrow_prelight (c);
+            else
+                draw_arrow (c);
+        }
 
         return false;
     }
@@ -148,9 +220,10 @@ public class DashEntry : Gtk.Entry, Fadable
         c.save ();
 
         var style_ctx = get_style_context ();
-        var arrow_size = get_arrow_size () - 8;
+        var arrow_height = get_arrow_height ();
+        var arrow_width = get_arrow_width ();
         Gtk.cairo_transform_to_window (c, this, arrow_win);
-        style_ctx.render_activity (c, 0, 4, arrow_size, arrow_size);
+        style_ctx.render_activity (c, 0, 4, arrow_width, arrow_height);
 
         c.restore ();
     }
@@ -162,10 +235,38 @@ public class DashEntry : Gtk.Entry, Fadable
 
         c.save ();
 
-        var arrow_size = get_arrow_size ();
+//        var arrow_size = get_arrow_size ();
         Gtk.cairo_transform_to_window (c, this, arrow_win);
-        c.translate ( arrow_size - arrow_pixbuf.get_width () , 0); // right align 
+//        c.translate ( arrow_size - arrow_pixbuf.get_width () , 0); // right align
         Gdk.cairo_set_source_pixbuf (c, arrow_pixbuf, 0, 0);
+
+        c.paint ();
+        c.restore ();
+    }
+
+    private void draw_arrow_active (Cairo.Context c)
+    {
+        if (arrow_active_pixbuf == null)
+            return;
+
+        c.save ();
+
+        Gtk.cairo_transform_to_window (c, this, arrow_win);
+        Gdk.cairo_set_source_pixbuf (c, arrow_active_pixbuf, 0, 0);
+
+        c.paint ();
+        c.restore ();
+    }
+
+    private void draw_arrow_prelight (Cairo.Context c)
+    {
+        if (arrow_prelight_pixbuf == null)
+            return;
+
+        c.save ();
+
+        Gtk.cairo_transform_to_window (c, this, arrow_win);
+        Gdk.cairo_set_source_pixbuf (c, arrow_prelight_pixbuf, 0, 0);
 
         c.paint ();
         c.restore ();
@@ -211,6 +312,8 @@ public class DashEntry : Gtk.Entry, Fadable
 
     public bool button_press_event_cb (Gdk.EventButton event)
     {
+        if (event.window == arrow_win)
+            arrow_active = true;
         if (event.window == arrow_win && get_text_length () > 0)
         {
             activate ();
@@ -220,27 +323,63 @@ public class DashEntry : Gtk.Entry, Fadable
             return false;
     }
 
-    private int get_arrow_size ()
+    public bool button_release_event_cb (Gdk.EventButton event)
     {
-        // height is larger than width for the arrow, so we measure using that
+        arrow_active = false;
+        return true;
+    }
+
+    public bool enter_notify_event_cb (Gdk.EventCrossing event)
+    {
+        if (event.window == arrow_win)
+        {
+            arrow_hover = true;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public bool leave_notify_event_cb (Gdk.EventCrossing event)
+    {
+        if (event.window == arrow_win)
+        {
+            arrow_hover = false;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private int get_arrow_width ()
+    {
+        if (arrow_pixbuf != null)
+            return arrow_pixbuf.get_width ();
+        else
+            return 60;
+    }
+
+    private int get_arrow_height ()
+    {
         if (arrow_pixbuf != null)
             return arrow_pixbuf.get_height ();
         else
-            return 20; // Shouldn't happen
+            return 34;
     }
 
     private void get_arrow_location (out int x, out int y)
     {
-        var arrow_size = get_arrow_size ();
+        var arrow_height = get_arrow_height ();
+        var arrow_width = get_arrow_width ();
 
         Gtk.Allocation allocation;
         get_allocation (out allocation);
 
         // height is larger than width for the arrow, so we measure using that
-        var margin = (allocation.height - arrow_size) / 2;
+        var margin = (allocation.height - arrow_height) / 2;
         if (margin < 0)
             margin = 0;//change by pz
-        x = allocation.x + allocation.width - margin - arrow_size;
+        x = allocation.x + allocation.width - margin - arrow_width;
         y = allocation.y + margin;
     }
 
@@ -253,9 +392,10 @@ public class DashEntry : Gtk.Entry, Fadable
 
         int arrow_x, arrow_y;
         get_arrow_location (out arrow_x, out arrow_y);
-        var arrow_size = get_arrow_size ();
+        var arrow_width = get_arrow_width ();
+        var arrow_height = get_arrow_height ();
 
-        arrow_win.move_resize (arrow_x, arrow_y, arrow_size, arrow_size);
+        arrow_win.move_resize (arrow_x, arrow_y, arrow_width, arrow_height);
     }
 
     public override void realize ()
@@ -272,7 +412,10 @@ public class DashEntry : Gtk.Entry, Fadable
         attrs.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
         attrs.window_type = Gdk.WindowType.CHILD;
         attrs.event_mask = get_events () |
-                           Gdk.EventMask.BUTTON_PRESS_MASK;
+                           Gdk.EventMask.BUTTON_PRESS_MASK |
+                           Gdk.EventMask.BUTTON_RELEASE_MASK |
+                           Gdk.EventMask.ENTER_NOTIFY_MASK |
+                           Gdk.EventMask.LEAVE_NOTIFY_MASK;
 
         arrow_win = new Gdk.Window (get_window (), attrs,
                                     Gdk.WindowAttributesType.X |

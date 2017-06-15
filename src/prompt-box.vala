@@ -71,19 +71,19 @@ public class PromptBox : FadableBox
     public string face;
     private string face_path;
     private string logined_string=_("Logined");
-    protected static const int COL_BACKBUTTON    = 0;
-    protected static const int COL_ACTIVE        = 1;
-    protected static const int COL_CONTENT       = 2;
-    //protected static const int COL_SPACER        = 2;
+    protected const int COL_BACKBUTTON    = 0;
+    protected const int COL_ACTIVE        = 1;
+    protected const int COL_CONTENT       = 2;
+    //protected const int COL_SPACER        = 2;
 
-    protected static const int ROW_NAME          = 0;
-    protected static const int COL_NAME_LABEL    = 0;
-    protected static const int COL_NAME_MESSAGE  = 1;
-    protected static const int COL_NAME_OPTIONS  = 2;
+    protected const int ROW_NAME          = 0;
+    protected const int COL_NAME_LABEL    = 0;
+    protected const int COL_NAME_MESSAGE  = 1;
+    protected const int COL_NAME_OPTIONS  = 2;
 
-    protected static const int COL_ENTRIES_START = 2;
-    protected static const int COL_ENTRIES_END   = 2;
-    protected static const int COL_ENTRIES_WIDTH = 1;
+    protected const int COL_ENTRIES_START = 2;
+    protected const int COL_ENTRIES_END   = 2;
+    protected const int COL_ENTRIES_WIDTH = 1;
 
     protected static  string back_button_normal = Path.build_filename (Config.PKGDATADIR, "arrow_left.png", null);
     protected static  string back_button_prelight = Path.build_filename (Config.PKGDATADIR, "arrow_left_prelight.png", null);
@@ -221,20 +221,19 @@ public class PromptBox : FadableBox
           try
         {
             tmp_face_image.pixbuf = new Gdk.Pixbuf.from_file (Path.build_filename (Path.build_filename (face)));
-            
+
         }
         catch (Error e)
         {
             debug ("Error loading user face image: %s", e.message);
             face_path = Path.build_filename (Config.PKGDATADIR, "default_face.png", null);
             tmp_face_image.set_from_file(face_path);
-            
+
         }
-        
-        
+
+
         user_face_image.pixbuf=scale(tmp_face_image.pixbuf,128,128);
         small_user_face_image.pixbuf=scale(tmp_face_image.pixbuf,128,128);
-        //debug("~~~~~~~~set_face_image~~~~~~~~~~");
     }
     private Gdk.Pixbuf? scale (Gdk.Pixbuf? image, int width, int height)
     {
@@ -394,7 +393,7 @@ public class PromptBox : FadableBox
         small_name_label.override_color(Gtk.StateFlags.NORMAL, { 1.0f, 1.0f, 1.0f, 1.0f });
 
     }
-    
+
     public void set_options_image (Gdk.Pixbuf? image)
     {
         if (option_button == null)
@@ -422,7 +421,7 @@ public class PromptBox : FadableBox
     {
         small_active_label.active = active;
         active_label.active = active;
-        
+
     }
 
     protected void foreach_prompt_widget (Gtk.Callback cb)
@@ -518,7 +517,6 @@ public class PromptBox : FadableBox
 
     public void show_prompts ()
     {
-        //debug("~~~~~~~~~~show_prompts = %s",this.id);
         prompt_visibility = PromptVisibility.SHOWN;
         show ();
         foreach_prompt_widget ((w) => { update_prompt_visibility (w); });
@@ -526,8 +524,6 @@ public class PromptBox : FadableBox
 
         public void hide_prompts ()
     {
-        //debug("~~~~~~~~~~hide_prompts = %s",this.id);
-
         prompt_visibility = PromptVisibility.HIDDEN;
         show ();
     }
@@ -539,9 +535,9 @@ public class PromptBox : FadableBox
             UnityGreeter.add_style_class (w);
 
         last_row += 1;
-        
+
         if(is_message==true)
-        {   //debug("!!!!!!!!!!!!!~~~~~~~~~~~~~~~~~~~~~~is_message==true");
+        {
             box_grid.attach (w, COL_ENTRIES_START, last_row, COL_ENTRIES_WIDTH, 1);
         }else{
             box_grid.attach (w, COL_ENTRIES_START, last_row, COL_ENTRIES_WIDTH, 1);
@@ -588,6 +584,8 @@ public class PromptBox : FadableBox
 
         var entry = new DashEntry ();
         entry.sensitive = false;
+        entry.arrow_active = false;
+        entry.arrow_hover = false;
 
         if (text.contains ("\n"))
         {
@@ -705,7 +703,6 @@ public class PromptBox : FadableBox
     {
         base.size_allocate (allocation);
         box_grid.size_allocate (allocation);
-        //debug("allocation=%d:%d:%d:%d",allocation.x,allocation.y,allocation.height,allocation.width);
         int small_height;
         small_box_widget.get_preferred_height (null, out small_height);
         allocation.height = small_height;
@@ -754,8 +751,8 @@ private class ActiveLabel : Gtk.Label
 private class ActiveIndicator : Gtk.Image
 {
     public bool active { get; set; }
-    public static const int WIDTH = 8;
-    public static const int HEIGHT = 7;
+    public const int WIDTH = 8;
+    public const int HEIGHT = 7;
 
     construct
     {
@@ -803,19 +800,21 @@ public class GreeterButton : Gtk.Button
         prelight_back_image = new Gtk.Image.from_file (prelight);
         active_back_image = new Gtk.Image.from_file (active);
     }
+
     public override void state_flags_changed (Gtk.StateFlags previous_state)
     {
         var new_flags = get_state_flags ();
+        new_flags = new_flags & (~Gtk.StateFlags.DIR_LTR);
 
 
-        if(new_flags == Gtk.StateFlags.PRELIGHT)
+        if (new_flags == Gtk.StateFlags.PRELIGHT)
         {
             set_image(prelight_back_image);
-        }else if ((new_flags & Gtk.StateFlags.ACTIVE) != 0)
+        } else if (new_flags == Gtk.StateFlags.NORMAL)
         {
-            set_image(active_back_image);
-        }else {
             set_image(default_back_image);
+        } else {
+            set_image(active_back_image);
         }
 
         base.state_flags_changed (previous_state);

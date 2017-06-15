@@ -43,7 +43,7 @@ public class SessionPrompt : PromptBox
 			 foreach (var session in LightDM.get_sessions ())
             {
                 debug ("Adding session %s (%s)", session.key, session.name);
-                
+
             }
             box.add_item ("gnome", "GNOME", SessionList.get_badge ("gnome"));
             box.add_item ("kde", "KDE", SessionList.get_badge ("kde"));
@@ -85,35 +85,31 @@ public class SessionList : GreeterList
 
     construct
     {
-        
         prompt = add_session_prompt ("session");
         status=Status.SESSIONLIST;
-        
+
         prompt.show_prompts();
-        
     }
 
     public void set_prompt_face_image(string? face)
     {
         prompt.set_face_image(face);
     }
-    
+
     private SessionPrompt add_session_prompt (string id)
     {
-        
         var e = new SessionPrompt (id, session, default_session);
-        
+
         e.respond.connect ((responses) => { session_clicked (responses[0]); });
         e.set_face_image(null);
         add_entry (e);
 
-        
         status_box=Status.SESSIONLIST;
-        
+
         return e;
     }
 
-    
+
     protected override void add_manual_entry () {}
     public override void show_authenticated (bool successful = true) {}
 

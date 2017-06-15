@@ -7,9 +7,11 @@ dist_pkgdata_DATA = \
 	a11y.svg \
 	active.png \
 	arrow_left.png \
-	arrow_right.png \
 	arrow_left_active.png \
 	arrow_left_prelight.png \
+	arrow_right.png \
+	arrow_right_active.png \
+	arrow_right_prelight.png \
 	arrow-down_can_click.png \
 	arrow-down_cannot_click.png \
 	arrow-up_can_click.png \

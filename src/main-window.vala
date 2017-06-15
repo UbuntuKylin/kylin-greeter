@@ -54,9 +54,9 @@ public class MainWindow : Gtk.Window
     private Gtk.Alignment scroll_down_button_align;
     private Gtk.Alignment scroll_up_button_align;
     // Menubar is smaller, but with shadow, we reserve more space
-    public static const int BUTTONBOX_HEIGHT = 80;
-    public static const int SCROLL_BUTTON_HEIGHT = 30;
-    public static const int BOTTOM_HEIGHT = 40;
+    public const int BUTTONBOX_HEIGHT = 80;
+    public const int SCROLL_BUTTON_HEIGHT = 30;
+    public const int BOTTOM_HEIGHT = 40;
     construct
     {
         events |= Gdk.EventMask.POINTER_MOTION_MASK;
