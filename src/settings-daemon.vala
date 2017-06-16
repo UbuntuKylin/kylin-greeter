@@ -28,28 +28,28 @@ public class SettingsDaemon : Object
 
     public void start ()
     {
-        string[] disabled = { "org.gnome.settings-daemon.plugins.background",
-                              "org.gnome.settings-daemon.plugins.clipboard",
-                              "org.gnome.settings-daemon.plugins.font",
-                              "org.gnome.settings-daemon.plugins.gconf",
-                              "org.gnome.settings-daemon.plugins.gsdwacom",
-                              "org.gnome.settings-daemon.plugins.housekeeping",
-                              "org.gnome.settings-daemon.plugins.keybindings",
-                              "org.gnome.settings-daemon.plugins.keyboard",
-                              "org.gnome.settings-daemon.plugins.media-keys",
-                              "org.gnome.settings-daemon.plugins.mouse",
-                              "org.gnome.settings-daemon.plugins.print-notifications",
-                              "org.gnome.settings-daemon.plugins.smartcard",
-                              "org.gnome.settings-daemon.plugins.sound",
-                              "org.gnome.settings-daemon.plugins.wacom" };
+        string[] disabled = { "org.mate.SettingsDaemon.plugins.background",
+                              "org.mate.SettingsDaemon.plugins.clipboard",
+                              "org.mate.SettingsDaemon.plugins.font",
+                              "org.mate.SettingsDaemon.plugins.gconf",
+                              "org.mate.SettingsDaemon.plugins.gsdwacom",
+                              "org.mate.SettingsDaemon.plugins.housekeeping",
+                              "org.mate.SettingsDaemon.plugins.keybindings",
+                              "org.mate.SettingsDaemon.plugins.keyboard",
+                              "org.mate.SettingsDaemon.plugins.media-keys",
+                              "org.mate.SettingsDaemon.plugins.mouse",
+                              "org.mate.SettingsDaemon.plugins.print-notifications",
+                              "org.mate.SettingsDaemon.plugins.smartcard",
+                              "org.mate.SettingsDaemon.plugins.sound",
+                              "org.mate.SettingsDaemon.plugins.wacom" };
 
-        string[] enabled =  { "org.gnome.settings-daemon.plugins.a11y-keyboard",
-                              "org.gnome.settings-daemon.plugins.a11y-settings",
-                              "org.gnome.settings-daemon.plugins.color",
-                              "org.gnome.settings-daemon.plugins.cursor",
-                              "org.gnome.settings-daemon.plugins.power",
-                              "org.gnome.settings-daemon.plugins.xrandr",
-                              "org.gnome.settings-daemon.plugins.xsettings" };
+        string[] enabled =  { "org.mate.SettingsDaemon.plugins.a11y-keyboard",
+                              "org.mate.SettingsDaemon.plugins.a11y-settings",
+                              "org.mate.SettingsDaemon.plugins.color",
+                              "org.mate.SettingsDaemon.plugins.cursor",
+                              "org.mate.SettingsDaemon.plugins.power",
+                              "org.mate.SettingsDaemon.plugins.xrandr",
+                              "org.mate.SettingsDaemon.plugins.xsettings" };
 
         foreach (var schema in disabled)
             set_plugin_enabled (schema, false);
@@ -103,7 +103,7 @@ public class SettingsDaemon : Object
                            {
                                debug ("Acquired org.gnome.ScreenSaver");
                                start_settings_daemon ();
-                           },                          
+                           },
                            () => debug ("Failed to acquire name org.gnome.ScreenSaver"));
 
         /* The media-keys plugin inhibits the power key, but we don't want
@@ -158,15 +158,15 @@ public class SettingsDaemon : Object
         if (n_names != 0)
             return;
 
-        debug ("All bus names acquired, starting unity-settings-daemon");
+        debug ("All bus names acquired, starting mate-settings-daemon");
 
         try
         {
-            Process.spawn_command_line_async (Config.USD_BINARY);
+            Process.spawn_command_line_async (Config.MSD_BINARY);
         }
         catch (SpawnError e)
         {
-            debug ("Could not start unity-settings-daemon: %s", e.message);
+            debug ("Could not start mate-settings-daemon: %s", e.message);
         }
     }
 }
@@ -183,7 +183,7 @@ public class ScreenSaverInterface : Object
     public ScreenSaverInterface ()
     {
         idle_monitor = new Gnome.IdleMonitor ();
-        _set_active (false);       
+        _set_active (false);
     }
 
     private void _set_active (bool value)
@@ -220,7 +220,7 @@ public class ScreenSaverInterface : Object
     {
         return _active;
     }
-    
+
     public uint32 get_active_time () { return 0; }
     public void lock () {}
     public void show_message (string summary, string body, string icon) {}

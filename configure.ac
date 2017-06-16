@@ -36,11 +36,11 @@ PKG_CHECK_MODULES(KYLIN_GREETER, [
 #INDICATORDIR=`$PKG_CONFIG --variable=indicatordir indicator3-0.4`
 #AC_SUBST(INDICATORDIR)
 
-USD_BINARY=`$PKG_CONFIG --variable=binary unity-settings-daemon`
-if test -z "$USD_BINARY"; then
-    AC_MSG_ERROR([Could not find path to unity-settings-daemon binary])
+MSD_BINARY=`$PKG_CONFIG --variable=binary mate-settings-daemon`
+if test -z "$MSD_BINARY"; then
+    AC_MSG_ERROR([Could not find path to mate-settings-daemon binary])
 fi
-AC_DEFINE_UNQUOTED([USD_BINARY], ["$USD_BINARY"], [Path to g-s-d])
+AC_DEFINE_UNQUOTED([MSD_BINARY], ["$MSD_BINARY"], [Path to g-s-d])
 
 dnl ###########################################################################
 dnl Internationalization

@@ -8,6 +8,6 @@ namespace Config
   public const string INDICATOR_FILE_DIR;
   public const string PKGDATADIR;
   public const string INDICATORDIR;
-  public const string USD_BINARY;
+  public const string MSD_BINARY;
 }
 
