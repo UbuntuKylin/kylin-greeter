@@ -1,4 +1,4 @@
-kylin-greeter (17.10.0) atrful; urgency=medium
+kylin-greeter (17.10.0) artful; urgency=medium
 
   * Set name label's halign to center. (LP: #1552664)
   * Fix the theme error. (LP: #1683789) 
