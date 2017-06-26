@@ -855,8 +855,8 @@ public UserList (Background bg)
         redraw_greeter_box ();
     }
 
-    public void add_user (string name, string label, string? background = null, bool is_active = false, bool has_messages = false, string? session = null, string? face_image = default_face_image)
-    {   //debug("~~~~~~~~~~face=%s",face_image);
+    public void add_user (string name, string label, string? background = null, bool is_active = false, bool has_messages = false, string? session = null, string? face_image = null)
+    {
         var e = find_entry (name) as UserPromptBox;
         if (e == null)
         {
@@ -870,7 +870,7 @@ public UserList (Background bg)
         }
         //e.background = null;
         e.background = background;
-        if(face_image==null)
+        if(face_image == null)
             face_image = default_face_image;
         
         e.set_face_image(face_image);
