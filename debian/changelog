@@ -1,7 +1,7 @@
 kylin-greeter (17.10.0) artful; urgency=medium
 
   * Set name label's halign to center. (LP: #1552664)
-  * Fix the theme error. (LP: #1683789) 
+  * Fix the theme error. (LP: #1683789)
   * Add hover/active status on arrow_left and arrow_right.
   * Use mate-settings-daemon instead of unity-settings-daemon.
 
@@ -10,7 +10,7 @@ kylin-greeter (17.10.0) artful; urgency=medium
 kylin-greeter (17.04.0) zesty; urgency=medium
 
   * Added support for UKUI.
-  * Updated the background.png. 
+  * Updated the background.png.
 
  -- handsome_feng <jianfengli@ubuntukylin.com>  Thu, 16 Mar 2017 09:54:32 +0800
 

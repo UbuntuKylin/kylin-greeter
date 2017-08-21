@@ -10,8 +10,11 @@ dist_pkgdata_DATA = \
 	arrow_left_active.png \
 	arrow_left_prelight.png \
 	arrow_right.png \
+	arrow_right_en.png \
 	arrow_right_active.png \
+	arrow_right_active_en.png \
 	arrow_right_prelight.png \
+	arrow_right_prelight_en.png \
 	arrow-down_can_click.png \
 	arrow-down_cannot_click.png \
 	arrow-up_can_click.png \

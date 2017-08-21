@@ -101,9 +101,21 @@ public class DashEntry : Gtk.Entry, Fadable
         enter_notify_event.connect (enter_notify_event_cb);
         leave_notify_event.connect (leave_notify_event_cb);
 
+        if (!Environment.get_variable ("LANG").has_prefix ("zh_CN"))
+            font = "Ubuntu 16";
+
         if (arrow_pixbuf == null)
         {
-            var filename = Path.build_filename (Config.PKGDATADIR, "arrow_right.png");
+            string pic_name;
+            if (Environment.get_variable ("LANG").has_prefix ("zh_CN"))
+            {
+                pic_name = "arrow_right.png";
+            }
+            else
+            {
+                pic_name = "arrow_right_en.png";
+            }
+            var filename = Path.build_filename (Config.PKGDATADIR, pic_name);
             try
             {
                 arrow_pixbuf = new Gdk.Pixbuf.from_file (filename);
@@ -116,7 +128,16 @@ public class DashEntry : Gtk.Entry, Fadable
 
         if (arrow_active_pixbuf == null)
         {
-            var filename = Path.build_filename (Config.PKGDATADIR, "arrow_right_active.png");
+            string pic_name;
+            if (Environment.get_variable ("LANG").has_prefix ("zh_CN"))
+            {
+                pic_name = "arrow_right_active.png";
+            }
+            else
+            {
+                pic_name = "arrow_right_active_en.png";
+            }
+            var filename = Path.build_filename (Config.PKGDATADIR, pic_name);
             try
             {
                 arrow_active_pixbuf = new Gdk.Pixbuf.from_file (filename);
@@ -129,7 +150,16 @@ public class DashEntry : Gtk.Entry, Fadable
 
         if (arrow_prelight_pixbuf == null)
         {
-            var filename = Path.build_filename (Config.PKGDATADIR, "arrow_right_prelight.png");
+            string pic_name;
+            if (Environment.get_variable ("LANG").has_prefix ("zh_CN"))
+            {
+                pic_name = "arrow_right_prelight.png";
+            }
+            else
+            {
+                pic_name = "arrow_right_prelight_en.png";
+            }
+            var filename = Path.build_filename (Config.PKGDATADIR, pic_name);
             try
             {
                 arrow_prelight_pixbuf = new Gdk.Pixbuf.from_file (filename);
