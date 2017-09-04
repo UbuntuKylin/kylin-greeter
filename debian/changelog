@@ -1,3 +1,11 @@
+kylin-greeter (17.10.1) artful; urgency=medium
+
+  * Change the login button according to the value of 'LANG'.
+  * Update the logo and background from 1704 to 1710.
+  * Fix the caps warning.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 04 Sep 2017 15:02:17 +0800
+
 kylin-greeter (17.10.0) artful; urgency=medium
 
   * Set name label's halign to center. (LP: #1552664)

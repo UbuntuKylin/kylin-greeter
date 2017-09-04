@@ -172,12 +172,12 @@ public class DashEntry : Gtk.Entry, Fadable
 
         override_font (Pango.FontDescription.from_string (font));
 
-/*        var style_ctx = get_style_context ();
+        var style_ctx = get_style_context ();
 
         try
         {
             var padding_provider = new Gtk.CssProvider ();
-            var css = "* {padding-right: %dpx;}".printf (get_arrow_size ());
+            var css = "entry {padding-right: %dpx;}".printf (get_arrow_width () + 3);
             padding_provider.load_from_data (css, -1);
             style_ctx.add_provider (padding_provider,
                                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -186,7 +186,7 @@ public class DashEntry : Gtk.Entry, Fadable
         {
             debug ("Internal error loading padding style: %s", e.message);
         }
-*/
+
         // We add the styles and classes we need for normal operation of the
         // spinner animation.  These are always "on" and we just turn them off
         // right before drawing our parent class's draw function.  This is done
