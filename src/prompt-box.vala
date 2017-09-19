@@ -803,9 +803,9 @@ public class GreeterButton : Gtk.Button
 
     public override void state_flags_changed (Gtk.StateFlags previous_state)
     {
+        // TODO: It's strange here.
         var new_flags = get_state_flags ();
         new_flags = new_flags & (~Gtk.StateFlags.DIR_LTR);
-
 
         if (new_flags == Gtk.StateFlags.PRELIGHT)
         {
@@ -813,7 +813,8 @@ public class GreeterButton : Gtk.Button
         } else if (new_flags == Gtk.StateFlags.NORMAL)
         {
             set_image(default_back_image);
-        } else {
+        } else if (new_flags == 3)
+        {
             set_image(active_back_image);
         }
 

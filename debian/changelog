@@ -1,10 +1,11 @@
-kylin-greeter (17.10.1) artful; urgency=medium
+kylin-greeter (17.10.2) artful; urgency=medium
 
   * Change the login button according to the value of 'LANG'.
   * Update the logo and background from 1704 to 1710.
   * Fix the caps warning.
+  * Fix the wrong button state of arrow_left.
 
- -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 04 Sep 2017 15:02:17 +0800
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Tue, 19 Sep 2017 19:37:21 +0800
 
 kylin-greeter (17.10.0) artful; urgency=medium
 
