@@ -26,6 +26,7 @@ extern bool gtk_style_context_lookup_color (Gtk.StyleContext ctx, string color_n
 public class DashEntry : Gtk.Entry, Fadable
 {
     public static string font = "Ubuntu 14";
+    public static bool current_visibility = false;
     public signal void respond ();
 
     public string constant_placeholder_text { get; set; }
@@ -90,6 +91,8 @@ public class DashEntry : Gtk.Entry, Fadable
     private static Gdk.Pixbuf arrow_pixbuf;
     private static Gdk.Pixbuf arrow_active_pixbuf;
     private static Gdk.Pixbuf arrow_prelight_pixbuf;
+    private static Gdk.Pixbuf show_password_pixbuf;
+    private static Gdk.Pixbuf hide_password_pixbuf;
 
     construct
     {
@@ -100,6 +103,43 @@ public class DashEntry : Gtk.Entry, Fadable
         button_release_event.connect (button_release_event_cb);
         enter_notify_event.connect (enter_notify_event_cb);
         leave_notify_event.connect (leave_notify_event_cb);
+
+        if (show_password_pixbuf == null)
+        {
+            var filename = Path.build_filename (Config.PKGDATADIR, "show_password.png");
+            try
+            {
+                show_password_pixbuf = new Gdk.Pixbuf.from_file (filename);
+            }
+            catch (Error e)
+            {
+                debug ("Internal error loading show_password icon: %s", e.message);
+            }
+        }
+        if (hide_password_pixbuf == null)
+        {
+            var filename = Path.build_filename (Config.PKGDATADIR, "hide_password.png");
+            try
+            {
+                hide_password_pixbuf = new Gdk.Pixbuf.from_file (filename);
+            }
+            catch (Error e)
+            {
+                debug ("Internal error loading hide_password icon: %s", e.message);
+            }
+        }
+        set_icon_from_pixbuf (Gtk.EntryIconPosition.SECONDARY, hide_password_pixbuf);
+        icon_press.connect ((pos, event) => {
+            if (pos == Gtk.EntryIconPosition.SECONDARY) {
+                if (current_visibility == true) {
+                    visibility = current_visibility = false;
+                    set_icon_from_pixbuf (Gtk.EntryIconPosition.SECONDARY, hide_password_pixbuf);
+                } else {
+                    visibility = current_visibility = true;
+                    set_icon_from_pixbuf (Gtk.EntryIconPosition.SECONDARY, show_password_pixbuf);
+                }
+            }
+        });
 
         if (!Environment.get_variable ("LANG").has_prefix ("zh_CN"))
             font = "Ubuntu 16";

@@ -36,6 +36,8 @@ dist_pkgdata_DATA = \
 	restart_highlight.png \
 	restart.png \
 	shadow.png \
+	show_password.png \
+	hide_password.png \
 	shutdown_highlight.png \
 	shutdown.png \
 	suspend_highlight.png \
