@@ -2,10 +2,10 @@ Source: kylin-greeter
 Section: x11
 Priority: optional
 Maintainer: Ubuntu Kylin Team <ubuntukylin-members@lists.launchpad.net>
-Standards-Version: 4.0.0
+Standards-Version: 4.1.2
 Build-Depends: at-spi2-core,
                dbus-x11,
-               debhelper (>= 9),
+               debhelper (>= 11),
                dh-autoreconf,
                gnome-common,
                mate-settings-daemon-dev,
