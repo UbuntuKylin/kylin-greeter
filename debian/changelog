@@ -2,6 +2,7 @@ kylin-greeter (18.04.0) bionic; urgency=medium
 
   * Add show/hide password function to the text entry.
   * Update the log and background from 17.10 to 18.04.
+  * Use ukui-settings-daemon instead of mate-settings-daemon.
 
  -- handsome_feng <jianfengli@ubuntukylin.com>  Wed, 28 Feb 2018 10:52:08 +0800
 

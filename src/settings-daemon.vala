@@ -28,28 +28,28 @@ public class SettingsDaemon : Object
 
     public void start ()
     {
-        string[] disabled = { "org.mate.SettingsDaemon.plugins.background",
-                              "org.mate.SettingsDaemon.plugins.clipboard",
-                              "org.mate.SettingsDaemon.plugins.font",
-                              "org.mate.SettingsDaemon.plugins.gconf",
-                              "org.mate.SettingsDaemon.plugins.gsdwacom",
-                              "org.mate.SettingsDaemon.plugins.housekeeping",
-                              "org.mate.SettingsDaemon.plugins.keybindings",
-                              "org.mate.SettingsDaemon.plugins.keyboard",
-                              "org.mate.SettingsDaemon.plugins.media-keys",
-                              "org.mate.SettingsDaemon.plugins.mouse",
-                              "org.mate.SettingsDaemon.plugins.print-notifications",
-                              "org.mate.SettingsDaemon.plugins.smartcard",
-                              "org.mate.SettingsDaemon.plugins.sound",
-                              "org.mate.SettingsDaemon.plugins.wacom" };
+        string[] disabled = { "org.ukui.SettingsDaemon.plugins.background",
+                              "org.ukui.SettingsDaemon.plugins.clipboard",
+                              "org.ukui.SettingsDaemon.plugins.font",
+                              "org.ukui.SettingsDaemon.plugins.gconf",
+                              "org.ukui.SettingsDaemon.plugins.gsdwacom",
+                              "org.ukui.SettingsDaemon.plugins.housekeeping",
+                              "org.ukui.SettingsDaemon.plugins.keybindings",
+                              "org.ukui.SettingsDaemon.plugins.keyboard",
+                              "org.ukui.SettingsDaemon.plugins.media-keys",
+                              "org.ukui.SettingsDaemon.plugins.mouse",
+                              "org.ukui.SettingsDaemon.plugins.print-notifications",
+                              "org.ukui.SettingsDaemon.plugins.smartcard",
+                              "org.ukui.SettingsDaemon.plugins.sound",
+                              "org.ukui.SettingsDaemon.plugins.wacom" };
 
-        string[] enabled =  { "org.mate.SettingsDaemon.plugins.a11y-keyboard",
-                              "org.mate.SettingsDaemon.plugins.a11y-settings",
-                              "org.mate.SettingsDaemon.plugins.color",
-                              "org.mate.SettingsDaemon.plugins.cursor",
-                              "org.mate.SettingsDaemon.plugins.power",
-                              "org.mate.SettingsDaemon.plugins.xrandr",
-                              "org.mate.SettingsDaemon.plugins.xsettings" };
+        string[] enabled =  { "org.ukui.SettingsDaemon.plugins.a11y-keyboard",
+                              "org.ukui.SettingsDaemon.plugins.a11y-settings",
+                              "org.ukui.SettingsDaemon.plugins.color",
+                              "org.ukui.SettingsDaemon.plugins.cursor",
+                              "org.ukui.SettingsDaemon.plugins.power",
+                              "org.ukui.SettingsDaemon.plugins.xrandr",
+                              "org.ukui.SettingsDaemon.plugins.xsettings" };
 
         foreach (var schema in disabled)
             set_plugin_enabled (schema, false);
@@ -158,7 +158,7 @@ public class SettingsDaemon : Object
         if (n_names != 0)
             return;
 
-        debug ("All bus names acquired, starting mate-settings-daemon");
+        debug ("All bus names acquired, starting ukui-settings-daemon");
 
         try
         {
@@ -166,7 +166,7 @@ public class SettingsDaemon : Object
         }
         catch (SpawnError e)
         {
-            debug ("Could not start mate-settings-daemon: %s", e.message);
+            debug ("Could not start ukui-settings-daemon: %s", e.message);
         }
     }
 }

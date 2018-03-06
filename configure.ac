@@ -2,7 +2,7 @@
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(kylin-greeter, 17.04.0)
+AC_INIT(kylin-greeter, 18.04.0)
 AC_CONFIG_MACRO_DIR(m4)
 AM_INIT_AUTOMAKE
 AM_PROG_CC_C_O
@@ -36,9 +36,9 @@ PKG_CHECK_MODULES(KYLIN_GREETER, [
 #INDICATORDIR=`$PKG_CONFIG --variable=indicatordir indicator3-0.4`
 #AC_SUBST(INDICATORDIR)
 
-MSD_BINARY=`$PKG_CONFIG --variable=binary mate-settings-daemon`
+MSD_BINARY=`$PKG_CONFIG --variable=binary ukui-settings-daemon`
 if test -z "$MSD_BINARY"; then
-    AC_MSG_ERROR([Could not find path to mate-settings-daemon binary])
+    AC_MSG_ERROR([Could not find path to ukui-settings-daemon binary])
 fi
 AC_DEFINE_UNQUOTED([MSD_BINARY], ["$MSD_BINARY"], [Path to g-s-d])
 
