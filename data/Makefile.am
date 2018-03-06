@@ -19,7 +19,7 @@ dist_pkgdata_DATA = \
 	arrow-down_cannot_click.png \
 	arrow-up_can_click.png \
 	arrow-up_cannot_click.png \
-	background.png \
+	background.jpg \
 	cof.png \
 	logo.png \
 	dialog_close.png \
