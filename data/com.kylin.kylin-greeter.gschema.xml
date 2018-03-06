@@ -2,7 +2,7 @@
 <schemalist gettext-domain="kylin-greeter">
   <schema id="com.kylin.kylin-greeter" path="/com/kylin/kylin-greeter/">
     <key name="background" type="s">
-      <default>'/usr/share/kylin-greeter/background.jpg'</default>
+      <default>'/usr/share/kylin-greeter/background.png'</default>
       <summary>Background file to use, either an image path or a color (e.g. #772953)</summary>
     </key>
     <key name="background-color" type="s">
