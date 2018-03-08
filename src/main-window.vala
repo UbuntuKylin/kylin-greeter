@@ -18,6 +18,7 @@
  * Authors: Robert Ancell <robert.ancell@canonical.com>
  *          Michael Terry <michael.terry@canonical.com>
  * Modified by : zhangchao <zhangchao@ubuntukylin.com>
+ *               handsome_feng <jianfengli@ubuntukylin.com>
  */
 
 public class MainWindow : Gtk.Window
@@ -239,6 +240,7 @@ public class MainWindow : Gtk.Window
         {
             var screen = get_screen ();
             screen.monitors_changed.connect (monitors_changed_cb);
+            screen.size_changed.connect (size_changed_cb);
             monitors_changed_cb (screen);
         }
     }
@@ -362,10 +364,16 @@ public class MainWindow : Gtk.Window
 
     }
 
+    private void size_changed_cb (Gdk.Screen screen)
+    {
+        debug ("Size changed, screen is %dx%d pixels", screen.get_width (), screen.get_height ());
+        stack.queue_resize ();
+    }
+
     private void monitors_changed_cb (Gdk.Screen screen)
     {
         int primary = screen.get_primary_monitor ();
-        debug ("Screen is %dx%d pixels", screen.get_width (), screen.get_height ());
+        debug ("Monitors changed, screen is %dx%d pixels", screen.get_width (), screen.get_height ());
         monitors = new List<Monitor> ();
         primary_monitor = null;
 
