@@ -1,10 +1,17 @@
-kylin-greeter (18.04.0) bionic; urgency=medium
+kylin-greeter (18.04.1) bionic; urgency=medium
 
   * Add show/hide password function to the text entry.
   * Update the log and background from 17.10 to 18.04.
   * Use ukui-settings-daemon instead of mate-settings-daemon.
+  * Resize when screen resolution changed.
 
- -- handsome_feng <jianfengli@ubuntukylin.com>  Wed, 28 Feb 2018 10:52:08 +0800
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Tue, 13 Mar 2018 14:42:38 +0800
+
+kylin-greeter (18.04.0) bionic; urgency=medium
+
+  * No-change rebuild against latest gnome-desktop3
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Thu, 15 Feb 2018 21:12:37 -0500
 
 kylin-greeter (17.10.2) artful; urgency=medium
 
