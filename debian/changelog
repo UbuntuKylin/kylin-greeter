@@ -1,9 +1,9 @@
 kylin-greeter (18.04.1) bionic; urgency=medium
 
   * Add show/hide password function to the text entry.
-  * Update the log and background from 17.10 to 18.04.
+  * Update the log and background from 17.10 to 18.04. (LP: #1755373)
   * Use ukui-settings-daemon instead of mate-settings-daemon.
-  * Resize when screen resolution changed.
+  * Resize when screen resolution changed. (LP: #1755386)
 
  -- handsome_feng <jianfengli@ubuntukylin.com>  Tue, 13 Mar 2018 14:42:38 +0800
 
