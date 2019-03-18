@@ -2,10 +2,10 @@ Source: kylin-greeter
 Section: x11
 Priority: optional
 Maintainer: Ubuntu Kylin Team <ubuntukylin-members@lists.launchpad.net>
-Standards-Version: 4.1.3
+Standards-Version: 4.3.0
 Build-Depends: at-spi2-core,
                dbus-x11,
-               debhelper (>= 11),
+               debhelper (>= 12),
                gnome-common,
                ukui-settings-daemon-dev,
                libcanberra-dev,
@@ -17,8 +17,9 @@ Build-Depends: at-spi2-core,
                libpixman-1-dev,
                valac (>= 0.20.0),
                xvfb,
-Homepage: https://launchpad.net/kylin-greeter
-Vcs-Bzr: https://code.launchpad.net/~ubuntukylin-members/unity-greeter/trunk
+Homepage: https://github.com/ubuntukylin/kylin-greeter
+Vcs-Git: https://github.com/ubuntukylin/kylin-greeter.git
+Vcs-Browser: https://github.com/ubuntukylin/kylin-greeter
 
 Package: kylin-greeter
 Architecture: any

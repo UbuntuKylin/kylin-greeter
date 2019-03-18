@@ -1,3 +1,15 @@
+kylin-greeter (19.04.0) disco; urgency=medium
+
+  * Fix the ftbfs error. (LP: #1820541)
+  * Update the logo.png.
+  * Debian:
+    - Bump stardant-version to 4.3.0.
+    - Bump compat level to 12.
+    - Migrate from bzr to git.
+    - Update rules.
+
+ -- handsome_feng <jianfengli@ubuntukylin.com>  Mon, 18 Mar 2019 11:38:07 +0800
+
 kylin-greeter (18.04.2) bionic; urgency=medium
 
   * Use ukui-settings-daemon instead of mate-settings-daemon.
