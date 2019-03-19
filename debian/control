@@ -6,7 +6,7 @@ Standards-Version: 4.3.0
 Build-Depends: at-spi2-core,
                dbus-x11,
                debhelper (>= 12),
-               gnome-common,
+               mate-common,
                ukui-settings-daemon-dev,
                libcanberra-dev,
                libgnome-desktop-3-dev,
